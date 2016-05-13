@@ -4,20 +4,27 @@ import Keyboard from './keyboard';
 
 let game = new Game();
 
+let rocketSize = 45;
+
 let rocket = new FlyingObject({
     keyboard: new Keyboard(38, 39, 40, 37, 16),
-    x: 40,
+    size: rocketSize,
+    x: rocketSize,
     y: window.innerHeight / 2,
-    color: '#193441',
-    unicode: '\uf0fb'
+    color: '#EB2A2A',
+    unicode: '\uf0fb',
+    infinite: true
 });
+
 let rocket2 = new FlyingObject({
     keyboard: new Keyboard(87, 68, 83, 65, 32),
-    x: window.innerWidth - 40,
+    size: rocketSize,
+    x: window.innerWidth - rocketSize,
     y: window.innerHeight / 2,
-    color: '#91AA9D',
+    color: '#34AB29',
     unicode: '\uf0fb',
-    rotation: 180
+    rotation: 180,
+    infinite: true
 });
 
 game.addFlyingObject(rocket);
