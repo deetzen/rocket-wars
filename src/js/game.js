@@ -121,6 +121,7 @@ export default class {
             player.character.y = Math.round(Math.random() * window.innerHeight) + 1;
             player.character.rotation = Math.round(Math.random() * 360) + 1;
             player.character.alive = true;
+            player.explosion.currentFrame = 0;
         }, 2000);
 
         var snd = new Audio("sounds/explode.wav"); // buffers automatically when created
@@ -131,7 +132,7 @@ export default class {
         if (this.players) {
             for (let i = 0; i < this.players.length; i++) {
                 this.players[i].character.update(this.keyboard);
-                this.players[i].character.draw();
+                this.players[i].character.alive ? this.players[i].character.draw() : this.players[i].explode(this.context);
             }
         }
 
