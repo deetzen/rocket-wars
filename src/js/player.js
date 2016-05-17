@@ -11,6 +11,8 @@ export default class {
 
         this.character = new FlyingObject({
             size: CHARACTER_SIZE,
+            label: true,
+            shadow: true,
             player: this,
             x: Math.round(Math.random() * window.innerWidth) + 1,
             y: Math.round(Math.random() * window.innerHeight) + 1,

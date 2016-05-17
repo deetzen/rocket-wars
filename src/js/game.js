@@ -27,14 +27,8 @@ export default class {
     updateCanvas () {
 
         this.drawBackground();
-
-        for(let i = 0; i < this.players.length; i++) {
-            this.context.fillStyle = '#FFFFFF';
-            this.context.font = '14px arial';
-            this.context.fillText(this.players[i].name + ': ' + this.players[i].score.toString(), 10, (i+1) * 20);
-        }
-
         this.drawFlyingObjects();
+        this.drawHighscore();
         this.checkCollisions();
 
         requestAnimationFrame(() => this.updateCanvas());
@@ -52,6 +46,43 @@ export default class {
 
         this.context.drawImage(background, 0,0);
          */
+    }
+
+    drawHighscore() {
+
+        let playerList = this.players.slice(0);
+        let playerTextWidth = 0;
+        playerList.sort(function(a, b) {
+            return a.score > b.score ? -1 : a.score < b.score ? 1 : 0;
+        });
+
+        this.context.font = '14px Verdana';
+
+        for(let i = 1; i <= playerList.length; i++) {
+            let playerText = i + '. ' + playerList[i-1].name + " [" + playerList[i-1].score.toString() + ']';
+            playerTextWidth = this.context.measureText(playerText).width > playerTextWidth ? this.context.measureText(playerText).width : playerTextWidth;
+        }
+
+        this.context.fillStyle = 'rgba(255,255,255,0.8)';
+        this.context.fillRect(10, 10, playerTextWidth + 55, playerList.length * 20 + 30);
+
+        for(let i = 1; i <= playerList.length; i++) {
+            this.context.fillStyle = playerList[i-1].color;
+            this.context.shadowColor = 'rgba(0,0,0,0.4)';
+            this.context.shadowOffsetX = 1;
+            this.context.shadowOffsetY = 1;
+            this.context.shadowBlur = 1;
+            let playerText = i + '. ' + playerList[i-1].name;
+            let playerPoints = playerList[i-1].score.toString();
+
+            this.context.textAlign = 'left';
+            this.context.fillText(playerText, 25, (i * 20) + 20);
+
+            this.context.fillStyle = 'rgba(0,0,0,0.5)';
+            this.context.textAlign = 'right';
+            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 20);
+        }
+
     }
 
     checkCollisions () {
@@ -88,9 +119,9 @@ export default class {
         setTimeout(function() {
             player.character.x = Math.round(Math.random() * window.innerWidth) + 1;
             player.character.y = Math.round(Math.random() * window.innerHeight) + 1;
-            player.character.y = Math.round(Math.random() * 360) + 1;
+            player.character.rotation = Math.round(Math.random() * 360) + 1;
             player.character.alive = true;
-        }, 3000);
+        }, 2000);
 
         var snd = new Audio("sounds/explode.wav"); // buffers automatically when created
         snd.play();
