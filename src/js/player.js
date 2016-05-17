@@ -1,5 +1,7 @@
 import FlyingObject from './flying-object';
 import {CHARACTER_SIZE} from './constants';
+import SpriteSheet from './sprite-sheet';
+import Animation from './animation';
 
 export default class {
 
@@ -8,6 +10,9 @@ export default class {
         this.color = options.color;
         this.keyboard = options.keyboard;
         this.score = 0;
+
+        this.explosionSheet = new SpriteSheet('images/explosion_3_40_128.png', 128, 128);
+        this.explosion = new Animation(this.explosionSheet, 4, 0, 40, false);
 
         this.character = new FlyingObject({
             size: CHARACTER_SIZE,
@@ -21,10 +26,15 @@ export default class {
             unicode: '\uf0fb',
             infinite: true
         });
-        
+
         this.enableKeyboard();
 
         setInterval(this.checkInput.bind(this), 10);
+    }
+
+    explode(context){
+        this.explosion.update();
+        this.explosion.draw(this.character.x, this.character.y, context);
     }
 
     checkInput () {
