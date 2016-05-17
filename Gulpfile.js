@@ -1,6 +1,8 @@
 const gulp = require('gulp');
 const browserify = require('browserify');
 const source = require('vinyl-source-stream');
+const webserver = require('gulp-webserver');
+
 
 gulp.task('copy', function () {
     return gulp.src(['src/**/*', '!src/js/**/*'])
@@ -15,8 +17,20 @@ gulp.task('transpile', function () {
         .pipe(gulp.dest('dist/js'));
 });
 
-gulp.task('default', ['copy', 'transpile']);
+gulp.task('webserver', function() {
+    gulp.src('dist')
+        .pipe(webserver({
+            livereload: true,
+            directoryListing: false,
+            open: 'index.html'
+        }));
+});
+
+
+gulp.task('build', ['copy', 'transpile']);
+
+gulp.task('default', ['build', 'webserver']);
 
 gulp.task('watch', ['default'], function () {
-    gulp.watch(['./src/js/**/*.js'], ['default']);    
+    gulp.watch(['./src/**/*'], ['build']);
 });
