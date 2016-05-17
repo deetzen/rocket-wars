@@ -14,7 +14,6 @@ export default class {
     }
 
     onKeydown (event) {
-        console.log(event.keyCode);
         this.pressed[event.keyCode] = true;
     }
 

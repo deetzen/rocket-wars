@@ -1,42 +1,43 @@
-import {VELOCITY} from './constants';
+import {VELOCITY,MAX_VELOCITY,MIN_VELOCITY} from './constants';
 
 class FlyingObject {
 
     constructor (options) {
         this.x = options.x;
         this.y = options.y;
-        this.game = null;
+        this.alive = true;
+        this.game = options.game || null;
+        this.player = options.player || null;
         this.circle = options.circle || {};
         this.rotation = options.rotation || 0;
-        this.keyboard = options.keyboard || null;
         this.color = options.color || 'lightpink';
         this.unicode = options.unicode || '';
         this.independent = options.independent || false;
         this.velocity = options.velocity || VELOCITY;
-        this.keyboardIsEnabled = false;
         this.fontSize = options.size ? options.size + 'px' : '45px';
         this.isFiring = false;
         this.radius = options.size / 2;
         this.infinite = options.infinite || false;
-
-        if(this.keyboard) {
-            this.enableKeyboard();
-        }
     }
 
     draw () {
         if(!this.isValid()) {
-            let ammoPos = this.game.flyingObjects.indexOf(this);
-            this.game.flyingObjects.splice(ammoPos, 1);
+            let ammoPos = this.game.ammos.indexOf(this);
+            this.game.ammos.splice(ammoPos, 1);
+        } if (!this.alive) {
+            return;
         }
 
-        let context = this.game.context;
 
-        context.font = this.fontSize + ' FontAwesome';
+        let context = this.game.context;
 
         // draw fighter
         context.save();
         context.fillStyle = this.color;
+        context.shadowColor = 'rgba(0,0,0,0.5)';
+        context.shadowOffsetX = 2;
+        context.shadowOffsetY = 2;
+        context.shadowBlur = 1;
         context.font = this.fontSize + ' FontAwesome';
         let textWidth = context.measureText(this.unicode).width;
         context.translate(this.x, this.y);
@@ -46,18 +47,7 @@ class FlyingObject {
     }
 
     update () {
-
-        if(this.independent) {
-            this.move();
-            return;
-        }
-
-        if(this.keyboardIsEnabled) {
-            if(this.keyboard.isDown(this.keyboard.up)) { this.move(); }
-            if(this.keyboard.isDown(this.keyboard.right)) { this.rotateRight(); }
-            if(this.keyboard.isDown(this.keyboard.left)) { this.rotateLeft(); }
-            if(this.keyboard.isDown(this.keyboard.fire) && !this.isFiring) { this.fire(); }
-        }
+        this.move();
     }
 
     fire () {
@@ -68,16 +58,20 @@ class FlyingObject {
         let ammo = new FlyingObject({
             x: ammoPos.x,
             y: ammoPos.y,
-            color: '#FFFFFF',
-            velocity: VELOCITY * 1.6,
+            player: this.player,
+            color: this.color,
+            velocity: this.velocity * 1.4,
             independent: true,
             infinite: false,
-            size: 20,
-            unicode: '.',
+            size: 7,
+            unicode: '\uf111',
             rotation: this.rotation
         });
 
-        this.game.addFlyingObject(ammo);
+        this.game.addAmmo(ammo);
+
+        var snd = new Audio("sounds/shoot.wav"); // buffers automatically when created
+        snd.play();
     }
 
     static calcVector (xCoord, yCoord, angle, length) {
@@ -90,11 +84,22 @@ class FlyingObject {
     }
 
     rotateRight () {
-        this.rotation += (VELOCITY/4);
+        this.rotation += (VELOCITY/2.8);
     }
 
     rotateLeft () {
-        this.rotation -= (VELOCITY/4);
+        this.rotation -= (VELOCITY/2.8);
+    }
+
+    speedUp () {
+        if (this.velocity < MAX_VELOCITY) {
+            this.velocity += 0.2;
+        }
+    }
+    speedDown () {
+        if (this.velocity > MIN_VELOCITY) {
+            this.velocity -= 0.2;
+        }
     }
 
     move () {
@@ -131,15 +136,7 @@ class FlyingObject {
         return !(this.x >= canvasWidth || this.x <= 0 || this.y >= canvasHeight || this.y <= 0);
     }
 
-    enableKeyboard () {
-        document.addEventListener('keydown', event => { this.keyboard.onKeydown(event); });
-        document.addEventListener('keyup', event => {
-            this.keyboard.onKeyup(event);
-            this.isFiring = false;
-        });
-        
-        this.keyboardIsEnabled = true;
-    }
+
 }
 
 export default FlyingObject;
