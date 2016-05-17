@@ -42,16 +42,16 @@ export default class {
 
     drawBackground () {
 
-        /*
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
         this.context.fillStyle = 'rgba(0,0,0,0.5)';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
-        */
 
+        /*
         var background = new Image();
         background.src = 'images/lasvegas.jpg';
 
         this.context.drawImage(background, 0,0);
+         */
     }
 
     checkCollisions () {
