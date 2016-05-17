@@ -6,6 +6,8 @@ class FlyingObject {
         this.x = options.x;
         this.y = options.y;
         this.alive = true;
+        this.label = options.label || false;
+        this.shadow = options.shadow || false;
         this.game = options.game || null;
         this.player = options.player || null;
         this.circle = options.circle || {};
@@ -14,7 +16,7 @@ class FlyingObject {
         this.unicode = options.unicode || '';
         this.independent = options.independent || false;
         this.velocity = options.velocity || VELOCITY;
-        this.fontSize = options.size ? options.size + 'px' : '45px';
+        this.fontSize = options.size ? options.size : 45;
         this.isFiring = false;
         this.radius = options.size / 2;
         this.infinite = options.infinite || false;
@@ -28,21 +30,36 @@ class FlyingObject {
             return;
         }
 
-
         let context = this.game.context;
 
-        // draw fighter
         context.save();
+
+        // draw fighter
         context.fillStyle = this.color;
-        context.shadowColor = 'rgba(0,0,0,0.5)';
-        context.shadowOffsetX = 2;
-        context.shadowOffsetY = 2;
-        context.shadowBlur = 1;
-        context.font = this.fontSize + ' FontAwesome';
-        let textWidth = context.measureText(this.unicode).width;
+        context.textAlign = 'left';
         context.translate(this.x, this.y);
+
+        context.font = this.fontSize + 'px FontAwesome';
+        let textWidth = context.measureText(this.unicode).width;
+
+        if (this.label) {
+            // draw label
+            context.font = (this.fontSize / 2.8) + 'px Arial';
+            context.fillStyle = this.color;
+            context.fillText(this.player.name, -textWidth, textWidth);
+        }
+
+        if (this.shadow) {
+            context.shadowColor = 'rgba(0,0,0,0.5)';
+            context.shadowOffsetX = 2;
+            context.shadowOffsetY = 2;
+            context.shadowBlur = 1;
+        }
+
+        context.font = this.fontSize + 'px FontAwesome';
         context.rotate(this.rotation * Math.PI / 180);
         context.fillText(this.unicode, -(textWidth / 2), (textWidth / 3.4));
+
         context.restore();
     }
 
@@ -63,8 +80,8 @@ class FlyingObject {
             velocity: this.velocity * 1.4,
             independent: true,
             infinite: false,
-            size: 7,
-            unicode: '\uf111',
+            size: 14,
+            unicode: '\uf135',
             rotation: this.rotation
         });
 
