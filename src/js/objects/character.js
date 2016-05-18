@@ -1,4 +1,4 @@
-import {MAX_VELOCITY, MIN_VELOCITY, MAX_AMMO, FIRE_RATE, MAX_SHIELD} from '../constants';
+import {MAX_VELOCITY, MIN_VELOCITY, FIRE_RATE, MAX_SHIELD} from '../constants';
 import SpriteSheet from '../sprite-sheet';
 import Animation from '../animation';
 import Utils from '../utils';
@@ -19,7 +19,7 @@ class Character extends FlyingObject
     }
 
     draw () {
-        if (!this.alive) {
+        if (!this.visible) {
             this.velocity = 0;
             this.explosion.update();
             this.explosion.draw(this.x - this.size, this.y - this.size);
@@ -32,13 +32,13 @@ class Character extends FlyingObject
     drawShield () {
         this.context.save();
         this.context.beginPath();
-        let opacity = (this.player.shield-1) / MAX_SHIELD;
+        let opacity = (this.player.shield - 1) / MAX_SHIELD;
 
-        let color = '140,255,140';
+        let color = '90,255,90';
         if (opacity < 0.4) {
-            color = '255,140,140';
+            color = '255,90,90';
         } else if (opacity < 0.7) {
-            color = '255,255,140';
+            color = '255,255,90';
         }
 
         this.context.fillStyle = 'rgba(' + color + ',' + (opacity/5) + ')';
@@ -80,20 +80,13 @@ class Character extends FlyingObject
     }
 
     hit (object) {
-        if (object.constructor.name === 'Ammo') {
-            this.player.shield--;
-        }
-        if (object.constructor.name === 'RefillAmmo') {
-            this.player.ammo = MAX_AMMO;
-        }
-        if (object.constructor.name === 'RefillShield') {
-            this.player.shield = MAX_SHIELD;
-        }
         if (object.constructor.name === 'Character') {
             this.rotation -= 90;
         }
         if (this.player.shield <= 0) {
-            object.player.score += 10;
+            if (object.player) {
+                object.player.score += 3;
+            }
             this.destroy();
         }
     }
@@ -108,7 +101,7 @@ class Character extends FlyingObject
     }
 
     destroy () {
-        this.player.score -= 5;
+        this.player.score -= 2;
         this.visible = false;
         setTimeout(this.respawn.bind(this), 2000);
 
