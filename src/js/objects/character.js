@@ -9,7 +9,7 @@ class Character extends FlyingObject
 {
     constructor(stage, options) {
         super(stage, options);
-        this.type = options.type || 3;
+        this.type = Math.floor(Math.random() * (5 - 1 + 1) + 1); // TODO: used to get random sprite-sheet ( 1 - 5 ) remove later on
         this.alive = true;
         this.isFiring = false;
         this.label = true;
