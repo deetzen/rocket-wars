@@ -1,4 +1,5 @@
-import {VELOCITY,MAX_VELOCITY,MIN_VELOCITY} from './constants';
+import {VELOCITY,MAX_VELOCITY,MIN_VELOCITY} from '../constants';
+import Utils from '../utils';
 
 class FlyingObject {
 
@@ -10,23 +11,17 @@ class FlyingObject {
         this.shadow = options.shadow || false;
         this.game = options.game || null;
         this.player = options.player || null;
-        this.circle = options.circle || {};
         this.rotation = options.rotation || 0;
         this.color = options.color || 'lightpink';
         this.unicode = options.unicode || '';
-        this.independent = options.independent || false;
         this.velocity = options.velocity || VELOCITY;
-        this.fontSize = options.size ? options.size : 45;
-        this.isFiring = false;
+        this.size = options.size ? options.size : 45;
         this.radius = options.size / 2;
-        this.infinite = options.infinite || false;
     }
 
     draw () {
-        if(!this.isValid()) {
-            let ammoPos = this.game.ammos.indexOf(this);
-            this.game.ammos.splice(ammoPos, 1);
-        } if (!this.alive) {
+
+        if (this.checkValid() === false) {
             return;
         }
 
@@ -34,17 +29,17 @@ class FlyingObject {
 
         context.save();
 
-        // draw fighter
+        // draw object
         context.fillStyle = this.color;
         context.textAlign = 'left';
         context.translate(this.x, this.y);
 
-        context.font = this.fontSize + 'px FontAwesome';
+        context.font = this.size + 'px FontAwesome';
         let textWidth = context.measureText(this.unicode).width;
 
         if (this.label) {
             // draw label
-            context.font = (this.fontSize / 2.8) + 'px Arial';
+            context.font = (this.size / 2.8) + 'px Arial';
             context.fillStyle = this.color;
             context.fillText(this.player.name, -textWidth, textWidth);
         }
@@ -56,7 +51,7 @@ class FlyingObject {
             context.shadowBlur = 1;
         }
 
-        context.font = this.fontSize + 'px FontAwesome';
+        context.font = this.size + 'px FontAwesome';
         context.rotate(this.rotation * Math.PI / 180);
         context.fillText(this.unicode, -(textWidth / 2), (textWidth / 3.4));
 
@@ -65,39 +60,6 @@ class FlyingObject {
 
     update () {
         this.move();
-    }
-
-    fire () {
-        this.isFiring = true;
-
-        let ammoPos = FlyingObject.calcVector(this.x, this.y, this.rotation, this.radius * 1.5);
-
-        let ammo = new FlyingObject({
-            x: ammoPos.x,
-            y: ammoPos.y,
-            player: this.player,
-            color: this.color,
-            velocity: this.velocity * 1.4,
-            independent: true,
-            infinite: false,
-            size: 14,
-            unicode: '\uf135',
-            rotation: this.rotation
-        });
-
-        this.game.addAmmo(ammo);
-
-        var snd = new Audio("sounds/shoot.wav"); // buffers automatically when created
-        snd.play();
-    }
-
-    static calcVector (xCoord, yCoord, angle, length) {
-        length = typeof length !== 'undefined' ? length : 10;
-        angle = angle * Math.PI / 180;
-        return {
-            x: length * Math.cos(angle) + xCoord,
-            y: length * Math.sin(angle) + yCoord
-        }
     }
 
     rotateRight () {
@@ -121,7 +83,7 @@ class FlyingObject {
 
     move () {
 
-        let vectors = FlyingObject.calcVector(this.x, this.y, this.rotation, this.velocity);
+        let vectors = Utils.calcVector(this.x, this.y, this.rotation, this.velocity);
         let canvasWidth = this.game.canvas.width;
         let canvasHeight = this.game.canvas.height;
 
@@ -142,18 +104,11 @@ class FlyingObject {
         }
     }
 
-    isValid () {
-        if (this.infinite) {
-            return true;
-        }
-
-        let canvasWidth = this.game.canvas.width;
-        let canvasHeight = this.game.canvas.height;
-
-        return !(this.x >= canvasWidth || this.x <= 0 || this.y >= canvasHeight || this.y <= 0);
-    }
-
+    hit () {}
+    destroy () {}
+    checkValid () {}
 
 }
 
 export default FlyingObject;
+

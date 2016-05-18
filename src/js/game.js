@@ -1,3 +1,6 @@
+import {MAX_AMMO} from './constants';
+import PowerUpAmmo from './objects/powerup-ammo';
+
 export default class {
 
     constructor () {
@@ -6,7 +9,23 @@ export default class {
         this.canvas.width = window.innerWidth;
         this.canvas.height = window.innerHeight;
         this.players = [];
-        this.ammos = [];
+        this.objects = [];
+
+        let timeout = Math.floor(Math.random() * 20) + 10;
+        setTimeout(this.addPowerUp.bind(this), 0 * 1000);
+    }
+
+    addPowerUp () {
+        let powerUp = new PowerUpAmmo({
+            x: Math.round(Math.random() * window.innerWidth) + 1,
+            y: Math.round(Math.random() * window.innerHeight) + 1,
+            rotation: Math.round(Math.random() * 360) + 1
+        });
+
+        this.addObject(powerUp);
+
+        let timeout = Math.floor(Math.random() * 20) + 10;
+        setTimeout(this.addPowerUp.bind(this), timeout * 1000);
     }
 
     start () {
@@ -14,13 +33,18 @@ export default class {
     }
 
     addPlayer(player) {
-        player.character.game = this;
         this.players.push(player);
+        this.addObject(player.character);
     }
 
-    addAmmo(object) {
+    addObject(object) {
         object.game = this;
-        this.ammos.push(object);
+        this.objects.push(object);
+    }
+
+    removeObject(object) {
+        let objectPos = this.objects.indexOf(object);
+        this.objects.splice(objectPos, 1);
     }
 
     // this happens with 60 frames per second
@@ -29,23 +53,31 @@ export default class {
         this.drawBackground();
         this.drawFlyingObjects();
         this.drawHighscore();
+        this.drawAmmo();
         this.checkCollisions();
 
         requestAnimationFrame(() => this.updateCanvas());
     }
 
     drawBackground () {
-
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = 'rgba(0,0,0,0.5)';
+        this.context.fillStyle = 'rgba(0,0,0,0.800)';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    }
 
-        /*
-        var background = new Image();
-        background.src = 'images/lasvegas.jpg';
+    drawAmmo () {
+        this.context.font = '14px Verdana';
+        this.context.fillStyle = 'rgba(255,255,255,0.8)';
+        this.context.fillRect(window.innerWidth - 160, 10, 150, (this.players.length * 20) + 10);
 
-        this.context.drawImage(background, 0,0);
-         */
+        for(let i = 1; i <= this.players.length; i++) {
+            let player = this.players[i-1];
+            this.context.fillStyle = 'rgba(0,0,0,0.3)';
+            this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130, 10);
+            this.context.shadowColor = 'transparent';
+            this.context.fillStyle = player.color;
+            this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130/MAX_AMMO * player.ammo, 10);
+        }
     }
 
     drawHighscore() {
@@ -57,6 +89,7 @@ export default class {
         });
 
         this.context.font = '14px Verdana';
+        this.context.shadowColor = 'rgba(0,0,0,0.5)';
 
         for(let i = 1; i <= playerList.length; i++) {
             let playerText = i + '. ' + playerList[i-1].name + " [" + playerList[i-1].score.toString() + ']';
@@ -86,59 +119,32 @@ export default class {
     }
 
     checkCollisions () {
-        if(this.ammos) {
-            for(let i = 0; i < this.ammos.length; i++) {
-                let ammo = this.ammos[i];
+        for(let i = 0; i < this.objects.length; i++) {
+            let object1 = this.objects[i];
 
-                for(let n = 0; n < this.players.length; n++) {
-                    let player = this.players[n];
+            for(let n = 0; n < this.objects.length; n++) {
+                let object2 = this.objects[n];
 
-                    if (!player.character.alive) continue;
-                    if (player === ammo.player) continue;
+                if (!object1.alive || !object2.alive) continue;
+                if (object1.player === object2.player) continue;
 
-                    let dx = ammo.x - player.character.x;
-                    let dy = ammo.y - player.character.y;
-                    let distance = Math.sqrt(dx * dx + dy * dy);
+                let dx = object1.x - object2.x;
+                let dy = object1.y - object2.y;
+                let distance = Math.sqrt(dx * dx + dy * dy);
 
-                    if(distance < (ammo.radius + player.character.radius)) {
-                        this.collision(player, ammo);
-                    }
+                if(distance < (object1.radius + object2.radius)) {
+                    object1.hit(object2);
+                    object2.hit(object1);
                 }
             }
         }
     }
 
-    collision (player, ammo) {
-        console.debug('collision ' + player.name + ' and ammo from ' + ammo.player.name);
-        console.debug('collision ' + player.character.x + ' and ' + ammo.x);
-        this.ammos.splice(this.ammos.indexOf(ammo), 1);
-        player.character.alive = false;
-
-        ammo.player.score++;
-
-        setTimeout(function() {
-            player.character.x = Math.round(Math.random() * window.innerWidth) + 1;
-            player.character.y = Math.round(Math.random() * window.innerHeight) + 1;
-            player.character.rotation = Math.round(Math.random() * 360) + 1;
-            player.character.alive = true;
-        }, 2000);
-
-        var snd = new Audio("sounds/explode.wav"); // buffers automatically when created
-        snd.play();
-    }
-
     drawFlyingObjects () {
-        if (this.players) {
-            for (let i = 0; i < this.players.length; i++) {
-                this.players[i].character.update(this.keyboard);
-                this.players[i].character.draw();
-            }
-        }
-
-        if (this.ammos) {
-            for (let i = 0; i < this.ammos.length; i++) {
-                this.ammos[i].update(this.keyboard);
-                this.ammos[i].draw();
+        if (this.objects) {
+            for (let i = 0; i < this.objects.length; i++) {
+                this.objects[i].update(this.keyboard);
+                this.objects[i].draw();
             }
         }
     }
