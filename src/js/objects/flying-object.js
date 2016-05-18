@@ -3,10 +3,13 @@ import Utils from '../utils';
 
 class FlyingObject {
 
-    constructor (options) {
+    constructor (stage, options) {
         this.x = options.x;
         this.y = options.y;
-        this.alive = true;
+        this.stage = stage;
+        this.canvas = this.stage.canvas;
+        this.context = this.stage.context;
+        this.visible = options.visible || true;
         this.label = options.label || false;
         this.shadow = options.shadow || false;
         this.game = options.game || null;
@@ -16,45 +19,50 @@ class FlyingObject {
         this.unicode = options.unicode || '';
         this.velocity = options.velocity || VELOCITY;
         this.size = options.size ? options.size : 45;
-        this.radius = options.size / 2;
+        this.radius = options.size * 0.65;
     }
 
     draw () {
-        if (this.checkValid() === false) {
+        if (!this.checkValid() || !this.visible) {
             return;
         }
 
-        let context = this.game.context;
-
-        context.save();
+        this.context.save();
 
         // draw object
-        context.fillStyle = this.color;
-        context.textAlign = 'left';
-        context.translate(this.x, this.y);
+        this.context.fillStyle = this.color;
+        this.context.textAlign = 'left';
+        this.context.translate(this.x, this.y);
 
-        context.font = this.size + 'px FontAwesome';
-        let textWidth = context.measureText(this.unicode).width;
+        this.context.font = this.size + 'px FontAwesome';
+        let textWidth = this.context.measureText(this.unicode).width;
 
         if (this.label) {
-            // draw label
-            context.font = (this.size / 2.8) + 'px Arial';
-            context.fillStyle = this.color;
-            context.fillText(this.player.name, -textWidth, textWidth);
+            this.drawLabel(textWidth);
         }
 
         if (this.shadow) {
-            context.shadowColor = 'rgba(0,0,0,0.5)';
-            context.shadowOffsetX = 2;
-            context.shadowOffsetY = 2;
-            context.shadowBlur = 1;
+            this.drawShadow();
         }
 
-        context.font = this.size + 'px FontAwesome';
-        context.rotate(this.rotation * Math.PI / 180);
-        context.fillText(this.unicode, -(textWidth / 2), (textWidth / 3.4));
+        this.context.font = this.size + 'px FontAwesome';
+        this.context.rotate(this.rotation * Math.PI / 180);
+        this.context.fillText(this.unicode, -(textWidth / 2), (textWidth / 3.4));
 
-        context.restore();
+        this.context.restore();
+    }
+
+    drawShadow () {
+        this.context.shadowColor = 'rgba(0,0,0,0.5)';
+        this.context.shadowOffsetX = 2;
+        this.context.shadowOffsetY = 2;
+        this.context.shadowBlur = 1;
+    }
+
+    drawLabel (textWidth) {
+        this.context.font = (this.size / 3) + 'px Arial';
+        this.context.fillStyle = this.color;
+        this.context.fillText(this.player.name, -textWidth/2, textWidth);
     }
 
     update () {
@@ -62,11 +70,11 @@ class FlyingObject {
     }
 
     rotateRight () {
-        this.rotation += (VELOCITY/2.8);
+        this.rotation += (VELOCITY/3);
     }
 
     rotateLeft () {
-        this.rotation -= (VELOCITY/2.8);
+        this.rotation -= (VELOCITY/3);
     }
 
     speedUp () {
@@ -83,8 +91,8 @@ class FlyingObject {
     move () {
 
         let vectors = Utils.calcVector(this.x, this.y, this.rotation, this.velocity);
-        let canvasWidth = this.game.canvas.width;
-        let canvasHeight = this.game.canvas.height;
+        let canvasWidth = this.canvas.width;
+        let canvasHeight = this.canvas.height;
 
         if(canvasWidth < vectors.x) {
             this.x = 0;
@@ -105,7 +113,9 @@ class FlyingObject {
 
     hit () {}
     destroy () {}
-    checkValid () {}
+    checkValid () {
+        return true;
+    }
 
 }
 
