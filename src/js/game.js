@@ -1,35 +1,19 @@
 import {MAX_AMMO} from './constants';
-import PowerUpAmmo from './objects/powerup-ammo';
+import PowerUps from './objects/powerups';
 
 export default class {
 
-    constructor () {
-        this.canvas = document.getElementById('playground');
-        this.context = this.canvas.getContext('2d');
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+    constructor (stage) {
+        this.stage = stage;
+        this.context = this.stage.context;
+        this.canvas = this.stage.canvas;
         this.players = [];
         this.objects = [];
-
-        let timeout = Math.floor(Math.random() * 20) + 10;
-        setTimeout(this.addPowerUp.bind(this), 0 * 1000);
-    }
-
-    addPowerUp () {
-        let powerUp = new PowerUpAmmo({
-            x: Math.round(Math.random() * window.innerWidth) + 1,
-            y: Math.round(Math.random() * window.innerHeight) + 1,
-            rotation: Math.round(Math.random() * 360) + 1
-        });
-
-        this.addObject(powerUp);
-
-        let timeout = Math.floor(Math.random() * 20) + 10;
-        setTimeout(this.addPowerUp.bind(this), timeout * 1000);
     }
 
     start () {
         this.updateCanvas();
+        new PowerUps(this).start();
     }
 
     addPlayer(player) {
@@ -47,7 +31,6 @@ export default class {
         this.objects.splice(objectPos, 1);
     }
 
-    // this happens with 60 frames per second
     updateCanvas () {
 
         this.drawBackground();
@@ -61,7 +44,7 @@ export default class {
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = 'rgba(0,0,0,0.800)';
+        this.context.fillStyle = 'rgba(0,0,0,0.8)';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
@@ -125,7 +108,7 @@ export default class {
             for(let n = 0; n < this.objects.length; n++) {
                 let object2 = this.objects[n];
 
-                if (!object1.alive || !object2.alive) continue;
+                if (!object1.visible || !object2.visible) continue;
                 if (object1 === object2) continue;
                 if (object1.player === object2.player) continue;
 
