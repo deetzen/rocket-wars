@@ -126,6 +126,7 @@ export default class {
                 let object2 = this.objects[n];
 
                 if (!object1.alive || !object2.alive) continue;
+                if (object1 === object2) continue;
                 if (object1.player === object2.player) continue;
 
                 let dx = object1.x - object2.x;

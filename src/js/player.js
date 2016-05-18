@@ -20,7 +20,7 @@ export default class {
             color: this.color,
             unicode: '\uf0fb'
         });
-        
+
         this.enableKeyboard();
 
         setInterval(this.checkInput.bind(this), 10);

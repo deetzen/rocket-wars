@@ -20,7 +20,6 @@ class FlyingObject {
     }
 
     draw () {
-
         if (this.checkValid() === false) {
             return;
         }
