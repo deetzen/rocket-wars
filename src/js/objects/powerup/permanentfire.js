@@ -15,27 +15,23 @@ class PermanentFire extends FlyingObject
         this.interval = null;
     }
 
-    draw () {
-        if (this.collected == false) {
-            super.draw();
-        }
-    }
-
-    startFire (character) {
-        this.interval = setInterval(() => { character.fire(); character.player.ammo++; }, 75);
+    startFire (object) {
+        this.interval = setInterval(() => { object.fire(); object.player.ammo++; }, 50);
     }
 
     hit (object) {
-        if (this.collected == false) {
+        if (this.visible == true) {
+            this.visible = false;
             setTimeout(() => { this.remove() }, 5000);
-            this.startFire(object);
-            this.collected = true;
+
+            if (object.player && object.player.character) {
+                this.startFire(object.player.character);
+            }
         }
     }
-
     remove () {
         clearInterval(this.interval);
-        this.collected = false;
+        this.visible = true;
         this.game.removeObject(this);
     }
 }

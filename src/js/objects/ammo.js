@@ -1,6 +1,6 @@
 import FlyingObject from './flying-object';
 
-class RefillAmmo extends FlyingObject
+class Ammo extends FlyingObject
 {
     constructor(stage, options) {
         super(stage, options);
@@ -15,6 +15,7 @@ class RefillAmmo extends FlyingObject
 
         if (object.constructor.name === 'Character') {
             this.player.score++;
+            object.player.shield--;
         }
 
         var snd = new Audio("sounds/hit.wav"); // buffers automatically when created
@@ -33,4 +34,4 @@ class RefillAmmo extends FlyingObject
     }
 }
 
-export default RefillAmmo;
+export default Ammo;

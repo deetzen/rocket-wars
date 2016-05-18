@@ -1,4 +1,4 @@
-import {CHARACTER_SIZE} from '../../constants';
+import {MAX_AMMO, CHARACTER_SIZE} from '../../constants';
 import FlyingObject from '../flying-object';
 
 class RefillAmmo extends FlyingObject
@@ -15,6 +15,9 @@ class RefillAmmo extends FlyingObject
 
     hit (object) {
         this.game.removeObject(this);
+        if (object.player) {
+            object.player.ammo = MAX_AMMO;
+        }
     }
 }
 

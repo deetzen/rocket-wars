@@ -1,4 +1,4 @@
-import {CHARACTER_SIZE} from '../../constants';
+import {CHARACTER_SIZE, MAX_SHIELD} from '../../constants';
 import FlyingObject from '../flying-object';
 
 class RefillShield extends FlyingObject
@@ -15,6 +15,9 @@ class RefillShield extends FlyingObject
 
     hit (object) {
         this.game.removeObject(this);
+        if (object.player) {
+            object.player.shield = MAX_SHIELD;
+        }
     }
 }
 
