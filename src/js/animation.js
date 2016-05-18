@@ -1,38 +1,50 @@
 class Animation {
-  constructor(spritesheet, frameSpeed, startFrame, endFrame, repeat = true, context) {
-    this.animationSequence = [];  // array holding the order of the animation
+  constructor(spriteSheet, frameSpeed, startFrame, endFrame, context) {
     this.currentFrame = 0;        // the current frame to draw
     this.counter = 0;             // keep track of frame rate
-    this.context = context;
-    this.spritesheet = spritesheet;
+    this.spriteSheet = spriteSheet;
     this.frameSpeed = frameSpeed;
+    this.animationSequence = [];  // array holding the order of the animation
+    this.context = context;
     this.startFrame = startFrame;
     this.endFrame = endFrame;
-    this.repeat = repeat;
     // start and end range for frames
     for (let frameNumber = this.startFrame; frameNumber <= this.endFrame; frameNumber++) {
       this.animationSequence.push(frameNumber);
     }
   }
+
   update() {
     // update to the next frame if it is time
-    if (this.counter == (this.frameSpeed - 1))
+    if (this.counter === (this.frameSpeed - 1)) {
       this.currentFrame = (this.currentFrame + 1) % this.animationSequence.length;
+    }
     // update the counter
     this.counter = (this.counter + 1) % this.frameSpeed;
-  };
+  }
 
-  draw(x, y) {
+  draw(x, y, rotation) {
     // get the row and col of the frame
-    var row = Math.floor(this.animationSequence[this.currentFrame] / this.spritesheet.framesPerRow);
-    var col = Math.floor(this.animationSequence[this.currentFrame] % this.spritesheet.framesPerRow);
+    const row = Math.floor(this.animationSequence[this.currentFrame] / this.spriteSheet.framesPerRow);
+    const col = Math.floor(this.animationSequence[this.currentFrame] % this.spriteSheet.framesPerRow);
+    const SCALE = 1;
+    const CENTER_X = (-this.spriteSheet.frameWidth / 2) * SCALE;
+    const CENTER_Y = (-this.spriteSheet.frameHeight / 2) * SCALE;
+    const OFFSET_X = 6;
+    const OFFSET_Y = 3;
+
+    this.context.save();
+    this.context.translate(x, y);
+    this.context.translate(this.spriteSheet.frameWidth / 2 + OFFSET_X, this.spriteSheet.frameHeight / 2 + OFFSET_Y);
+    this.context.rotate((rotation + 90) * Math.PI / 180);
     this.context.drawImage(
-    this.spritesheet.image,
-    col * this.spritesheet.frameWidth, row * this.spritesheet.frameHeight,
-    this.spritesheet.frameWidth, this.spritesheet.frameHeight,
-    x, y,
-    this.spritesheet.frameWidth, this.spritesheet.frameHeight);
-  };
+    this.spriteSheet.image,
+    col * this.spriteSheet.frameWidth, row * this.spriteSheet.frameHeight,
+    this.spriteSheet.frameWidth, this.spriteSheet.frameHeight,
+    CENTER_X, CENTER_Y,
+    this.spriteSheet.frameWidth * SCALE, this.spriteSheet.frameHeight * SCALE);
+    this.context.restore();
+  }
 }
 
 export default Animation;

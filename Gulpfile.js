@@ -29,7 +29,7 @@ gulp.task('webserver', function() {
 
 gulp.task('build', ['copy', 'transpile']);
 
-gulp.task('default', ['build', 'webserver']);
+gulp.task('default', ['build']);
 
 gulp.task('watch', ['default'], function () {
     gulp.watch(['./src/**/*'], ['build']);

@@ -17,6 +17,7 @@ export default class {
         this.character = new Character(this.stage, {
             size: CHARACTER_SIZE,
             player: this,
+            type: this.getRandomInt(3,5), // used to set character-skin randomly, remove later
             x: Math.round(Math.random() * this.canvas.width) + 1,
             y: Math.round(Math.random() * this.canvas.height) + 1,
             rotation: Math.round(Math.random() * 360) + 1,
@@ -28,6 +29,10 @@ export default class {
 
         setInterval(this.checkInput.bind(this), 10);
         setInterval(this.raiseAmmo.bind(this), 1200);
+    }
+
+    getRandomInt(min, max) {
+        return Math.floor(Math.random() * (max - min + 1) + min);
     }
 
     raiseAmmo() {
