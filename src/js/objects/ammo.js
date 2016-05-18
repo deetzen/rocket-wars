@@ -4,8 +4,10 @@ class Ammo extends FlyingObject
 {
     constructor(options) {
         super(options);
+        this.alive = true;
         this.shadow = false;
         this.size = 10;
+        this.radius = this.size / 2;
         this.unicode = '\uf111';
     }
 

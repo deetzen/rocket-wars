@@ -1,4 +1,6 @@
-import {MAX_AMMO, FIRE_RATE} from '../constants';
+import {MAX_VELOCITY, MIN_VELOCITY, MAX_AMMO, FIRE_RATE, MAX_SHIELD} from '../constants';
+import SpriteSheet from '../sprite-sheet';
+import Animation from '../animation';
 import Utils from '../utils';
 import FlyingObject from './flying-object';
 import Ammo from './ammo';
@@ -7,9 +9,20 @@ class Character extends FlyingObject
 {
     constructor(options) {
         super(options);
+        this.alive = true;
         this.isFiring = false;
         this.label = true;
         this.shadow = true;
+    }
+
+    draw () {
+        if (!this.alive) {
+            this.velocity = 0;
+            this.explosion.update();
+            this.explosion.draw(this.x - this.size, this.y - this.size, this.game.context);
+        } else {
+            super.draw();
+        }
     }
 
     fire () {
@@ -28,6 +41,7 @@ class Character extends FlyingObject
         let ammo = new Ammo({
             x: ammoPos.x,
             y: ammoPos.y,
+            size: 10,
             player: this.player,
             color: this.color,
             velocity: this.velocity * 1.4,
@@ -40,11 +54,11 @@ class Character extends FlyingObject
         snd.play();
     }
 
-    hit(object) {
+    hit (object) {
         if (object.constructor.name === 'Ammo') {
             this.player.shield--;
 
-            if (this.player.shield === 0) {
+            if (this.player.shield <= 0) {
                 this.destroy();
             }
         }
@@ -56,14 +70,19 @@ class Character extends FlyingObject
 
     respawn () {
         this.alive = true;
+        this.shield = MAX_SHIELD;
         this.x = Math.round(Math.random() * window.innerWidth) + 1;
         this.y = Math.round(Math.random() * window.innerHeight) + 1;
         this.rotation = Math.round(Math.random() * 360) + 1;
+        this.velocity = Math.round(Math.random() * (MAX_VELOCITY - MIN_VELOCITY)) + MIN_VELOCITY;
     }
 
     destroy () {
         this.alive = false;
         setTimeout(this.respawn.bind(this), 2000);
+
+        this.explosionSheet = new SpriteSheet('images/explosion_3_40_128.png', 128, 128);
+        this.explosion = new Animation(this.explosionSheet, 3, 0, 40, false);
 
         var snd = new Audio("sounds/explode.wav"); // buffers automatically when created
         snd.play();
