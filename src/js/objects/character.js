@@ -14,7 +14,10 @@ class Character extends FlyingObject
         this.player = options.player || null;
         this.weapons = [new Canon(stage, this.player, this)];
         this.activeWeapon = 0;
-        this.explosionSheet = new SpriteSheet('images/explosion.png', 128, 128);
+        //this.explosionSheet = new SpriteSheet('images/explosion_3_40_128.png', 128, 128);
+        this.explosionSheet = new SpriteSheet(`images/explosion2_spr_strip16.png`, 203, 207, this.context);
+        //this.explosion = new Animation(this.explosionSheet, 3, 0, 40, this.context);
+        //this.explosionSheet = new SpriteSheet('images/explosion.png', 128, 128);
         this.explosion = new Animation(this.explosionSheet, 3, 0, 39, this.context);
         this.skinSheet = new SpriteSheet(`images/rocket${this.type}up_spr_strip5.png`, 71, 80, this.context);
         this.skin = new Animation(this.skinSheet, 0, 0, 4, this.context);
