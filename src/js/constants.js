@@ -1,5 +1,4 @@
-export const CHARACTER_SIZE = 40;
-export const VELOCITY = 7;
+export const CHARACTER_SIZE = 60;
 export const MIN_VELOCITY = 4;
 export const MAX_VELOCITY = 8;
 export const FIRE_RATE = 100;

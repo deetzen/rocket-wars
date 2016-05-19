@@ -23,13 +23,12 @@ class Animation {
     this.counter = (this.counter + 1) % this.frameSpeed;
   }
 
-  draw(x, y, rotation) {
+  draw(x, y, rotation, scale = 1) {
     // get the row and col of the frame
     const row = Math.floor(this.animationSequence[this.currentFrame] / this.spriteSheet.framesPerRow);
     const col = Math.floor(this.animationSequence[this.currentFrame] % this.spriteSheet.framesPerRow);
-    const SCALE = 1;
-    const CENTER_X = (-this.spriteSheet.frameWidth / 2) * SCALE;
-    const CENTER_Y = (-this.spriteSheet.frameHeight / 2) * SCALE;
+    const CENTER_X = (-this.spriteSheet.frameWidth / 2) * scale;
+    const CENTER_Y = (-this.spriteSheet.frameHeight / 2) * scale;
 
     this.context.save();
     this.context.translate(x, y);
@@ -39,7 +38,7 @@ class Animation {
     col * this.spriteSheet.frameWidth, row * this.spriteSheet.frameHeight,
     this.spriteSheet.frameWidth, this.spriteSheet.frameHeight,
     CENTER_X, CENTER_Y,
-    this.spriteSheet.frameWidth * SCALE, this.spriteSheet.frameHeight * SCALE);
+    this.spriteSheet.frameWidth * scale, this.spriteSheet.frameHeight * scale);
     this.context.restore();
   }
 }

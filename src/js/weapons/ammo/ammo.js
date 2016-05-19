@@ -1,8 +1,8 @@
-import FlyingObject from './flying-object';
+import FlyingObject from '../../objects/flying-object';
 
 class Ammo extends FlyingObject
 {
-    constructor(stage, options) {
+    constructor (stage, options) {
         super(stage, options);
         this.shadow = false;
         this.size = 10;
