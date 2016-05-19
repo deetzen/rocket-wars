@@ -1,5 +1,5 @@
-import {MAX_AMMO} from './constants';
-import PowerUps from './objects/powerups';
+import {MAX_AMMO} from '../constants';
+import PowerUps from '../objects/powerups';
 
 export default class {
 
@@ -37,14 +37,14 @@ export default class {
         this.drawFlyingObjects();
         this.drawHighscore();
         this.drawAmmo();
-        this.checkCollisions();
+        this.collide();
 
         requestAnimationFrame(() => this.updateCanvas());
     }
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = 'rgba(0,0,0,0.8)';
+        this.context.fillStyle = 'rgba(0,0,0,0.85)';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
@@ -80,28 +80,28 @@ export default class {
         }
 
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(10, 10, playerTextWidth + 55, playerList.length * 20 + 30);
+        this.context.fillRect(10, 10, playerTextWidth + 50, playerList.length * 20 + 10);
 
         for(let i = 1; i <= playerList.length; i++) {
             this.context.fillStyle = playerList[i-1].color;
-            this.context.shadowColor = 'rgba(0,0,0,0.4)';
+            this.context.shadowColor = 'rgba(0,0,0,0.8)';
             this.context.shadowOffsetX = 1;
             this.context.shadowOffsetY = 1;
-            this.context.shadowBlur = 1;
+            this.context.shadowBlur = 0;
             let playerText = i + '. ' + playerList[i-1].name;
             let playerPoints = playerList[i-1].score.toString();
 
             this.context.textAlign = 'left';
-            this.context.fillText(playerText, 25, (i * 20) + 20);
+            this.context.fillText(playerText, 20, (i * 20) + 10);
 
-            this.context.fillStyle = 'rgba(0,0,0,0.5)';
+            this.context.fillStyle = 'rgba(0,0,0,0.8)';
             this.context.textAlign = 'right';
-            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 20);
+            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 10);
         }
 
     }
 
-    checkCollisions () {
+    collide () {
         for(let i = 0; i < this.objects.length; i++) {
             let object1 = this.objects[i];
 
@@ -112,14 +112,8 @@ export default class {
                 if (object1 === object2) continue;
                 if (object1.player === object2.player) continue;
 
-                let dx = object1.x - object2.x;
-                let dy = object1.y - object2.y;
-                let distance = Math.sqrt(dx * dx + dy * dy);
-
-                if(distance < (object1.radius + object2.radius)) {
-                    object1.hit(object2);
-                    object2.hit(object1);
-                }
+                object1.collide(object2);
+                object2.collide(object1);
             }
         }
     }

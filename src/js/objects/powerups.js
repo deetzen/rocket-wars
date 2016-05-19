@@ -14,7 +14,7 @@ export default class PowerUps
     }
 
     static getTimeout () {
-        return ((Math.floor(Math.random() * 7) + 4) * 1000);
+        return ((Math.floor(Math.random() * 10) + 4) * 1000);
     }
 
     start () {
@@ -34,8 +34,8 @@ export default class PowerUps
             }
         }
 
-        powerUp.x = Math.round(Math.random() * (this.game.canvas.width - 70)) + 35;
-        powerUp.y = Math.round(Math.random() * (this.game.canvas.height - 70)) + 35;
+        powerUp.position.x = Math.round(Math.random() * (this.game.canvas.width - 70)) + 35;
+        powerUp.position.y = Math.round(Math.random() * (this.game.canvas.height - 70)) + 35;
 
         this.game.addObject(powerUp);
     }

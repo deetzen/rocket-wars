@@ -1,7 +1,7 @@
-import {MAX_VELOCITY, MIN_VELOCITY, FIRE_RATE, MAX_SHIELD} from '../constants';
-import SpriteSheet from '../sprite-sheet';
-import Animation from '../animation';
-import Utils from '../utils';
+import {MIN_VELOCITY, FIRE_RATE, MAX_SHIELD} from '../constants';
+import SpriteSheet from '../animation/sprite-sheet';
+import Animation from '../animation/animation';
+import Vector from '../utils/vector';
 import FlyingObject from './flying-object';
 import Ammo from './ammo';
 
@@ -22,7 +22,7 @@ class Character extends FlyingObject
         if (!this.visible) {
             this.velocity = 0;
             this.explosion.update();
-            this.explosion.draw(this.x - this.size, this.y - this.size);
+            this.explosion.draw(this.position.x - this.size, this.position.y - this.size);
         } else {
             this.drawShield();
             super.draw();
@@ -35,7 +35,7 @@ class Character extends FlyingObject
         let opacity = (this.player.shield - 1) / MAX_SHIELD;
 
         let color = '90,255,90';
-        if (opacity < 0.4) {
+        if (opacity < 0.25) {
             color = '255,90,90';
         } else if (opacity < 0.7) {
             color = '255,255,90';
@@ -44,15 +44,15 @@ class Character extends FlyingObject
         this.context.fillStyle = 'rgba(' + color + ',' + (opacity/5) + ')';
         this.context.strokeStyle = 'rgba(' + color + ',' + opacity + ')';
 
-        this.context.lineWidth = '2';
-        this.context.arc(this.x, this.y, (this.size * 0.65), 0, 2 * Math.PI);
+        this.context.lineWidth = '1.3';
+        this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
         this.context.fill();
         this.context.stroke();
         this.context.restore();
     }
 
     fire () {
-        if (!this.player.ammo) { return; }
+        if (!this.player.ammo || !this.visible) { return; }
 
         this.player.ammo--;
 
@@ -61,7 +61,7 @@ class Character extends FlyingObject
             this.isFiring = false;
         }.bind(this), FIRE_RATE);
 
-        let ammoPos = Utils.calcVector(this.x, this.y, this.rotation, this.radius * 1.5);
+        let ammoPos = Vector.calcMovement(this.position.x, this.position.y, this.rotation, this.radius);
 
         let ammo = new Ammo(this.stage, {
             x: ammoPos.x,
@@ -80,14 +80,11 @@ class Character extends FlyingObject
     }
 
     hit (object) {
-        if (object.constructor.name === 'Character') {
-            this.rotation -= 90;
-        }
         if (this.player.shield <= 0) {
+            this.destroy();
             if (object.player) {
                 object.player.score += 3;
             }
-            this.destroy();
         }
     }
 
@@ -97,7 +94,7 @@ class Character extends FlyingObject
         this.x = Math.round(Math.random() * this.canvas.width) + 1;
         this.y = Math.round(Math.random() * this.canvas.height) + 1;
         this.rotation = Math.round(Math.random() * 360) + 1;
-        this.velocity = Math.round(Math.random() * (MAX_VELOCITY - MIN_VELOCITY)) + MIN_VELOCITY;
+        this.velocity = MIN_VELOCITY;
     }
 
     destroy () {

@@ -16,7 +16,7 @@ class PermanentFire extends FlyingObject
     }
 
     startFire (object) {
-        this.interval = setInterval(() => { object.fire(); object.player.ammo++; }, 50);
+        this.interval = setInterval(() => { object.fire(); object.player.ammo++; }, 100);
     }
 
     hit (object) {

@@ -1,5 +1,5 @@
-import {CHARACTER_SIZE, MAX_AMMO, MAX_SHIELD} from './constants';
-import Character from './objects/character';
+import {CHARACTER_SIZE, MIN_VELOCITY, MAX_AMMO, MAX_SHIELD} from '../constants';
+import Character from '../objects/character';
 
 export default class {
 
@@ -16,6 +16,7 @@ export default class {
 
         this.character = new Character(this.stage, {
             size: CHARACTER_SIZE,
+            velocity: MIN_VELOCITY,
             player: this,
             x: Math.round(Math.random() * this.canvas.width) + 1,
             y: Math.round(Math.random() * this.canvas.height) + 1,

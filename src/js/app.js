@@ -1,11 +1,16 @@
-import Stage from './stage';
-import Game from './game';
-import Player from './player';
-import Keyboard from './keyboard';
+import Stage from './game/stage';
+import Game from './game/game';
+import Player from './game/player';
+import Keyboard from './game/keyboard';
 
 (function() {
 
     const canvas = document.getElementById('playground');
+
+    window.onresize = function(event) {
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    };
 
     const stage = new Stage(canvas);
     const game = new Game(stage);
