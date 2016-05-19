@@ -6,6 +6,7 @@ class Ammo extends FlyingObject
         super(stage, options);
         this.shadow = false;
         this.size = 10;
+        this.mass = 1;
         this.radius = this.size / 2;
         this.unicode = '\uf111';
     }
@@ -26,7 +27,7 @@ class Ammo extends FlyingObject
         let canvasWidth = this.game.canvas.width;
         let canvasHeight = this.game.canvas.height;
 
-        if (this.x >= canvasWidth || this.x <= 0 || this.y >= canvasHeight || this.y <= 0) {
+        if (this.position.x >= canvasWidth || this.position.x <= 0 || this.position.y >= canvasHeight || this.position.y <= 0) {
             this.game.removeObject(this);
         }
 

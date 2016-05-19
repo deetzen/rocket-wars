@@ -1,11 +1,13 @@
-import {VELOCITY,MAX_VELOCITY,MIN_VELOCITY} from '../constants';
-import Utils from '../utils';
+import {MAX_VELOCITY,MIN_VELOCITY} from '../constants';
+import Vector from '../utils/vector';
 
-class FlyingObject {
-
+class FlyingObject
+{
     constructor (stage, options) {
-        this.x = options.x;
-        this.y = options.y;
+        this.vector = new Vector(0, 0);
+        this.position = new Vector(options.x, options.y);
+        this.mass = 10;
+        this.elasticity = 0.2;
         this.stage = stage;
         this.canvas = this.stage.canvas;
         this.context = this.stage.context;
@@ -17,9 +19,41 @@ class FlyingObject {
         this.rotation = options.rotation || 0;
         this.color = options.color || 'lightpink';
         this.unicode = options.unicode || '';
-        this.velocity = options.velocity || VELOCITY;
+        this.velocity = options.velocity;
         this.size = options.size ? options.size : 45;
         this.radius = options.size * 0.65;
+    }
+
+    collide (obj) {
+        let dt, mT, v1, v2, cr, sm,
+            dn = new Vector(this.position.x - obj.position.x, this.position.y - obj.position.y),
+            sr = this.radius + obj.radius,
+            dx = dn.length();
+
+        if (dx > sr) {
+            return;
+        }
+
+        sm = this.mass + obj.mass;
+        dn.normalize();
+        dt = new Vector(dn.y, -dn.x);
+
+        mT = dn.multiply(this.radius + obj.radius - dx);
+        this.position.tx(mT.multiply(obj.mass / sm));
+        obj.position.tx(mT.multiply(-this.mass / sm));
+
+        cr = Math.min(this.elasticity, obj.elasticity);
+
+        v1 = dn.multiply(this.vector.dot(dn)).length();
+        v2 = dn.multiply(obj.vector.dot(dn)).length();
+
+        this.vector = dt.multiply(this.vector.dot(dt));
+        this.vector.tx(dn.multiply((cr * obj.mass * (v2 - v1) + this.mass * v1 + obj.mass * v2) / sm));
+
+        obj.vector = dt.multiply(obj.vector.dot(dt));
+        obj.vector.tx(dn.multiply((cr * this.mass * (v1 - v2) + obj.mass * v2 + this.mass * v1) / sm));
+
+        obj.hit(this);
     }
 
     draw () {
@@ -32,7 +66,7 @@ class FlyingObject {
         // draw object
         this.context.fillStyle = this.color;
         this.context.textAlign = 'left';
-        this.context.translate(this.x, this.y);
+        this.context.translate(this.position.x, this.position.y);
 
         this.context.font = this.size + 'px FontAwesome';
         let textWidth = this.context.measureText(this.unicode).width;
@@ -66,15 +100,30 @@ class FlyingObject {
     }
 
     update () {
-        this.move();
+
+        let angle = this.rotation * Math.PI / 180;
+        this.position.x += this.velocity * Math.cos(angle) + this.vector.x;
+        this.position.y += this.velocity * Math.sin(angle) + this.vector.y;
+
+        if(this.canvas.width < this.position.x) {
+            this.position.x = 0;
+        } else if (this.position.x < 0) {
+            this.position.x = this.canvas.width;
+        }
+
+        if(this.canvas.height < this.position.y) {
+            this.position.y = 0;
+        } else if(this.position.y < 0) {
+            this.position.y = this.canvas.height;
+        }
     }
 
     rotateRight () {
-        this.rotation += (VELOCITY/3);
+        this.rotation += MIN_VELOCITY / 2.5;
     }
 
     rotateLeft () {
-        this.rotation -= (VELOCITY/3);
+        this.rotation -= MIN_VELOCITY / 2.5;
     }
 
     speedUp () {
@@ -88,35 +137,11 @@ class FlyingObject {
         }
     }
 
-    move () {
-
-        let vectors = Utils.calcVector(this.x, this.y, this.rotation, this.velocity);
-        let canvasWidth = this.canvas.width;
-        let canvasHeight = this.canvas.height;
-
-        if(canvasWidth < vectors.x) {
-            this.x = 0;
-        } else if (vectors.x < 0) {
-            this.x = canvasWidth;
-        } else {
-            this.x = vectors.x;
-        }
-
-        if(canvasHeight < vectors.y) {
-            this.y = 0;
-        } else if(vectors.y < 0) {
-            this.y = canvasHeight;
-        } else {
-            this.y = vectors.y;
-        }
-    }
-
     hit () {}
     destroy () {}
     checkValid () {
         return true;
     }
-
 }
 
 export default FlyingObject;
