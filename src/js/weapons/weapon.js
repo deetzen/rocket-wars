@@ -18,6 +18,7 @@ export default class Weapon
         let bullet = new Bullet(this.stage, {
             x: bulletPosition.x,
             y: bulletPosition.y,
+            type: this.character.type,
             size: 10,
             player: this.player,
             color: this.player.color,
