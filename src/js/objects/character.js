@@ -9,13 +9,15 @@ class Character extends FlyingObject
 {
     constructor(stage, options) {
         super(stage, options);
+        this.type = Math.floor(Math.random() * (5 - 1 + 1) + 1); // TODO: used to get random sprite-sheet ( 1 - 5 ) remove later on
         this.alive = true;
         this.isFiring = false;
         this.label = true;
         this.shadow = true;
-
         this.explosionSheet = new SpriteSheet('images/explosion_3_40_128.png', 128, 128);
-        this.explosion = new Animation(this.explosionSheet, 3, 0, 40, false, this.context);
+        this.explosion = new Animation(this.explosionSheet, 3, 0, 40, this.context);
+        this.skinSheet = new SpriteSheet(`images/rocket${this.type}up_spr_strip5.png`, 71, 80, this.context);
+        this.skin = new Animation(this.skinSheet, 0, 0, 4, this.context);
     }
 
     draw () {
@@ -25,7 +27,9 @@ class Character extends FlyingObject
             this.explosion.draw(this.position.x - this.size, this.position.y - this.size);
         } else {
             this.drawShield();
-            super.draw();
+            this.skin.update();
+            this.skin.draw(this.x - this.size, this.y - this.size, this.rotation, this.game.context);
+            //super.draw();
         }
     }
 
@@ -57,9 +61,10 @@ class Character extends FlyingObject
         this.player.ammo--;
 
         this.isFiring = true;
-        setTimeout(function() {
+
+        setTimeout(() => {
             this.isFiring = false;
-        }.bind(this), FIRE_RATE);
+        }, FIRE_RATE);
 
         let ammoPos = Vector.calcMovement(this.position.x, this.position.y, this.rotation, this.radius);
 
