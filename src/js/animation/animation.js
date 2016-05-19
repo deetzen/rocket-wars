@@ -30,12 +30,9 @@ class Animation {
     const SCALE = 1;
     const CENTER_X = (-this.spriteSheet.frameWidth / 2) * SCALE;
     const CENTER_Y = (-this.spriteSheet.frameHeight / 2) * SCALE;
-    const OFFSET_X = 6;
-    const OFFSET_Y = 3;
 
     this.context.save();
     this.context.translate(x, y);
-    this.context.translate(this.spriteSheet.frameWidth / 2 + OFFSET_X, this.spriteSheet.frameHeight / 2 + OFFSET_Y);
     this.context.rotate((rotation + 90) * Math.PI / 180);
     this.context.drawImage(
     this.spriteSheet.image,

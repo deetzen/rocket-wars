@@ -7,7 +7,6 @@ class Ammo extends FlyingObject
         this.shadow = false;
         this.size = 10;
         this.mass = 1;
-        this.radius = this.size / 2;
         this.unicode = '\uf111';
     }
 

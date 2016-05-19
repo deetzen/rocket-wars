@@ -24,12 +24,11 @@ class Character extends FlyingObject
         if (!this.visible) {
             this.velocity = 0;
             this.explosion.update();
-            this.explosion.draw(this.position.x - this.size, this.position.y - this.size);
+            this.explosion.draw(this.position.x, this.position.y);
         } else {
             this.drawShield();
             this.skin.update();
-            this.skin.draw(this.x - this.size, this.y - this.size, this.rotation, this.game.context);
-            //super.draw();
+            this.skin.draw(this.position.x, this.position.y, this.rotation, this.game.context);
         }
     }
 
@@ -49,7 +48,7 @@ class Character extends FlyingObject
         this.context.strokeStyle = 'rgba(' + color + ',' + opacity + ')';
 
         this.context.lineWidth = '1.3';
-        this.context.arc(this.position.x, this.position.y, this.radius, 0, 2 * Math.PI);
+        this.context.arc(this.position.x, this.position.y, this.size, 0, 2 * Math.PI);
         this.context.fill();
         this.context.stroke();
         this.context.restore();
@@ -66,7 +65,7 @@ class Character extends FlyingObject
             this.isFiring = false;
         }, FIRE_RATE);
 
-        let ammoPos = Vector.calcMovement(this.position.x, this.position.y, this.rotation, this.radius);
+        let ammoPos = Vector.calcMovement(this.position.x, this.position.y, this.rotation, this.size);
 
         let ammo = new Ammo(this.stage, {
             x: ammoPos.x,

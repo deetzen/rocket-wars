@@ -3,7 +3,6 @@ const browserify = require('browserify');
 const source = require('vinyl-source-stream');
 const webserver = require('gulp-webserver');
 
-
 gulp.task('copy', function () {
     return gulp.src(['src/**/*', '!src/js/**/*'])
         .pipe(gulp.dest('dist'));
@@ -31,6 +30,6 @@ gulp.task('build', ['copy', 'transpile']);
 
 gulp.task('default', ['build']);
 
-gulp.task('watch', ['default'], function () {
+gulp.task('watch', ['default', 'webserver'], function () {
     gulp.watch(['./src/**/*'], ['build']);
 });

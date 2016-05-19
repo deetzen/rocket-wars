@@ -21,13 +21,12 @@ class FlyingObject
         this.unicode = options.unicode || '';
         this.velocity = options.velocity;
         this.size = options.size ? options.size : 45;
-        this.radius = options.size * 0.65;
     }
 
     collide (obj) {
         let dt, mT, v1, v2, cr, sm,
             dn = new Vector(this.position.x - obj.position.x, this.position.y - obj.position.y),
-            sr = this.radius + obj.radius,
+            sr = this.size + obj.size,
             dx = dn.length();
 
         if (dx > sr) {
@@ -38,7 +37,7 @@ class FlyingObject
         dn.normalize();
         dt = new Vector(dn.y, -dn.x);
 
-        mT = dn.multiply(this.radius + obj.radius - dx);
+        mT = dn.multiply(this.size + obj.size - dx);
         this.position.tx(mT.multiply(obj.mass / sm));
         obj.position.tx(mT.multiply(-this.mass / sm));
 
