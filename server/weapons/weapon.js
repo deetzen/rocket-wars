@@ -28,7 +28,9 @@ export default class Weapon
 
         this.character.game.addObject(bullet);
 
+        /*
         var snd = new Audio("sounds/shoot.wav"); // buffers automatically when created
         snd.play();
+        */
     }
 }

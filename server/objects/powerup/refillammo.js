@@ -1,4 +1,4 @@
-import {MAX_AMMO, CHARACTER_SIZE} from '../../constants';
+import {MAX_AMMO, CHARACTER_SIZE} from '../../../constants';
 import FlyingObject from '../flying-object';
 
 class RefillAmmo extends FlyingObject

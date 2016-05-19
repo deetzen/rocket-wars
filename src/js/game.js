@@ -1,23 +1,36 @@
-import {MAX_AMMO} from '../constants';
-import PowerUps from '../objects/powerups';
+import {MAX_AMMO} from '../../constants';
+import PowerUpAmmo from './objects/powerup-ammo';
 
 export default class {
 
-    constructor (stage) {
-        this.stage = stage;
-        this.context = this.stage.context;
-        this.canvas = this.stage.canvas;
+    constructor (socket) {
+        this.socket = socket;
+        this.canvas = document.getElementById('playground');
+        this.context = this.canvas.getContext('2d');
+        this.canvas.width = 500;
+        this.canvas.height = 500;
         this.players = [];
         this.objects = [];
+
+        let timeout = Math.floor(Math.random() * 20) + 10;
+        setTimeout(this.addPowerUp.bind(this), 0 * 1000);
     }
 
-    start () {
-        this.updateCanvas();
-        new PowerUps(this).start();
+    addPowerUp () {
+        let powerUp = new PowerUpAmmo({
+            x: Math.round(Math.random() * window.innerWidth) + 1,
+            y: Math.round(Math.random() * window.innerHeight) + 1,
+            rotation: Math.round(Math.random() * 360) + 1
+        });
+
+        this.addObject(powerUp);
+
+        let timeout = Math.floor(Math.random() * 20) + 10;
+        setTimeout(this.addPowerUp.bind(this), timeout * 1000);
     }
 
     addPlayer(player) {
-        this.players.push(player);
+        this.players[player.id] = player;
         this.addObject(player.character);
     }
 
@@ -31,23 +44,18 @@ export default class {
         this.objects.splice(objectPos, 1);
     }
 
+    // this happens within the server's update loop
     updateCanvas () {
-
         this.drawBackground();
         this.drawFlyingObjects();
         this.drawHighscore();
         this.drawAmmo();
-        this.collide();
-
-        requestAnimationFrame(() => this.updateCanvas());
     }
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        let image = new Image();
-        image.src = 'images/background.jpg';
-        this.context.drawImage(image, 0, 0);
+        this.context.fillStyle = 'rgba(0,0,0,0.800)';
+        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
     }
 
     drawAmmo () {
@@ -82,48 +90,30 @@ export default class {
         }
 
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(10, 10, playerTextWidth + 50, playerList.length * 20 + 10);
+        this.context.fillRect(10, 10, playerTextWidth + 55, playerList.length * 20 + 30);
 
         for(let i = 1; i <= playerList.length; i++) {
             this.context.fillStyle = playerList[i-1].color;
-            this.context.shadowColor = 'rgba(0,0,0,0.8)';
+            this.context.shadowColor = 'rgba(0,0,0,0.4)';
             this.context.shadowOffsetX = 1;
             this.context.shadowOffsetY = 1;
-            this.context.shadowBlur = 0;
+            this.context.shadowBlur = 1;
             let playerText = i + '. ' + playerList[i-1].name;
             let playerPoints = playerList[i-1].score.toString();
 
             this.context.textAlign = 'left';
-            this.context.fillText(playerText, 20, (i * 20) + 10);
+            this.context.fillText(playerText, 25, (i * 20) + 20);
 
-            this.context.fillStyle = 'rgba(0,0,0,0.8)';
+            this.context.fillStyle = 'rgba(0,0,0,0.5)';
             this.context.textAlign = 'right';
-            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 10);
+            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 20);
         }
 
-    }
-
-    collide () {
-        for(let i = 0; i < this.objects.length; i++) {
-            let object1 = this.objects[i];
-
-            for(let n = 0; n < this.objects.length; n++) {
-                let object2 = this.objects[n];
-
-                if (!object1.visible || !object2.visible) continue;
-                if (object1 === object2) continue;
-                if (object1.player === object2.player) continue;
-
-                object1.collide(object2);
-                object2.collide(object1);
-            }
-        }
     }
 
     drawFlyingObjects () {
         if (this.objects) {
             for (let i = 0; i < this.objects.length; i++) {
-                this.objects[i].update(this.keyboard);
                 this.objects[i].draw();
             }
         }
