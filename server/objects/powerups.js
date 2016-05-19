@@ -34,8 +34,8 @@ export default class PowerUps
             }
         }
 
-        powerUp.position.x = Math.round(Math.random() * (this.game.canvas.width - 70)) + 35;
-        powerUp.position.y = Math.round(Math.random() * (this.game.canvas.height - 70)) + 35;
+        powerUp.position.x = Math.round(Math.random() * (this.game.stage.width - 70)) + 35;
+        powerUp.position.y = Math.round(Math.random() * (this.game.stage.height - 70)) + 35;
 
         this.game.addObject(powerUp);
     }

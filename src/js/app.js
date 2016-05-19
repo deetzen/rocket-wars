@@ -1,34 +1,78 @@
-import Stage from './game/stage';
-import Game from './game/game';
-import Player from './game/player';
-import Keyboard from './game/keyboard';
+import {ADD_PLAYER,PLAYER_CREATED,AMMO_CREATED,UPDATE_OBJECTS} from '../../events';
+import {HOSTNAME} from '../../constants';
+import Game from './game';
+import Player from './player';
+import Skin from './skin/skin';
+import Ammo from './objects/ammo';
+import Factory from './objects/factory';
+import io from 'socket.io-client/socket.io.js';
 
 (function() {
 
-    const canvas = document.getElementById('playground');
+    let socket = io(HOSTNAME);
+    let game = new Game(socket);
 
-    window.onresize = function(event) {
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
-    };
+    let playerName = 'henry';
 
-    const stage = new Stage(canvas);
-    const game = new Game(stage);
+    socket.emit(ADD_PLAYER, {
+        name: playerName,
+        color: '#00B806'
+    });
+    
+    socket.on(UPDATE_OBJECTS, function (objects) {
 
-    let player1 = new Player(stage, {
-        name: 'Player 1',
-        color: '#00B806',
-        keyboard: new Keyboard(38, 39, 40, 37, 48)
+        game.objects.splice(0, game.objects.length);
+        
+        let ObjectFactory = new Factory();
+        
+        for(let object in objects) {
+            let newObject = ObjectFactory.create(objects[object].type);
+            newObject.id = objects[object].id;
+            newObject.x = objects[object].x;
+            newObject.y = objects[object].y;
+            newObject.context = game.context;
+            newObject.visible = objects[object].visible;
+            newObject.rotation = objects[object].rotation;
+            newObject.unicode = objects[object].unicode;
+            newObject.skin = new Skin(objects[object].skin, game.context);
+
+            game.addObject(newObject);
+        }
+        
+        game.updateCanvas();
+    });
+    
+    socket.on(PLAYER_CREATED, function (newPlayer) {
+
+        console.log('player with id ' + newPlayer.id + ' was created on server');
+
+        let player = new Player({
+            id: newPlayer.id,
+            name: newPlayer.name,
+            color: newPlayer.color
+        });
+        
+        game.addPlayer(player);
     });
 
-    let player2 = new Player(stage, {
-        name: 'Player 2',
-        color: '#00A6BF',
-        keyboard: new Keyboard(87, 68, 83, 65, 70)
+    socket.on(AMMO_CREATED, function (newAmmo) {
+        let ammo = new Ammo({
+            x: newAmmo.x,
+            y: newAmmo.y,
+            size: newAmmo.size,
+            player: game.players[newAmmo.player],
+            color: newAmmo.color
+        });
+        
+        game.addObject(ammo);
     });
 
-    game.addPlayer(player1);
-    game.addPlayer(player2);
-
-    game.start();
+    document.addEventListener('keydown', (event) => {
+        socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
+    });
+    
+    document.addEventListener('keyup', (event) => {
+        socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
+    });
+    
 })();

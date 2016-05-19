@@ -1,4 +1,4 @@
-import {CHARACTER_SIZE} from '../../constants';
+import {CHARACTER_SIZE} from '../../../constants';
 import FlyingObject from '../flying-object';
 
 class PermanentFire extends FlyingObject

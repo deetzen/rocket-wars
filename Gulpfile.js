@@ -5,7 +5,7 @@ const webserver = require('gulp-webserver');
 
 gulp.task('copy', function () {
     return gulp.src(['src/**/*', '!src/js/**/*'])
-        .pipe(gulp.dest('dist'));
+        .pipe(gulp.dest('client'));
 });
 
 gulp.task('transpile', function () {
@@ -13,11 +13,11 @@ gulp.task('transpile', function () {
         .transform('babelify')
         .bundle()
         .pipe(source('app.js'))
-        .pipe(gulp.dest('dist/js'));
+        .pipe(gulp.dest('client/js'));
 });
 
 gulp.task('webserver', function() {
-    gulp.src('dist')
+    gulp.src('client')
         .pipe(webserver({
             livereload: true,
             directoryListing: false,

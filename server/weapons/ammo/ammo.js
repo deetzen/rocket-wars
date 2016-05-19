@@ -1,6 +1,5 @@
 import FlyingObject from '../../objects/flying-object';
-import SpriteSheet from '../../animation/sprite-sheet';
-import Animation from '../../animation/animation';
+import Skin from '../../skin/skin';
 
 class Ammo extends FlyingObject {
   constructor(stage, options) {
@@ -11,8 +10,7 @@ class Ammo extends FlyingObject {
     this.size = 10;
     this.mass = 1;
     this.unicode = '\uf111';
-    this.skinSheet = new SpriteSheet(`images/playerbullet${this.type}_spr_strip6.png`, 70, 39, this.context);
-    this.skin = new Animation(this.skinSheet, 1, 0, 5, this.context);
+    this.skin = new Skin(`images/playerbullet${this.type}_spr_strip6.png`, 1, 0, 5);
   }
 
   draw() {
