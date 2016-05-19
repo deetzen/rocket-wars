@@ -44,8 +44,15 @@ export default class {
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+        let image = new Image();
+        image.src = 'images/background.jpg';
+        this.context.drawImage(image, 0, 0);
+
+        /*
         this.context.fillStyle = 'rgba(0,0,0,0.85)';
         this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        */
     }
 
     drawAmmo () {
