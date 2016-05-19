@@ -104,21 +104,21 @@ class FlyingObject
     }
 
     rotateRight () {
-        this.rotation += MIN_VELOCITY / 2.5;
+        this.rotation += 1.5;
     }
 
     rotateLeft () {
-        this.rotation -= MIN_VELOCITY / 2.5;
+        this.rotation -= 1.5;
     }
 
     speedUp () {
         if (this.velocity < MAX_VELOCITY) {
-            this.velocity += 0.2;
+            this.velocity += 0.1;
         }
     }
     speedDown () {
         if (this.velocity > MIN_VELOCITY) {
-            this.velocity -= 0.2;
+            this.velocity -= 0.1;
         }
     }
 
