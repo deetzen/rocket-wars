@@ -5,3 +5,6 @@ export const MOVE_PLAYER = 'move player';
 export const ADD_PLAYER = 'add player';
 export const UPDATE_OBJECTS = 'update objects';
 export const UPDATE_PLAYERS = 'update players';
+export const DISCONNECT = 'disconnect';
+export const KEYDOWN = 'keydown';
+export const KEYUP = 'keyup';
