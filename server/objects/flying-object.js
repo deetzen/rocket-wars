@@ -22,7 +22,7 @@ class FlyingObject
         this.velocity = options.velocity;
         this.size = options.size ? options.size : 45;
         this.shield = 0;
-        this.skin = new Skin('images/rocket1up_spr_strip5.png', 0, 0, 0, 1);
+        this.skin = new Skin('rocket-1', 0, 0, 0, 1);
     }
 
     collide (obj) {
