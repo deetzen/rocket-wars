@@ -28,7 +28,13 @@ class FlyingObject {
 
         this.context.restore();
 
-        this.drawShield();
+        if (this.shield) {
+            this.drawShield();
+        }
+
+        if (this.label) {
+            this.drawLabel();
+        }
 
         if (this.skin) {
             this.skin.draw(this.context, this.x, this.y, this.rotation, this.size);
@@ -57,6 +63,12 @@ class FlyingObject {
         this.context.restore();
     }
 
+    drawLabel () {
+        this.context.font = '13px Arial';
+        this.context.fillStyle = this.color;
+        let textWidth = this.context.measureText(this.label).width;
+        this.context.fillText(this.label, this.x + (textWidth/2), this.y + this.size/2 + 18);
+    }
 }
 
 export default FlyingObject;

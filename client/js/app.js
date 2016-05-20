@@ -1,8 +1,9 @@
-import {ADD_PLAYER,UPDATE_PLAYERS,AMMO_CREATED,UPDATE_OBJECTS} from '../../events';
+import {ADD_PLAYER,UPDATE_PLAYERS,UPDATE_OBJECTS} from '../../events';
+import {STAGE_WIDTH,STAGE_HEIGHT} from '../../constants';
 import {HOSTNAME} from '../../constants';
 import Game from './game/game';
 import Player from './game/player';
-import SkinLibrary from './skin/library';
+import SpriteLibrary from './skin/library';
 import Skin from './skin/skin';
 import FlyingObject from './objects/flying-object';
 import io from 'socket.io-client/socket.io.js';
@@ -12,9 +13,12 @@ import io from 'socket.io-client/socket.io.js';
     let socket = io(HOSTNAME);
     let game = new Game(socket);
 
-    let skinLibrary = new SkinLibrary();
-    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
-    skinLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
+    let scaleX = game.canvas.width / STAGE_WIDTH;
+    let scaleY = game.canvas.height / STAGE_HEIGHT;
+
+    let spriteLibrary = new SpriteLibrary();
+    spriteLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
+    spriteLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
 
     let playerName = 'henry';
 
@@ -30,16 +34,16 @@ import io from 'socket.io-client/socket.io.js';
         {
             let newObject = new FlyingObject(objects[object].type);
             newObject.id = objects[object].id;
-            newObject.x = objects[object].x;
-            newObject.y = objects[object].y;
+            newObject.x = objects[object].x * scaleX;
+            newObject.y = objects[object].y * scaleY;
             newObject.shield = objects[object].shield;
             newObject.size = objects[object].size;
             newObject.context = game.context;
-            newObject.player = objects[object].player;
+            newObject.label = objects[object].label;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
-            newObject.skin = new Skin(skinLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
+            newObject.skin = new Skin(spriteLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
 
             game.addObject(newObject);
         }
@@ -69,5 +73,13 @@ import io from 'socket.io-client/socket.io.js';
     document.addEventListener('keyup', (event) => {
         socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
     });
+
+    window.onresize = () => {
+        game.canvas.width = window.innerWidth;
+        game.canvas.height = window.innerHeight;
+
+        scaleX = game.canvas.width / STAGE_WIDTH;
+        scaleY = game.canvas.height / STAGE_HEIGHT;
+    };
     
 })();

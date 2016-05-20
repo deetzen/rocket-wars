@@ -1,4 +1,4 @@
-import {CHARACTER_SIZE, MAX_SHIELD, MIN_VELOCITY, FIRE_RATE} from '../../constants';
+import {CHARACTER_SIZE, MAX_SHIELD, MIN_VELOCITY, FIRE_RATE, MAX_VELOCITY, ACCELERATION} from '../../constants';
 import FlyingObject from './flying-object';
 import Skin from '../skin/skin';
 import Canon from '../weapons/canon';
@@ -8,11 +8,9 @@ class Character extends FlyingObject
     constructor(stage, options) {
         super(stage, options);
         this.size = CHARACTER_SIZE;
-        this. shield = MAX_SHIELD;
         this.velocity = MIN_VELOCITY;
-        this.alive = true;
-        this.shadow = true;
-        this.player = options.player || null;
+        this.player = options.player;
+        this.label = options.player.name;
         this.weapons = [new Canon(stage, this.player, this)];
         this.activeWeapon = 0;
         this.shield = MAX_SHIELD;
@@ -86,6 +84,25 @@ class Character extends FlyingObject
         if (!this.isFiring) {
             this.isFiring = true;
             this.weapons[this.activeWeapon].fire();
+        }
+    }
+
+    rotateRight () {
+        this.rotation += 2;
+    }
+
+    rotateLeft () {
+        this.rotation -= 2;
+    }
+
+    speedUp () {
+        if (this.velocity < (MAX_VELOCITY - ACCELERATION)) {
+            this.velocity += ACCELERATION;
+        }
+    }
+    speedDown () {
+        if (this.velocity > (MIN_VELOCITY + ACCELERATION)) {
+            this.velocity -= ACCELERATION;
         }
     }
 
