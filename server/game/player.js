@@ -11,11 +11,8 @@ export default class {
         this.keyboard = options.keyboard;
         this.score = 0;
         this.ammo = MAX_AMMO;
-        this.shield = MAX_SHIELD;
 
         this.character = new Character(this.stage, {
-            size: CHARACTER_SIZE,
-            velocity: MIN_VELOCITY,
             player: this,
             x: Math.round(Math.random() * this.stage.width) + 1,
             y: Math.round(Math.random() * this.stage.height) + 1,
