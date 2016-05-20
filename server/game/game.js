@@ -86,6 +86,7 @@ export default class {
             this.objects.forEach((object2) => {
 
                 if (!object1.visible || !object2.visible) return;
+                if (!object1.alive || !object2.alive) return;
                 if (object1 === object2) return;
                 if (object1.player === object2.player) return;
 

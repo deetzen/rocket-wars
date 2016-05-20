@@ -9,7 +9,7 @@ class Ammo extends FlyingObject {
     this.type = options.type || 1;
     this.size = 45;
     this.mass = 1;
-    this.skin = new Skin(`images/playerbullet1_spr_strip6.png`, 0, 5, 4, 70, 39);
+    this.skin = new Skin('images/playerbullet1_spr_strip6.png', 0, 6, 4);
   }
 
   draw() {

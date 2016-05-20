@@ -5,6 +5,7 @@ class FlyingObject
 {
     constructor (stage, options) {
         this.id = '_' + Math.random().toString(36).substr(2, 9);
+        this.alive = true;
         this.vector = new Vector(0, 0);
         this.position = new Vector(options.x, options.y);
         this.mass = 10;
@@ -21,7 +22,7 @@ class FlyingObject
         this.velocity = options.velocity;
         this.size = options.size ? options.size : 45;
         this.shield = 0;
-        this.skin = new Skin(`images/rocket1up_spr_strip5.png`, 0, 0, 4, 71, 80);
+        this.skin = new Skin('images/rocket1up_spr_strip5.png', 0, 0, 0, 1);
     }
 
     collide (obj) {
@@ -72,6 +73,10 @@ class FlyingObject
             this.position.y = 0;
         } else if(this.position.y < 0) {
             this.position.y = this.stage.height;
+        }
+
+        if (this.skin) {
+            this.skin.update();
         }
     }
 

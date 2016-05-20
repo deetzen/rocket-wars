@@ -40,16 +40,16 @@ export default class {
     drawAmmo () {
         this.context.font = '14px Verdana';
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(STAGE_WIDTH - 160, 10, 150, (this.players.length * 20) + 10);
+        this.context.fillRect(window.innerWidth - 160, 10, 150, (this.players.length * 20) + 10);
 
         let i = 1;
         for(let index in this.players) {
             let player = this.players[index];
             this.context.fillStyle = 'rgba(0,0,0,0.3)';
-            this.context.fillRect(STAGE_WIDTH - 150, (i * 10) + (i * 10), 130, 10);
+            this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130, 10);
             this.context.shadowColor = 'transparent';
             this.context.fillStyle = player.color;
-            this.context.fillRect(STAGE_WIDTH - 150, (i * 10) + (i * 10), 130/MAX_AMMO * player.ammo, 10);
+            this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130/MAX_AMMO * player.ammo, 10);
             i++;
         }
     }
