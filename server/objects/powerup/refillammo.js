@@ -11,7 +11,7 @@ class RefillAmmo extends FlyingObject
         this.color = 'rgba(255,255,255,0.6)';
         this.skin = new Skin('powerup-ammo', 1, 2, 15);
 
-        setTimeout(() => { this.remove(); }, 15000);
+        setTimeout(() => { this.remove(); }, 20000);
     }
 
     hit (object) {

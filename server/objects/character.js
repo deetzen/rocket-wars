@@ -77,9 +77,7 @@ class Character extends FlyingObject
         this.alive = false;
         this.skin = new Skin('explosion', 0, 40, 2);
         setTimeout(this.respawn.bind(this), 2000);
-
-//        this.explosion.currentFrame = 0;
-
+        
         /*
         var snd = new Audio("sounds/explode.wav"); // buffers automatically when created
         snd.play();

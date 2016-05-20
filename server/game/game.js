@@ -1,5 +1,4 @@
-import PowerUps from '../objects/powerups';
-import AsteroidEmitter from '../objects/asteroid-emitter';
+import ObjectEmitter from '../objects/emitter';
 import {UPDATE_OBJECTS, UPDATE_PLAYERS} from '../../events';
 
 export default class {
@@ -14,13 +13,11 @@ export default class {
     start () {
         setInterval( () => this.updateObjects(), 35);
         setInterval( () => this.updateClient(), 17);
-        new PowerUps(this).start();
-        new AsteroidEmitter(this).start();
+        new ObjectEmitter(this).start();
     }
 
     addPlayer(player) {
         if(!this.players.has(player.id)) {
-            console.log('player with id ' + player.id + ' added');
             this.players.set(player.id, player);
             this.addObject(player.character);
         }

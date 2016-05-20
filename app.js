@@ -4,10 +4,17 @@
     let register = require('babel-register');
     
     let express = require('express');
+    let fs = require('fs');
+
+    let privateKey  = fs.readFileSync('certificates/rocket-wars.de.free.key', 'utf8');
+    let certificate = fs.readFileSync('certificates/rocket-wars.de.crt', 'utf8');
+    let credentials = {key: privateKey, cert: certificate};
 
     let app = express();
-    let server = require('http').Server(app);
-    let io = require('socket.io')(server);
+    let https_server = require('https').Server(credentials, app);
+    let http_server = require('http').Server(app);
+
+    let io = require('socket.io')(https_server);
 
     let Player = require('./server/game/player').default;
     let Game = require('./server/game/game').default;
@@ -21,7 +28,8 @@
     let game = new Game(io, stage);
     game.start();
 
-    server.listen(1234);
+    http_server.listen(1233);
+    https_server.listen(1234);
 
     app.use(express.static('public'));
 

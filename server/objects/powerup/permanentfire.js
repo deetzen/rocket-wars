@@ -13,7 +13,7 @@ class PermanentFire extends FlyingObject
         this.collected = false;
         this.interval = null;
 
-        setTimeout(() => { this.remove(); }, 15000);
+        setTimeout(() => { this.remove(); }, 20000);
     }
 
     startFire (object) {

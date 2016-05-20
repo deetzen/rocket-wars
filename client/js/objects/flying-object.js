@@ -41,7 +41,15 @@ class FlyingObject {
         }
     }
 
+    setShieldSkin (sprite) {
+        this.shieldSkin = sprite;
+    }
+
     drawShield () {
+
+        this.shieldSkin.draw(this.context, this.x, this.y, this.rotation, this.size * 1.3);
+
+        /*
         this.context.save();
         this.context.beginPath();
 
@@ -61,6 +69,7 @@ class FlyingObject {
         this.context.fill();
         this.context.stroke();
         this.context.restore();
+        */
     }
 
     drawLabel () {
