@@ -14,7 +14,7 @@ class RefillShield extends FlyingObject
 
     hit (object) {
         this.game.removeObject(this);
-        if (object.player) {
+        if (object.shield) {
             object.shield = MAX_SHIELD;
         }
     }
