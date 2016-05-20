@@ -30,12 +30,12 @@ export default class Vector
         return this;
     };
 
-    static calcMovement (xCoord, yCoord, angle, length) {
-        length = typeof length !== 'undefined' ? length : 10;
+    static calcMovement (xCoord, yCoord, angle, radius) {
+        radius = typeof radius !== 'undefined' ? radius : 1;
         angle = angle * Math.PI / 180;
         return {
-            x: length * Math.cos(angle) + xCoord,
-            y: length * Math.sin(angle) + yCoord
+            x: radius * Math.cos(angle) + xCoord,
+            y: radius * Math.sin(angle) + yCoord
         }
     }
 }

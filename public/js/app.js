@@ -37,7 +37,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     var game = new _game2.default(socket);
 
     var skinLibrary = new _library2.default();
-    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80);
+    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
+    skinLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
 
     var playerName = 'henry';
 
@@ -54,12 +55,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             newObject.id = objects[object].id;
             newObject.x = objects[object].x;
             newObject.y = objects[object].y;
+            newObject.shield = objects[object].shield;
+            newObject.size = objects[object].size;
             newObject.context = game.context;
             newObject.player = objects[object].player;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
-            newObject.skin = new _skin2.default(skinLibrary, objects[object].skin.imageSource);
+            newObject.skin = new _skin2.default(skinLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
 
             game.addObject(newObject);
         }
@@ -254,6 +257,8 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
+var _constants = require('../../../constants');
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var FlyingObject = function () {
@@ -267,6 +272,7 @@ var FlyingObject = function () {
         this.rotation = 0;
         this.size = 45;
         this.skin = null;
+        this.shield = 0;
     }
 
     _createClass(FlyingObject, [{
@@ -286,9 +292,34 @@ var FlyingObject = function () {
 
             this.context.restore();
 
+            this.drawShield();
+
             if (this.skin) {
-                this.skin.draw(this.context, this.x, this.y, this.rotation);
+                this.skin.draw(this.context, this.x, this.y, this.rotation, this.size);
             }
+        }
+    }, {
+        key: 'drawShield',
+        value: function drawShield() {
+            this.context.save();
+            this.context.beginPath();
+
+            var shieldPercent = this.shield / _constants.MAX_SHIELD;
+            var color = '90,255,90';
+            if (shieldPercent < 0.2) {
+                color = '255,90,90';
+            } else if (shieldPercent < 0.7) {
+                color = '255,255,90';
+            }
+
+            this.context.fillStyle = 'rgba(' + color + ',' + shieldPercent / 3 + ')';
+            this.context.strokeStyle = 'rgba(' + color + ',' + shieldPercent + ')';
+
+            this.context.lineWidth = '1.3';
+            this.context.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI);
+            this.context.fill();
+            this.context.stroke();
+            this.context.restore();
         }
     }]);
 
@@ -297,7 +328,7 @@ var FlyingObject = function () {
 
 exports.default = FlyingObject;
 
-},{}],5:[function(require,module,exports){
+},{"../../../constants":7}],5:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -317,7 +348,7 @@ var SkinLibrary = function () {
 
     _createClass(SkinLibrary, [{
         key: "addSkin",
-        value: function addSkin(imageSource, frameHeight, frameWidth) {
+        value: function addSkin(imageSource, frameHeight, frameWidth, rotation) {
             var _this = this;
 
             var image = new Image();
@@ -325,6 +356,7 @@ var SkinLibrary = function () {
             image.onload = function () {
                 var skin = {
                     image: image,
+                    rotation: rotation,
                     framesPerRow: Math.floor(image.width / frameWidth),
                     frameWidth: frameWidth,
                     frameHeight: frameHeight,
@@ -363,32 +395,34 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Skin = function () {
-    function Skin(skinLibrary, skin) {
+    function Skin(skinLibrary, skin, currentFrame) {
         _classCallCheck(this, Skin);
 
         this.skinName = skin;
         this.spriteLibrary = skinLibrary;
+        this.currentFrame = currentFrame;
     }
 
     _createClass(Skin, [{
         key: "draw",
-        value: function draw(context, x, y, rotation) {
-            var currentFrame = arguments.length <= 4 || arguments[4] === undefined ? 0 : arguments[4];
-            var scale = arguments.length <= 5 || arguments[5] === undefined ? 1 : arguments[5];
-
+        value: function draw(context, x, y, rotation, size) {
             var sprite = this.spriteLibrary.getSkin(this.skinName);
 
+            if (!sprite) return;
+
+            var scale = size / sprite.frameWidth;
+            var newWidth = sprite.frameWidth * scale;
+            var newHeight = sprite.frameHeight * scale;
+
             // get the row and col of the frame
-            var row = Math.floor(sprite.animationSequence[currentFrame] / sprite.framesPerRow);
-            var col = Math.floor(sprite.animationSequence[currentFrame] % sprite.framesPerRow);
-            var CENTER_X = -sprite.frameWidth / 2 * scale;
-            var CENTER_Y = -sprite.frameHeight / 2 * scale;
+            var row = Math.floor(sprite.animationSequence[this.currentFrame] / sprite.framesPerRow);
+            var col = Math.floor(sprite.animationSequence[this.currentFrame] % sprite.framesPerRow);
 
             context.save();
             context.translate(x, y);
-            context.rotate((rotation + 90) * Math.PI / 180);
+            context.rotate((rotation + sprite.rotation) * Math.PI / 180);
 
-            context.drawImage(sprite.image, col * sprite.frameWidth, row * sprite.frameHeight, sprite.frameWidth, sprite.frameHeight, CENTER_X, CENTER_Y, sprite.frameWidth * scale, sprite.frameHeight * scale);
+            context.drawImage(sprite.image, col * sprite.frameWidth, row * sprite.frameHeight, sprite.frameWidth, sprite.frameHeight, -newWidth / 2, -newHeight / 2, newWidth, newHeight);
             context.restore();
         }
     }]);
@@ -404,9 +438,9 @@ exports.default = Skin;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var MIN_VELOCITY = exports.MIN_VELOCITY = 10;
+var MIN_VELOCITY = exports.MIN_VELOCITY = 0;
 var MAX_VELOCITY = exports.MAX_VELOCITY = 20;
-var CHARACTER_SIZE = exports.CHARACTER_SIZE = 50;
+var CHARACTER_SIZE = exports.CHARACTER_SIZE = 65;
 var FIRE_RATE = exports.FIRE_RATE = 200;
 var MAX_AMMO = exports.MAX_AMMO = 20;
 var MAX_SHIELD = exports.MAX_SHIELD = 10;
@@ -427,6 +461,9 @@ var MOVE_PLAYER = exports.MOVE_PLAYER = 'move player';
 var ADD_PLAYER = exports.ADD_PLAYER = 'add player';
 var UPDATE_OBJECTS = exports.UPDATE_OBJECTS = 'update objects';
 var UPDATE_PLAYERS = exports.UPDATE_PLAYERS = 'update players';
+var DISCONNECT = exports.DISCONNECT = 'disconnect';
+var KEYDOWN = exports.KEYDOWN = 'keydown';
+var KEYUP = exports.KEYUP = 'keyup';
 
 },{}],9:[function(require,module,exports){
 (function (global){
