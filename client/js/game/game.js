@@ -1,4 +1,4 @@
-import {MAX_AMMO, STAGE_WIDTH, STAGE_HEIGHT} from '../../../constants';
+import {MAX_AMMO, STAGE_WIDTH} from '../../../constants';
 
 export default class {
 
@@ -21,6 +21,10 @@ export default class {
         this.objects.push(object);
     }
 
+    setBackground (sprite) {
+        this.background = sprite;
+    }
+
     // this happens within the server's update loop
     drawCanvas () {
         this.drawBackground();
@@ -31,9 +35,7 @@ export default class {
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        let bg = new Image();
-        bg.src = 'images/backgrounds/background_04_parallax_01.png';
-        this.context.drawImage(bg, 0, 0);
+        this.background.draw(this.context, this.canvas.width/2, this.canvas.height/2, 0, STAGE_WIDTH);
     }
 
     drawAmmo () {
@@ -55,41 +57,38 @@ export default class {
 
     drawHighscore() {
 
+        let playerList = this.players.slice(0);
         let playerTextWidth = 0;
-        this.players.sort(function(a, b) {
+        playerList.sort(function(a, b) {
             return a.score > b.score ? -1 : a.score < b.score ? 1 : 0;
         });
 
         this.context.font = '14px Verdana';
         this.context.shadowColor = 'rgba(0,0,0,0.5)';
 
-        let i = 1;
-        for (let player in this.players) {
-            let playerText = i + '. ' + this.players[player].name + " [" + this.players[player].score.toString() + ']';
+        for(let i = 1; i <= playerList.length; i++) {
+            let playerText = i + '. ' + playerList[i-1].name + " [" + playerList[i-1].score.toString() + ']';
             playerTextWidth = this.context.measureText(playerText).width > playerTextWidth ? this.context.measureText(playerText).width : playerTextWidth;
-            i++;
         }
 
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(10, 10, playerTextWidth + 55, this.players.length * 20 + 30);
+        this.context.fillRect(10, 10, playerTextWidth + 50, playerList.length * 20 + 10);
 
-        i = 1;
-        for(let player in this.players) {
-            this.context.fillStyle = this.players[player].color;
-            this.context.shadowColor = 'rgba(0,0,0,0.4)';
+        for(let i = 1; i <= playerList.length; i++) {
+            this.context.fillStyle = playerList[i-1].color;
+            this.context.shadowColor = 'rgba(0,0,0,0.8)';
             this.context.shadowOffsetX = 1;
             this.context.shadowOffsetY = 1;
-            this.context.shadowBlur = 1;
-            let playerText = i + '. ' + this.players[player].name;
-            let playerPoints = this.players[player].score.toString();
+            this.context.shadowBlur = 0;
+            let playerText = i + '. ' + playerList[i-1].name;
+            let playerPoints = playerList[i-1].score.toString();
 
             this.context.textAlign = 'left';
-            this.context.fillText(playerText, 25, (i * 20) + 20);
+            this.context.fillText(playerText, 20, (i * 20) + 10);
 
-            this.context.fillStyle = 'rgba(0,0,0,0.5)';
+            this.context.fillStyle = 'rgba(0,0,0,0.8)';
             this.context.textAlign = 'right';
-            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 20);
-            i++;
+            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 10);
         }
     }
 

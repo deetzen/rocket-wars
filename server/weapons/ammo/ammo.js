@@ -20,7 +20,7 @@ class Ammo extends FlyingObject {
   hit(object) {
     this.game.removeObject(this);
 
-    if (object.constructor.name === 'Character') {
+    if (object.shield > 0) {
       this.player.score++;
       object.shield--;
     }

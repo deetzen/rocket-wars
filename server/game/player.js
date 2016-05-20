@@ -1,4 +1,4 @@
-import {CHARACTER_SIZE, MIN_VELOCITY, MAX_AMMO, MAX_SHIELD} from '../../constants';
+import {MAX_AMMO} from '../../constants';
 import Character from '../objects/character';
 
 export default class {

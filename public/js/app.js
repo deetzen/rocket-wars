@@ -41,13 +41,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
     var spriteLibrary = new _library2.default();
 
-<<<<<<< b5f4db5e92e394411dedcb26e5d1dcdac2c78738
-    Promise.all([spriteLibrary.addSprite('shield', 'images/weapons/shield_frames.png', 280, 280, 90), spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 71, 80, 90), spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180), spriteLibrary.addSprite('explosion', 'images/explosion.png', 128, 128, 0), spriteLibrary.addSprite('powerup-shield', 'images/power-ups/powerup_04.png', 100, 100, 0), spriteLibrary.addSprite('powerup-ammo', 'images/power-ups/powerup_06.png', 100, 100, 0), spriteLibrary.addSprite('powerup-permanentfire', 'images/power-ups/powerup_08.png', 100, 100, 0)]).then(function () {
-=======
-    Promise.all([spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 71, 80, 90), spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180), spriteLibrary.addSprite('asteroid-7', 'images/asteroids/asteroid_07.png', 250, 300, 0), spriteLibrary.addSprite('explosion', 'images/explosion.png', 128, 128, 0)]).then(function () {
->>>>>>> added asteroids
+    Promise.all([spriteLibrary.addSprite('shield', 'images/weapons/shield_frames.png', 280, 280, 90), spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 80, 71, 90), spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180), spriteLibrary.addSprite('asteroid-7', 'images/asteroids/asteroid_07_with_cracks.png', 250, 300, 0), spriteLibrary.addSprite('explosion', 'images/explosion.png', 128, 128, 0), spriteLibrary.addSprite('powerup-shield', 'images/power-ups/powerup_04.png', 100, 100, 0), spriteLibrary.addSprite('powerup-ammo', 'images/power-ups/powerup_06.png', 100, 100, 0), spriteLibrary.addSprite('powerup-permanentfire', 'images/power-ups/powerup_08.png', 100, 100, 0), spriteLibrary.addSprite('game-background-1', 'images/backgrounds/background_04_parallax_01.png', 2448, 1936, 0)]).then(function () {
 
-        var playerName = 'henry';
+        var backgroundSprite = spriteLibrary.sprites.get('game-background-1');
+        game.setBackground(new _skin2.default(backgroundSprite, 0));
+
+        var playerName = '';
+        while (!playerName) {
+            playerName = prompt("Please enter your name", "");
+        }
 
         socket.emit(_events.ADD_PLAYER, {
             name: playerName,
@@ -70,6 +72,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                 newObject.rotation = objects[object].rotation;
                 newObject.unicode = objects[object].unicode;
                 newObject.skin = new _skin2.default(sprite, objects[object].sprite.currentFrame);
+
+                var shieldSkin = spriteLibrary.sprites.get('shield');
+                newObject.setShieldSkin(new _skin2.default(shieldSkin, 0));
+
                 game.addObject(newObject);
             }
 
@@ -146,6 +152,11 @@ var _class = function () {
             object.game = this;
             this.objects.push(object);
         }
+    }, {
+        key: 'setBackground',
+        value: function setBackground(sprite) {
+            this.background = sprite;
+        }
 
         // this happens within the server's update loop
 
@@ -161,9 +172,7 @@ var _class = function () {
         key: 'drawBackground',
         value: function drawBackground() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            var bg = new Image();
-            bg.src = 'images/backgrounds/background_04_parallax_01.png';
-            this.context.drawImage(bg, 0, 0);
+            this.background.draw(this.context, this.canvas.width / 2, this.canvas.height / 2, 0, _constants.STAGE_WIDTH);
         }
     }, {
         key: 'drawAmmo',
@@ -187,41 +196,38 @@ var _class = function () {
         key: 'drawHighscore',
         value: function drawHighscore() {
 
+            var playerList = this.players.slice(0);
             var playerTextWidth = 0;
-            this.players.sort(function (a, b) {
+            playerList.sort(function (a, b) {
                 return a.score > b.score ? -1 : a.score < b.score ? 1 : 0;
             });
 
             this.context.font = '14px Verdana';
             this.context.shadowColor = 'rgba(0,0,0,0.5)';
 
-            var i = 1;
-            for (var player in this.players) {
-                var playerText = i + '. ' + this.players[player].name + " [" + this.players[player].score.toString() + ']';
+            for (var i = 1; i <= playerList.length; i++) {
+                var playerText = i + '. ' + playerList[i - 1].name + " [" + playerList[i - 1].score.toString() + ']';
                 playerTextWidth = this.context.measureText(playerText).width > playerTextWidth ? this.context.measureText(playerText).width : playerTextWidth;
-                i++;
             }
 
             this.context.fillStyle = 'rgba(255,255,255,0.8)';
-            this.context.fillRect(10, 10, playerTextWidth + 55, this.players.length * 20 + 30);
+            this.context.fillRect(10, 10, playerTextWidth + 50, playerList.length * 20 + 10);
 
-            i = 1;
-            for (var _player in this.players) {
-                this.context.fillStyle = this.players[_player].color;
-                this.context.shadowColor = 'rgba(0,0,0,0.4)';
+            for (var _i = 1; _i <= playerList.length; _i++) {
+                this.context.fillStyle = playerList[_i - 1].color;
+                this.context.shadowColor = 'rgba(0,0,0,0.8)';
                 this.context.shadowOffsetX = 1;
                 this.context.shadowOffsetY = 1;
-                this.context.shadowBlur = 1;
-                var _playerText = i + '. ' + this.players[_player].name;
-                var playerPoints = this.players[_player].score.toString();
+                this.context.shadowBlur = 0;
+                var _playerText = _i + '. ' + playerList[_i - 1].name;
+                var playerPoints = playerList[_i - 1].score.toString();
 
                 this.context.textAlign = 'left';
-                this.context.fillText(_playerText, 25, i * 20 + 20);
+                this.context.fillText(_playerText, 20, _i * 20 + 10);
 
-                this.context.fillStyle = 'rgba(0,0,0,0.5)';
+                this.context.fillStyle = 'rgba(0,0,0,0.8)';
                 this.context.textAlign = 'right';
-                this.context.fillText(playerPoints, playerTextWidth + 50, i * 20 + 20);
-                i++;
+                this.context.fillText(playerPoints, playerTextWidth + 50, _i * 20 + 10);
             }
         }
     }, {
@@ -319,27 +325,34 @@ var FlyingObject = function () {
             }
         }
     }, {
+        key: 'setShieldSkin',
+        value: function setShieldSkin(sprite) {
+            this.shieldSkin = sprite;
+        }
+    }, {
         key: 'drawShield',
         value: function drawShield() {
+
+            this.shieldSkin.draw(this.context, this.x, this.y, this.rotation, this.size * 1.3);
+
+            /*
             this.context.save();
             this.context.beginPath();
-
-            var shieldPercent = this.shield / _constants.MAX_SHIELD;
-            var color = '90,255,90';
+             let shieldPercent = this.shield / MAX_SHIELD;
+            let color = '90,255,90';
             if (shieldPercent < 0.2) {
                 color = '255,90,90';
             } else if (shieldPercent < 0.7) {
                 color = '255,255,90';
             }
-
-            this.context.fillStyle = 'rgba(' + color + ',' + shieldPercent / 3 + ')';
+             this.context.fillStyle = 'rgba(' + color + ',' + (shieldPercent/3) + ')';
             this.context.strokeStyle = 'rgba(' + color + ',' + shieldPercent + ')';
-
-            this.context.lineWidth = '1.3';
+             this.context.lineWidth = '1.3';
             this.context.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI);
             this.context.fill();
             this.context.stroke();
             this.context.restore();
+            */
         }
     }, {
         key: 'drawLabel',
