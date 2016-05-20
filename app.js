@@ -54,7 +54,7 @@
             }, 10);
         });
 
-        socket.on('disconnect', function() {
+        socket.on(EVENTS.DISCONNECT, function() {
             game.objects.forEach((object) => {
                 if (object.player && object.player.id === socket.id) {
                     game.removeObject(object);
@@ -84,7 +84,7 @@
             game.objects.get(data).fire();
         });
 
-        socket.on('keydown', function (event) {
+        socket.on(EVENTS.KEYDOWN, function (event) {
             if(game.players.has(event.player)) {
                 var player = game.players.get(event.player);
                 var keyboard = player.keyboard;
@@ -92,7 +92,7 @@
             }
         });
 
-        socket.on('keyup', function (event) {
+        socket.on(EVENTS.KEYUP, function (event) {
             if(game.players.has(event.player)) {
                 var player = game.players.get(event.player);
                 var keyboard = player.keyboard;
