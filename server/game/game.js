@@ -50,7 +50,7 @@ export default class {
                 objects[object.id] = {
                     id: object.id,
                     type: object.constructor.name,
-                    player: object.player ? object.player.id : null,
+                    label: object.label,
                     visible: object.visible,
                     x: object.position.x,
                     y: object.position.y,

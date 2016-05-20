@@ -1,4 +1,4 @@
-export default class SkinLibrary
+export default class SpriteLibrary
 {
     constructor () {
         this.skins = [];

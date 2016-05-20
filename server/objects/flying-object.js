@@ -1,4 +1,3 @@
-import {MAX_VELOCITY,MIN_VELOCITY} from '../../constants';
 import Vector from '../utils/vector';
 import Skin from '../skin/skin';
 
@@ -9,6 +8,7 @@ class FlyingObject
         this.vector = new Vector(0, 0);
         this.position = new Vector(options.x, options.y);
         this.mass = 10;
+        this.label = '';
         this.elasticity = 0.2;
         this.stage = stage;
         this.visible = options.visible || true;
@@ -72,25 +72,6 @@ class FlyingObject
             this.position.y = 0;
         } else if(this.position.y < 0) {
             this.position.y = this.stage.height;
-        }
-    }
-
-    rotateRight () {
-        this.rotation += 2;
-    }
-
-    rotateLeft () {
-        this.rotation -= 2;
-    }
-
-    speedUp () {
-        if (this.velocity < MAX_VELOCITY) {
-            this.velocity += 0.2;
-        }
-    }
-    speedDown () {
-        if (this.velocity > MIN_VELOCITY) {
-            this.velocity -= 0.2;
         }
     }
 

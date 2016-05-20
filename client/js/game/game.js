@@ -6,8 +6,8 @@ export default class {
         this.socket = socket;
         this.canvas = document.getElementById('playground');
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = STAGE_WIDTH;
-        this.canvas.height = STAGE_HEIGHT;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         this.players = [];
         this.objects = [];
     }

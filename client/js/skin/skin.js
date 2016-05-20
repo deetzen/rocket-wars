@@ -1,8 +1,8 @@
 export default class Skin
 {
-    constructor (skinLibrary, skin, currentFrame) {
+    constructor (spriteLibrary, skin, currentFrame) {
         this.skinName = skin;
-        this.spriteLibrary = skinLibrary;
+        this.spriteLibrary = spriteLibrary;
         this.currentFrame = currentFrame;
     }
     

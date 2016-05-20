@@ -36,9 +36,12 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     var socket = (0, _socketIo2.default)(_constants.HOSTNAME);
     var game = new _game2.default(socket);
 
-    var skinLibrary = new _library2.default();
-    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
-    skinLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
+    var scaleX = game.canvas.width / _constants.STAGE_WIDTH;
+    var scaleY = game.canvas.height / _constants.STAGE_HEIGHT;
+
+    var spriteLibrary = new _library2.default();
+    spriteLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
+    spriteLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
 
     var playerName = 'henry';
 
@@ -53,16 +56,16 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
         for (var object in objects) {
             var newObject = new _flyingObject2.default(objects[object].type);
             newObject.id = objects[object].id;
-            newObject.x = objects[object].x;
-            newObject.y = objects[object].y;
+            newObject.x = objects[object].x * scaleX;
+            newObject.y = objects[object].y * scaleY;
             newObject.shield = objects[object].shield;
             newObject.size = objects[object].size;
             newObject.context = game.context;
-            newObject.player = objects[object].player;
+            newObject.label = objects[object].label;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
-            newObject.skin = new _skin2.default(skinLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
+            newObject.skin = new _skin2.default(spriteLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
 
             game.addObject(newObject);
         }
@@ -92,6 +95,14 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     document.addEventListener('keyup', function (event) {
         socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
     });
+
+    window.onresize = function () {
+        game.canvas.width = window.innerWidth;
+        game.canvas.height = window.innerHeight;
+
+        scaleX = game.canvas.width / _constants.STAGE_WIDTH;
+        scaleY = game.canvas.height / _constants.STAGE_HEIGHT;
+    };
 })();
 
 },{"../../constants":7,"../../events":8,"./game/game":2,"./game/player":3,"./objects/flying-object":4,"./skin/library":5,"./skin/skin":6,"socket.io-client/socket.io.js":9}],2:[function(require,module,exports){
@@ -114,8 +125,8 @@ var _class = function () {
         this.socket = socket;
         this.canvas = document.getElementById('playground');
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = _constants.STAGE_WIDTH;
-        this.canvas.height = _constants.STAGE_HEIGHT;
+        this.canvas.width = window.innerWidth;
+        this.canvas.height = window.innerHeight;
         this.players = [];
         this.objects = [];
     }
@@ -292,7 +303,13 @@ var FlyingObject = function () {
 
             this.context.restore();
 
-            this.drawShield();
+            if (this.shield) {
+                this.drawShield();
+            }
+
+            if (this.label) {
+                this.drawLabel();
+            }
 
             if (this.skin) {
                 this.skin.draw(this.context, this.x, this.y, this.rotation, this.size);
@@ -321,6 +338,14 @@ var FlyingObject = function () {
             this.context.stroke();
             this.context.restore();
         }
+    }, {
+        key: 'drawLabel',
+        value: function drawLabel() {
+            this.context.font = '13px Arial';
+            this.context.fillStyle = this.color;
+            var textWidth = this.context.measureText(this.label).width;
+            this.context.fillText(this.label, this.x + textWidth / 2, this.y + this.size / 2 + 18);
+        }
     }]);
 
     return FlyingObject;
@@ -339,14 +364,14 @@ var _createClass = function () { function defineProperties(target, props) { for 
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var SkinLibrary = function () {
-    function SkinLibrary() {
-        _classCallCheck(this, SkinLibrary);
+var SpriteLibrary = function () {
+    function SpriteLibrary() {
+        _classCallCheck(this, SpriteLibrary);
 
         this.skins = [];
     }
 
-    _createClass(SkinLibrary, [{
+    _createClass(SpriteLibrary, [{
         key: "addSkin",
         value: function addSkin(imageSource, frameHeight, frameWidth, rotation) {
             var _this = this;
@@ -378,10 +403,10 @@ var SkinLibrary = function () {
         }
     }]);
 
-    return SkinLibrary;
+    return SpriteLibrary;
 }();
 
-exports.default = SkinLibrary;
+exports.default = SpriteLibrary;
 
 },{}],6:[function(require,module,exports){
 "use strict";
@@ -395,11 +420,11 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Skin = function () {
-    function Skin(skinLibrary, skin, currentFrame) {
+    function Skin(spriteLibrary, skin, currentFrame) {
         _classCallCheck(this, Skin);
 
         this.skinName = skin;
-        this.spriteLibrary = skinLibrary;
+        this.spriteLibrary = spriteLibrary;
         this.currentFrame = currentFrame;
     }
 
@@ -440,6 +465,7 @@ Object.defineProperty(exports, "__esModule", {
 });
 var MIN_VELOCITY = exports.MIN_VELOCITY = 0;
 var MAX_VELOCITY = exports.MAX_VELOCITY = 20;
+var ACCELERATION = exports.ACCELERATION = 0.3;
 var CHARACTER_SIZE = exports.CHARACTER_SIZE = 65;
 var FIRE_RATE = exports.FIRE_RATE = 200;
 var MAX_AMMO = exports.MAX_AMMO = 20;
