@@ -41,7 +41,11 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
     var spriteLibrary = new _library2.default();
 
+<<<<<<< b5f4db5e92e394411dedcb26e5d1dcdac2c78738
     Promise.all([spriteLibrary.addSprite('shield', 'images/weapons/shield_frames.png', 280, 280, 90), spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 71, 80, 90), spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180), spriteLibrary.addSprite('explosion', 'images/explosion.png', 128, 128, 0), spriteLibrary.addSprite('powerup-shield', 'images/power-ups/powerup_04.png', 100, 100, 0), spriteLibrary.addSprite('powerup-ammo', 'images/power-ups/powerup_06.png', 100, 100, 0), spriteLibrary.addSprite('powerup-permanentfire', 'images/power-ups/powerup_08.png', 100, 100, 0)]).then(function () {
+=======
+    Promise.all([spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 71, 80, 90), spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180), spriteLibrary.addSprite('asteroid-7', 'images/asteroids/asteroid_07.png', 250, 300, 0), spriteLibrary.addSprite('explosion', 'images/explosion.png', 128, 128, 0)]).then(function () {
+>>>>>>> added asteroids
 
         var playerName = 'henry';
 
@@ -157,10 +161,9 @@ var _class = function () {
         key: 'drawBackground',
         value: function drawBackground() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-            var image = new Image();
-            image.src = 'images/background.jpg';
-            this.context.drawImage(image, 0, 0);
+            var bg = new Image();
+            bg.src = 'images/backgrounds/background_04_parallax_01.png';
+            this.context.drawImage(bg, 0, 0);
         }
     }, {
         key: 'drawAmmo',

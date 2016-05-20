@@ -22,6 +22,7 @@ import io from 'socket.io-client/socket.io.js';
         spriteLibrary.addSprite('shield','images/weapons/shield_frames.png', 280, 280, 90),
         spriteLibrary.addSprite('rocket-1','images/rocket1up_spr_strip5.png', 71, 80, 90),
         spriteLibrary.addSprite('bullet-1','images/playerbullet1_spr_strip6.png', 39, 70, 180),
+        spriteLibrary.addSprite('asteroid-7','images/asteroids/asteroid_07.png', 250, 300, 0),
         spriteLibrary.addSprite('explosion','images/explosion.png', 128, 128, 0),
         spriteLibrary.addSprite('powerup-shield','images/power-ups/powerup_04.png', 100, 100, 0),
         spriteLibrary.addSprite('powerup-ammo','images/power-ups/powerup_06.png', 100, 100, 0),
