@@ -40,8 +40,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
     skinLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
 
-    var playerName = 'henry';
-
     socket.on(_events.UPDATE_OBJECTS, function (objects) {
         game.objects.splice(0, game.objects.length);
 
@@ -78,14 +76,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                 score: players[player].score
             }));
         }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
-    });
-
-    document.addEventListener('keyup', function (event) {
-        socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
     });
 })();
 
@@ -433,7 +423,7 @@ exports.default = Skin;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-var MIN_VELOCITY = exports.MIN_VELOCITY = 0;
+var MIN_VELOCITY = exports.MIN_VELOCITY = 10;
 var MAX_VELOCITY = exports.MAX_VELOCITY = 20;
 var CHARACTER_SIZE = exports.CHARACTER_SIZE = 65;
 var FIRE_RATE = exports.FIRE_RATE = 200;

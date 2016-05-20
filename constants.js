@@ -1,4 +1,4 @@
-export const MIN_VELOCITY = 0;
+export const MIN_VELOCITY = 10;
 export const MAX_VELOCITY = 20;
 export const CHARACTER_SIZE = 65;
 export const FIRE_RATE = 200;
