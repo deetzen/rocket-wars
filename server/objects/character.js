@@ -98,8 +98,8 @@ class Character extends FlyingObject
     respawn () {
         this.visible = true;
         this.player.shield = MAX_SHIELD;
-        this.position.x = Math.round(Math.random() * this.canvas.width) + 1;
-        this.position.y = Math.round(Math.random() * this.canvas.height) + 1;
+        this.position.x = Math.round(Math.random() * this.stage.width) + 1;
+        this.position.y = Math.round(Math.random() * this.stage.height) + 1;
         this.rotation = Math.round(Math.random() * 360) + 1;
         this.velocity = MIN_VELOCITY;
     }
@@ -109,7 +109,7 @@ class Character extends FlyingObject
         this.visible = false;
         setTimeout(this.respawn.bind(this), 2000);
 
-        this.explosion.currentFrame = 0;
+//        this.explosion.currentFrame = 0;
 
         /*
         var snd = new Audio("sounds/explode.wav"); // buffers automatically when created

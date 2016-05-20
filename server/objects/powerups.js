@@ -34,6 +34,7 @@ export default class PowerUps
             }
         }
 
+        powerUp.id = '_' + Math.random().toString(36).substr(2, 9);
         powerUp.position.x = Math.round(Math.random() * (this.game.stage.width - 70)) + 35;
         powerUp.position.y = Math.round(Math.random() * (this.game.stage.height - 70)) + 35;
 

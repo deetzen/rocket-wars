@@ -9,33 +9,33 @@ class Ammo extends FlyingObject {
     this.type = options.type || 1;
     this.size = 10;
     this.mass = 1;
-    this.unicode = '\uf111';
-    this.skin = new Skin(`images/playerbullet${this.type}_spr_strip6.png`, 1, 0, 5);
+    this.skin = new Skin(`images/playerbullet1_spr_strip6.png`, 0, 5, 4, 70, 39);
   }
 
   draw() {
     this.checkValid();
     this.skin.update();
-    this.skin.draw(this.position.x, this.position.y, this.rotation + 90, 1);
   }
 
   hit(object) {
-    this.game.objects.splice(this.game.objects.indexOf(this), 1);
+    this.game.removeObject(this);
 
     if (object.constructor.name === 'Character') {
       this.player.score++;
       object.player.shield--;
     }
 
+    /*
     var snd = new Audio("sounds/hit.wav"); // buffers automatically when created
     snd.play();
+    */
   }
 
   checkValid() {
-    let canvasWidth = this.game.canvas.width;
-    let canvasHeight = this.game.canvas.height;
+    let stageWidth = this.stage.width;
+    let stageHeight = this.stage.height;
 
-    if (this.position.x >= canvasWidth || this.position.x <= 0 || this.position.y >= canvasHeight || this.position.y <= 0) {
+    if (this.position.x >= stageWidth || this.position.x <= 0 || this.position.y >= stageHeight || this.position.y <= 0) {
       this.game.removeObject(this);
     }
 
