@@ -40,72 +40,69 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     var scaleY = game.canvas.height / _constants.STAGE_HEIGHT;
 
     var spriteLibrary = new _library2.default();
-    spriteLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
-    spriteLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
-    spriteLibrary.addSkin('images/explosion.png', 128, 128, 0);
 
-    var playerName = 'henry';
+    Promise.all([spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 71, 80, 90), spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180), spriteLibrary.addSprite('explosion', 'images/explosion.png', 128, 128, 0)]).then(function () {
 
-    socket.emit(_events.ADD_PLAYER, {
-        name: playerName,
-        color: '#00B806'
+        var playerName = 'henry';
+
+        socket.emit(_events.ADD_PLAYER, {
+            name: playerName,
+            color: '#00B806'
+        });
+
+        socket.on(_events.UPDATE_OBJECTS, function (objects) {
+            game.objects.splice(0, game.objects.length);
+            for (var object in objects) {
+                var newObject = new _flyingObject2.default(objects[object].type);
+                var sprite = spriteLibrary.sprites.get(objects[object].sprite.id);
+                newObject.id = objects[object].id;
+                newObject.x = objects[object].x * scaleX;
+                newObject.y = objects[object].y * scaleY;
+                newObject.shield = objects[object].shield;
+                newObject.size = objects[object].size * scaleX;
+                newObject.context = game.context;
+                newObject.label = objects[object].label;
+                newObject.visible = objects[object].visible;
+                newObject.rotation = objects[object].rotation;
+                newObject.unicode = objects[object].unicode;
+                newObject.skin = new _skin2.default(sprite, objects[object].sprite.currentFrame);
+                game.addObject(newObject);
+            }
+
+            game.drawCanvas();
+        });
+
+        socket.on(_events.UPDATE_PLAYERS, function (players) {
+            game.players.splice(0, game.players.length);
+
+            for (var player in players) {
+                game.addPlayer(new _player2.default({
+                    id: players[player].id,
+                    name: players[player].name,
+                    color: players[player].color,
+                    shield: players[player].shield,
+                    ammo: players[player].ammo,
+                    score: players[player].score
+                }));
+            }
+        });
+
+        document.addEventListener('keydown', function (event) {
+            socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
+        });
+
+        document.addEventListener('keyup', function (event) {
+            socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
+        });
+
+        window.onresize = function () {
+            game.canvas.width = window.innerWidth;
+            game.canvas.height = window.innerHeight;
+
+            scaleX = game.canvas.width / _constants.STAGE_WIDTH;
+            scaleY = game.canvas.height / _constants.STAGE_HEIGHT;
+        };
     });
-
-    socket.on(_events.UPDATE_OBJECTS, function (objects) {
-        game.objects.splice(0, game.objects.length);
-
-        for (var object in objects) {
-            var newObject = new _flyingObject2.default(objects[object].type);
-            newObject.id = objects[object].id;
-            newObject.x = objects[object].x * scaleX;
-            newObject.y = objects[object].y * scaleY;
-            newObject.shield = objects[object].shield;
-            newObject.size = objects[object].size * scaleX;
-            newObject.context = game.context;
-            newObject.label = objects[object].label;
-            newObject.visible = objects[object].visible;
-            newObject.rotation = objects[object].rotation;
-            newObject.unicode = objects[object].unicode;
-            newObject.skin = new _skin2.default(spriteLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
-
-            console.log(objects[object].skin.currentFrame);
-
-            game.addObject(newObject);
-        }
-
-        game.drawCanvas();
-    });
-
-    socket.on(_events.UPDATE_PLAYERS, function (players) {
-        game.players.splice(0, game.players.length);
-
-        for (var player in players) {
-            game.addPlayer(new _player2.default({
-                id: players[player].id,
-                name: players[player].name,
-                color: players[player].color,
-                shield: players[player].shield,
-                ammo: players[player].ammo,
-                score: players[player].score
-            }));
-        }
-    });
-
-    document.addEventListener('keydown', function (event) {
-        socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
-    });
-
-    document.addEventListener('keyup', function (event) {
-        socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
-    });
-
-    window.onresize = function () {
-        game.canvas.width = window.innerWidth;
-        game.canvas.height = window.innerHeight;
-
-        scaleX = game.canvas.width / _constants.STAGE_WIDTH;
-        scaleY = game.canvas.height / _constants.STAGE_HEIGHT;
-    };
 })();
 
 },{"../../constants":7,"../../events":8,"./game/game":2,"./game/player":3,"./objects/flying-object":4,"./skin/library":5,"./skin/skin":6,"socket.io-client/socket.io.js":9}],2:[function(require,module,exports){
@@ -371,38 +368,36 @@ var SpriteLibrary = function () {
     function SpriteLibrary() {
         _classCallCheck(this, SpriteLibrary);
 
-        this.skins = [];
+        this.sprites = new Map();
     }
 
     _createClass(SpriteLibrary, [{
-        key: "addSkin",
-        value: function addSkin(imageSource, frameHeight, frameWidth, rotation) {
+        key: "addSprite",
+        value: function addSprite(name, source, frameHeight, frameWidth, rotation) {
             var _this = this;
 
-            var image = new Image();
-            image.src = imageSource;
-            image.onload = function () {
-                var skin = {
-                    image: image,
-                    rotation: rotation,
-                    framesPerRow: Math.floor(image.width / frameWidth),
-                    frameWidth: frameWidth,
-                    frameHeight: frameHeight,
-                    rows: Math.floor(image.height / frameHeight),
-                    animationSequence: []
+            return new Promise(function (resolve, reject) {
+                var image = new Image();
+                image.src = source;
+                image.onerror = reject;
+                image.onload = function () {
+                    var sprite = {
+                        name: name,
+                        image: image,
+                        rotation: rotation,
+                        framesPerRow: Math.floor(image.width / frameWidth),
+                        frameWidth: frameWidth,
+                        frameHeight: frameHeight,
+                        rows: Math.floor(image.height / frameHeight),
+                        animationSequence: []
+                    };
+                    for (var frameNumber = 0; frameNumber <= sprite.framesPerRow * sprite.rows; frameNumber++) {
+                        sprite.animationSequence.push(frameNumber);
+                    }
+                    _this.sprites.set(name, sprite);
+                    resolve();
                 };
-
-                for (var frameNumber = 0; frameNumber <= skin.framesPerRow * skin.rows; frameNumber++) {
-                    skin.animationSequence.push(frameNumber);
-                }
-
-                _this.skins[imageSource] = skin;
-            };
-        }
-    }, {
-        key: "getSkin",
-        value: function getSkin(skinName) {
-            return this.skins[skinName];
+            });
         }
     }]);
 
@@ -423,34 +418,31 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Skin = function () {
-    function Skin(spriteLibrary, skin, currentFrame) {
+    function Skin(sprite, currentFrame) {
         _classCallCheck(this, Skin);
 
-        this.skinName = skin;
-        this.spriteLibrary = spriteLibrary;
+        this.sprite = sprite;
         this.currentFrame = currentFrame;
     }
 
     _createClass(Skin, [{
         key: "draw",
         value: function draw(context, x, y, rotation, size) {
-            var sprite = this.spriteLibrary.getSkin(this.skinName);
+            if (!this.sprite) return;
 
-            if (!sprite) return;
-
-            var scale = size / sprite.frameWidth;
-            var newWidth = sprite.frameWidth * scale;
-            var newHeight = sprite.frameHeight * scale;
+            var scale = size / this.sprite.frameWidth;
+            var newWidth = this.sprite.frameWidth * scale;
+            var newHeight = this.sprite.frameHeight * scale;
 
             // get the row and col of the frame
-            var row = Math.floor(sprite.animationSequence[this.currentFrame] / sprite.framesPerRow);
-            var col = Math.floor(sprite.animationSequence[this.currentFrame] % sprite.framesPerRow);
+            var row = Math.floor(this.sprite.animationSequence[this.currentFrame] / this.sprite.framesPerRow);
+            var col = Math.floor(this.sprite.animationSequence[this.currentFrame] % this.sprite.framesPerRow);
 
             context.save();
             context.translate(x, y);
-            context.rotate((rotation + sprite.rotation) * Math.PI / 180);
+            context.rotate((rotation + this.sprite.rotation) * Math.PI / 180);
 
-            context.drawImage(sprite.image, col * sprite.frameWidth, row * sprite.frameHeight, sprite.frameWidth, sprite.frameHeight, -newWidth / 2, -newHeight / 2, newWidth, newHeight);
+            context.drawImage(this.sprite.image, col * this.sprite.frameWidth, row * this.sprite.frameHeight, this.sprite.frameWidth, this.sprite.frameHeight, -newWidth / 2, -newHeight / 2, newWidth, newHeight);
             context.restore();
         }
     }]);

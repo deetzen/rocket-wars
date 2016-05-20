@@ -57,7 +57,7 @@ export default class {
                     size: object.size,
                     rotation: object.rotation,
                     unicode: object.unicode,
-                    skin: object.skin,
+                    sprite: object.skin,
                     shield: object.shield
                 };
             });

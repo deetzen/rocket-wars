@@ -1,7 +1,7 @@
 export default class Skin
 {
-    constructor (imageSource, frameStart = 0, frameEnd = 0, frameSpeed = 0) {
-        this.imageSource = imageSource;
+    constructor (id, frameStart = 0, frameEnd = 0, frameSpeed = 0) {
+        this.id = id;
         this.currentFrame = frameStart;
         this.frameEnd = frameEnd;
         this.frameSpeed = frameSpeed;
