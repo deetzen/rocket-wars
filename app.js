@@ -86,6 +86,7 @@
 
         socket.on(EVENTS.KEYDOWN, function (event) {
             if(game.players.has(event.player)) {
+                console.log(event);
                 var player = game.players.get(event.player);
                 var keyboard = player.keyboard;
                 keyboard.onKeydown(event);

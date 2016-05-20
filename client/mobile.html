@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rocket Wars Remote Control</title>
+</head>
+<body>
+
+    <a id="fire" style="display: block; background-color: red; width: 100%; height: 400px">FIRE</a>
+
+    <div id="content"></div>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.2.3.min.js"></script>
+    <script type="text/javascript" src="http://localhost:1234/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+
+        let socket = io(':1234');
+
+        socket.emit('add player', {
+            name: 'henry',
+            color: '#00B806'
+        });
+
+        $('#fire').click(function(e){
+            e.preventDefault();
+            socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: 48 });
+        });
+
+    </script>
+</body>
+</html>
