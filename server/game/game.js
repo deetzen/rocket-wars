@@ -12,7 +12,7 @@ export default class {
 
     start () {
         setInterval( () => this.updateObjects(), 35);
-        setInterval( () => this.updateClient(), 5);
+        setInterval( () => this.updateClient(), 17);
         new PowerUps(this).start();
     }
 
@@ -69,6 +69,7 @@ export default class {
                     name: player.name,
                     ammo: player.ammo,
                     score: player.score,
+                    shield: player.shield,
                     color: player.color
                 };
             });

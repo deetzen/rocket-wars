@@ -13,17 +13,17 @@ var _player = require('./game/player');
 
 var _player2 = _interopRequireDefault(_player);
 
+var _library = require('./skin/library');
+
+var _library2 = _interopRequireDefault(_library);
+
 var _skin = require('./skin/skin');
 
 var _skin2 = _interopRequireDefault(_skin);
 
-var _ammo = require('./objects/ammo');
+var _flyingObject = require('./objects/flying-object');
 
-var _ammo2 = _interopRequireDefault(_ammo);
-
-var _factory = require('./objects/factory');
-
-var _factory2 = _interopRequireDefault(_factory);
+var _flyingObject2 = _interopRequireDefault(_flyingObject);
 
 var _socketIo = require('socket.io-client/socket.io.js');
 
@@ -36,6 +36,9 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     var socket = (0, _socketIo2.default)(_constants.HOSTNAME);
     var game = new _game2.default(socket);
 
+    var skinLibrary = new _library2.default();
+    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80);
+
     var playerName = 'henry';
 
     socket.emit(_events.ADD_PLAYER, {
@@ -46,9 +49,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     socket.on(_events.UPDATE_OBJECTS, function (objects) {
         game.objects.splice(0, game.objects.length);
 
-        var ObjectFactory = new _factory2.default();
         for (var object in objects) {
-            var newObject = ObjectFactory.create(objects[object].type);
+            var newObject = new _flyingObject2.default(objects[object].type);
             newObject.id = objects[object].id;
             newObject.x = objects[object].x;
             newObject.y = objects[object].y;
@@ -57,7 +59,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
-            newObject.skin = new _skin2.default(objects[object].skin, game.context);
+            newObject.skin = new _skin2.default(skinLibrary, objects[object].skin.imageSource);
 
             game.addObject(newObject);
         }
@@ -74,21 +76,10 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
                 name: players[player].name,
                 color: players[player].color,
                 shield: players[player].shield,
-                ammp: players[player].ammo
+                ammo: players[player].ammo,
+                score: players[player].score
             }));
         }
-    });
-
-    socket.on(_events.AMMO_CREATED, function (newAmmo) {
-        var ammo = new _ammo2.default({
-            x: newAmmo.x,
-            y: newAmmo.y,
-            size: newAmmo.size,
-            player: game.players[newAmmo.player],
-            color: newAmmo.color
-        });
-
-        game.addObject(ammo);
     });
 
     document.addEventListener('keydown', function (event) {
@@ -100,7 +91,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     });
 })();
 
-},{"../../constants":10,"../../events":11,"./game/game":2,"./game/player":3,"./objects/ammo":4,"./objects/factory":6,"./skin/skin":9,"socket.io-client/socket.io.js":12}],2:[function(require,module,exports){
+},{"../../constants":7,"../../events":8,"./game/game":2,"./game/player":3,"./objects/flying-object":4,"./skin/library":5,"./skin/skin":6,"socket.io-client/socket.io.js":9}],2:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -120,8 +111,8 @@ var _class = function () {
         this.socket = socket;
         this.canvas = document.getElementById('playground');
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = 800;
-        this.canvas.height = 500;
+        this.canvas.width = _constants.STAGE_WIDTH;
+        this.canvas.height = _constants.STAGE_HEIGHT;
         this.players = [];
         this.objects = [];
     }
@@ -152,23 +143,27 @@ var _class = function () {
         key: 'drawBackground',
         value: function drawBackground() {
             this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-            this.context.fillStyle = 'rgba(0,0,0,0.800)';
-            this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+            var image = new Image();
+            image.src = 'images/background.jpg';
+            this.context.drawImage(image, 0, 0);
         }
     }, {
         key: 'drawAmmo',
         value: function drawAmmo() {
             this.context.font = '14px Verdana';
             this.context.fillStyle = 'rgba(255,255,255,0.8)';
-            this.context.fillRect(window.innerWidth - 160, 10, 150, this.players.length * 20 + 10);
+            this.context.fillRect(_constants.STAGE_WIDTH - 160, 10, 150, this.players.length * 20 + 10);
 
-            for (var i = 1; i <= this.players.length; i++) {
-                var player = this.players[i - 1];
+            var i = 1;
+            for (var index in this.players) {
+                var player = this.players[index];
                 this.context.fillStyle = 'rgba(0,0,0,0.3)';
-                this.context.fillRect(window.innerWidth - 150, i * 10 + i * 10, 130, 10);
+                this.context.fillRect(_constants.STAGE_WIDTH - 150, i * 10 + i * 10, 130, 10);
                 this.context.shadowColor = 'transparent';
                 this.context.fillStyle = player.color;
-                this.context.fillRect(window.innerWidth - 150, i * 10 + i * 10, 130 / _constants.MAX_AMMO * player.ammo, 10);
+                this.context.fillRect(_constants.STAGE_WIDTH - 150, i * 10 + i * 10, 130 / _constants.MAX_AMMO * player.ammo, 10);
+                i++;
             }
         }
     }, {
@@ -228,7 +223,7 @@ var _class = function () {
 
 exports.default = _class;
 
-},{"../../../constants":10}],3:[function(require,module,exports){
+},{"../../../constants":7}],3:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -243,221 +238,14 @@ var Player = function Player(options) {
     this.id = options.id;
     this.name = options.name;
     this.color = options.color;
-    this.score = 0;
-    this.ammo = 0;
-    this.shield = 0;
+    this.score = options.score;
+    this.ammo = options.ammo;
+    this.shield = options.shield;
 };
 
 exports.default = Player;
 
 },{}],4:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _flyingObject = require('./flying-object');
-
-var _flyingObject2 = _interopRequireDefault(_flyingObject);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Ammo = function (_FlyingObject) {
-    _inherits(Ammo, _FlyingObject);
-
-    function Ammo(options) {
-        _classCallCheck(this, Ammo);
-
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(Ammo).call(this, options));
-
-        _this.alive = true;
-        _this.shadow = false;
-        _this.size = 10;
-        _this.radius = _this.size / 2;
-        _this.unicode = '';
-        return _this;
-    }
-
-    _createClass(Ammo, [{
-        key: 'hit',
-        value: function hit(object) {
-            this.game.removeObject(this);
-
-            if (object.constructor.name === 'Character') {
-                this.player.score++;
-            }
-        }
-    }, {
-        key: 'checkValid',
-        value: function checkValid() {
-            var canvasWidth = this.game.canvas.width;
-            var canvasHeight = this.game.canvas.height;
-
-            if (this.x >= canvasWidth || this.x <= 0 || this.y >= canvasHeight || this.y <= 0) {
-                this.game.removeObject(this);
-            }
-        }
-    }]);
-
-    return Ammo;
-}(_flyingObject2.default);
-
-exports.default = Ammo;
-
-},{"./flying-object":7}],5:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _get = function get(object, property, receiver) { if (object === null) object = Function.prototype; var desc = Object.getOwnPropertyDescriptor(object, property); if (desc === undefined) { var parent = Object.getPrototypeOf(object); if (parent === null) { return undefined; } else { return get(parent, property, receiver); } } else if ("value" in desc) { return desc.value; } else { var getter = desc.get; if (getter === undefined) { return undefined; } return getter.call(receiver); } };
-
-var _events = require('../../../events');
-
-var _flyingObject = require('./flying-object');
-
-var _flyingObject2 = _interopRequireDefault(_flyingObject);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
-
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var Character = function (_FlyingObject) {
-    _inherits(Character, _FlyingObject);
-
-    function Character(options) {
-        _classCallCheck(this, Character);
-
-        return _possibleConstructorReturn(this, Object.getPrototypeOf(Character).call(this, options));
-    }
-
-    _createClass(Character, [{
-        key: 'draw',
-        value: function draw() {
-            _get(Object.getPrototypeOf(Character.prototype), 'draw', this).call(this);
-
-            //        this.drawShield();
-            //        this.drawLabel();
-        }
-    }, {
-        key: 'drawLabel',
-        value: function drawLabel() {
-            this.context.font = '14px Arial';
-            this.context.fillStyle = this.color;
-            var textWidth = this.context.measureText(this.player.name).width;
-            this.context.fillText(this.player.name, this.position.x + textWidth / 2, this.position.y + this.size / 2 + 18);
-        }
-    }, {
-        key: 'drawShield',
-        value: function drawShield() {
-            this.context.save();
-            this.context.beginPath();
-
-            var shieldPercent = this.player.shield / _events.MAX_SHIELD;
-            var color = '90,255,90';
-            if (shieldPercent < 0.2) {
-                color = '255,90,90';
-            } else if (shieldPercent < 0.7) {
-                color = '255,255,90';
-            }
-
-            this.context.fillStyle = 'rgba(' + color + ',' + shieldPercent / 3 + ')';
-            this.context.strokeStyle = 'rgba(' + color + ',' + shieldPercent + ')';
-
-            this.context.lineWidth = '1.3';
-            this.context.arc(this.position.x, this.position.y, this.size / 2, 0, 2 * Math.PI);
-            this.context.fill();
-            this.context.stroke();
-            this.context.restore();
-        }
-    }, {
-        key: 'fire',
-        value: function fire() {
-            this.game.socket.emit(_events.FIRE_REQUEST, this.player.id);
-        }
-    }]);
-
-    return Character;
-}(_flyingObject2.default);
-
-exports.default = Character;
-
-},{"../../../events":11,"./flying-object":7}],6:[function(require,module,exports){
-'use strict';
-
-Object.defineProperty(exports, "__esModule", {
-    value: true
-});
-
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
-var _ammo = require('./ammo');
-
-var _ammo2 = _interopRequireDefault(_ammo);
-
-var _flyingObject = require('./flying-object');
-
-var _flyingObject2 = _interopRequireDefault(_flyingObject);
-
-var _character = require('./character');
-
-var _character2 = _interopRequireDefault(_character);
-
-var _powerupAmmo = require('./powerup-ammo');
-
-var _powerupAmmo2 = _interopRequireDefault(_powerupAmmo);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
-
-var ObjectFactory = function () {
-    function ObjectFactory() {
-        _classCallCheck(this, ObjectFactory);
-    }
-
-    _createClass(ObjectFactory, [{
-        key: 'create',
-        value: function create(objectType) {
-            switch (objectType) {
-                case 'Ammo':
-                    return new _ammo2.default();
-                    break;
-                case 'Character':
-                    return new _character2.default();
-                    break;
-                case 'PowerUpAmmo':
-                    return new _powerupAmmo2.default();
-                    break;
-                default:
-                    return new _flyingObject2.default();
-                    break;
-            }
-        }
-    }]);
-
-    return ObjectFactory;
-}();
-
-exports.default = ObjectFactory;
-
-},{"./ammo":4,"./character":5,"./flying-object":7,"./powerup-ammo":8}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -473,11 +261,10 @@ var FlyingObject = function () {
         _classCallCheck(this, FlyingObject);
 
         this.context = null;
+        this.type = '';
         this.x = 0;
         this.y = 0;
         this.rotation = 0;
-        this.color = 'lightpink';
-        this.unicode = '';
         this.size = 45;
         this.skin = null;
     }
@@ -495,62 +282,14 @@ var FlyingObject = function () {
             this.context.textAlign = 'left';
             this.context.translate(this.x, this.y);
 
-            if (this.shadow) {
-                this.drawShadow();
-            }
-
             this.context.rotate(this.rotation * Math.PI / 180);
+
+            this.context.restore();
 
             if (this.skin) {
                 this.skin.draw(this.context, this.x, this.y, this.rotation);
             }
-
-            this.context.restore();
         }
-    }, {
-        key: 'drawShadow',
-        value: function drawShadow() {
-            this.context.shadowColor = 'rgba(0,0,0,0.5)';
-            this.context.shadowOffsetX = 2;
-            this.context.shadowOffsetY = 2;
-            this.context.shadowBlur = 1;
-        }
-
-        /*
-        draw () {
-             let context = this.game.context;
-             context.save();
-             // draw object
-            context.fillStyle = this.color;
-            context.textAlign = 'left';
-            context.translate(this.x, this.y);
-             context.font = this.size + 'px FontAwesome';
-            let textWidth = context.measureText(this.unicode).width;
-             if (this.label) {
-                // draw label
-                context.font = (this.size / 2.8) + 'px Arial';
-                context.fillStyle = this.color;
-                context.fillText('hansi', -textWidth, textWidth);
-            }
-             if (this.shadow) {
-                context.shadowColor = 'rgba(0,0,0,0.5)';
-                context.shadowOffsetX = 2;
-                context.shadowOffsetY = 2;
-                context.shadowBlur = 1;
-            }
-             context.font = this.size + 'px FontAwesome';
-            context.rotate(this.rotation * Math.PI / 180);
-            context.fillText(this.unicode, -(textWidth / 2), (textWidth / 3.4));
-             context.restore();
-        }
-        */
-
-    }, {
-        key: 'hit',
-        value: function hit() {}
-    }, {
-        key: 'destroy',
-        value: function destroy() {}
     }]);
 
     return FlyingObject;
@@ -558,8 +297,8 @@ var FlyingObject = function () {
 
 exports.default = FlyingObject;
 
-},{}],8:[function(require,module,exports){
-'use strict';
+},{}],5:[function(require,module,exports){
+"use strict";
 
 Object.defineProperty(exports, "__esModule", {
     value: true
@@ -567,55 +306,52 @@ Object.defineProperty(exports, "__esModule", {
 
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-var _constants = require('../../../constants');
-
-var _flyingObject = require('./flying-object');
-
-var _flyingObject2 = _interopRequireDefault(_flyingObject);
-
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+var SkinLibrary = function () {
+    function SkinLibrary() {
+        _classCallCheck(this, SkinLibrary);
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
-
-var PowerUpAmmo = function (_FlyingObject) {
-    _inherits(PowerUpAmmo, _FlyingObject);
-
-    function PowerUpAmmo(options) {
-        _classCallCheck(this, PowerUpAmmo);
-
-        var _this = _possibleConstructorReturn(this, Object.getPrototypeOf(PowerUpAmmo).call(this, options));
-
-        _this.velocity = 0;
-        _this.alive = true;
-        _this.size = _constants.CHARACTER_SIZE;
-        _this.radius = _this.size / 2;
-        _this.color = 'rgba(255,255,255,0.6)';
-        _this.shadow = true;
-        _this.unicode = '';
-        return _this;
+        this.skins = [];
     }
 
-    _createClass(PowerUpAmmo, [{
-        key: 'hit',
-        value: function hit(object) {
-            console.log('HERE');
-            this.game.removeObject(this);
+    _createClass(SkinLibrary, [{
+        key: "addSkin",
+        value: function addSkin(imageSource, frameHeight, frameWidth) {
+            var _this = this;
+
+            var image = new Image();
+            image.src = imageSource;
+            image.onload = function () {
+                var skin = {
+                    image: image,
+                    framesPerRow: Math.floor(image.width / frameWidth),
+                    frameWidth: frameWidth,
+                    frameHeight: frameHeight,
+                    rows: Math.floor(image.height / frameHeight),
+                    animationSequence: []
+                };
+
+                for (var frameNumber = 0; frameNumber <= skin.framesPerRow * skin.rows; frameNumber++) {
+                    skin.animationSequence.push(frameNumber);
+                }
+
+                _this.skins[imageSource] = skin;
+            };
         }
     }, {
-        key: 'checkValid',
-        value: function checkValid() {}
+        key: "getSkin",
+        value: function getSkin(skinName) {
+            return this.skins[skinName];
+        }
     }]);
 
-    return PowerUpAmmo;
-}(_flyingObject2.default);
+    return SkinLibrary;
+}();
 
-exports.default = PowerUpAmmo;
+exports.default = SkinLibrary;
 
-},{"../../../constants":10,"./flying-object":7}],9:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -627,47 +363,33 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Skin = function () {
-    function Skin(skin) {
+    function Skin(skinLibrary, skin) {
         _classCallCheck(this, Skin);
 
-        this.imageSource = skin.imageSource;
-        this.currentFrame = skin.currentFrame;
-        this.frameWidth = skin.frameWidth;
-        this.frameHeight = skin.frameHeight;
-        this.animationSequence = [];
+        this.skinName = skin;
+        this.spriteLibrary = skinLibrary;
     }
 
     _createClass(Skin, [{
         key: "draw",
         value: function draw(context, x, y, rotation) {
-            var _this = this;
+            var currentFrame = arguments.length <= 4 || arguments[4] === undefined ? 0 : arguments[4];
+            var scale = arguments.length <= 5 || arguments[5] === undefined ? 1 : arguments[5];
 
-            var scale = arguments.length <= 4 || arguments[4] === undefined ? 1 : arguments[4];
+            var sprite = this.spriteLibrary.getSkin(this.skinName);
 
+            // get the row and col of the frame
+            var row = Math.floor(sprite.animationSequence[currentFrame] / sprite.framesPerRow);
+            var col = Math.floor(sprite.animationSequence[currentFrame] % sprite.framesPerRow);
+            var CENTER_X = -sprite.frameWidth / 2 * scale;
+            var CENTER_Y = -sprite.frameHeight / 2 * scale;
 
-            this.image = new Image();
-            this.image.src = this.imageSource;
+            context.save();
+            context.translate(x, y);
+            context.rotate((rotation + 90) * Math.PI / 180);
 
-            this.image.onload = function () {
-                _this.framesPerRow = Math.floor(_this.image.width / _this.frameWidth);
-                _this.rows = Math.floor(_this.image.height / _this.frameHeight);
-
-                for (var frameNumber = 0; frameNumber <= _this.framesPerRow * _this.rows; frameNumber++) {
-                    _this.animationSequence.push(frameNumber);
-                }
-
-                // get the row and col of the frame
-                var row = Math.floor(_this.animationSequence[_this.currentFrame] / _this.framesPerRow);
-                var col = Math.floor(_this.animationSequence[_this.currentFrame] % _this.framesPerRow);
-                var CENTER_X = -_this.frameWidth / 2 * scale;
-                var CENTER_Y = -_this.frameHeight / 2 * scale;
-
-                context.save();
-                context.translate(x, y);
-                context.rotate((rotation + 90) * Math.PI / 180);
-                context.drawImage(_this.image, col * _this.frameWidth, row * _this.frameHeight, _this.frameWidth, _this.frameHeight, CENTER_X, CENTER_Y, _this.frameWidth * scale, _this.frameHeight * scale);
-                context.restore();
-            };
+            context.drawImage(sprite.image, col * sprite.frameWidth, row * sprite.frameHeight, sprite.frameWidth, sprite.frameHeight, CENTER_X, CENTER_Y, sprite.frameWidth * scale, sprite.frameHeight * scale);
+            context.restore();
         }
     }]);
 
@@ -676,7 +398,7 @@ var Skin = function () {
 
 exports.default = Skin;
 
-},{}],10:[function(require,module,exports){
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -688,11 +410,11 @@ var CHARACTER_SIZE = exports.CHARACTER_SIZE = 50;
 var FIRE_RATE = exports.FIRE_RATE = 200;
 var MAX_AMMO = exports.MAX_AMMO = 20;
 var MAX_SHIELD = exports.MAX_SHIELD = 10;
-var HOSTNAME = exports.HOSTNAME = 'http://127.0.0.1:1234';
+var HOSTNAME = exports.HOSTNAME = ':1234';
 var STAGE_WIDTH = exports.STAGE_WIDTH = 1000;
 var STAGE_HEIGHT = exports.STAGE_HEIGHT = 800;
 
-},{}],11:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -706,7 +428,7 @@ var ADD_PLAYER = exports.ADD_PLAYER = 'add player';
 var UPDATE_OBJECTS = exports.UPDATE_OBJECTS = 'update objects';
 var UPDATE_PLAYERS = exports.UPDATE_PLAYERS = 'update players';
 
-},{}],12:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function (global){
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.io = f()}})(function(){var define,module,exports;return (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(_dereq_,module,exports){
 

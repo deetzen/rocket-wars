@@ -1,4 +1,4 @@
-import {MAX_AMMO} from '../../../constants';
+import {MAX_AMMO, STAGE_WIDTH, STAGE_HEIGHT} from '../../../constants';
 
 export default class {
 
@@ -6,8 +6,8 @@ export default class {
         this.socket = socket;
         this.canvas = document.getElementById('playground');
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = 800;
-        this.canvas.height = 500;
+        this.canvas.width = STAGE_WIDTH;
+        this.canvas.height = STAGE_HEIGHT;
         this.players = [];
         this.objects = [];
     }
@@ -31,22 +31,26 @@ export default class {
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.context.fillStyle = 'rgba(0,0,0,0.800)';
-        this.context.fillRect(0, 0, this.canvas.width, this.canvas.height);
+
+        let image = new Image();
+        image.src = 'images/background.jpg';
+        this.context.drawImage(image, 0, 0);
     }
 
     drawAmmo () {
         this.context.font = '14px Verdana';
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(window.innerWidth - 160, 10, 150, (this.players.length * 20) + 10);
+        this.context.fillRect(STAGE_WIDTH - 160, 10, 150, (this.players.length * 20) + 10);
 
-        for(let i = 1; i <= this.players.length; i++) {
-            let player = this.players[i-1];
+        let i = 1;
+        for(let index in this.players) {
+            let player = this.players[index];
             this.context.fillStyle = 'rgba(0,0,0,0.3)';
-            this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130, 10);
+            this.context.fillRect(STAGE_WIDTH - 150, (i * 10) + (i * 10), 130, 10);
             this.context.shadowColor = 'transparent';
             this.context.fillStyle = player.color;
-            this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130/MAX_AMMO * player.ammo, 10);
+            this.context.fillRect(STAGE_WIDTH - 150, (i * 10) + (i * 10), 130/MAX_AMMO * player.ammo, 10);
+            i++;
         }
     }
 

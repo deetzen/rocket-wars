@@ -1,6 +1,8 @@
+import {STAGE_HEIGHT, STAGE_WIDTH} from '../../constants';
+
 export default class Stage {
     constructor () {
-        this.width = 800;
-        this.height = 500;
+        this.width = STAGE_WIDTH;
+        this.height = STAGE_HEIGHT;
     }
 }
