@@ -1,4 +1,5 @@
 import PowerUps from '../objects/powerups';
+import AsteroidEmitter from '../objects/asteroid-emitter';
 import {UPDATE_OBJECTS, UPDATE_PLAYERS} from '../../events';
 
 export default class {
@@ -14,6 +15,7 @@ export default class {
         setInterval( () => this.updateObjects(), 35);
         setInterval( () => this.updateClient(), 17);
         new PowerUps(this).start();
+        new AsteroidEmitter(this).start();
     }
 
     addPlayer(player) {

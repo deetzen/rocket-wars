@@ -31,10 +31,9 @@ export default class {
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-
-        let image = new Image();
-        image.src = 'images/background.jpg';
-        this.context.drawImage(image, 0, 0);
+        let bg = new Image();
+        bg.src = 'images/backgrounds/background_04_parallax_01.png';
+        this.context.drawImage(bg, 0, 0);
     }
 
     drawAmmo () {
