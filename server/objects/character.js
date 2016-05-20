@@ -22,7 +22,7 @@ class Character extends FlyingObject
         //this.explosionSheet = new SpriteSheet('images/explosion.png', 128, 128);
         //this.explosion = new Animation(this.explosionSheet, 3, 0, 39, this.context);
 
-        this.skin = new Skin(`images/rocket1up_spr_strip5.png`, 0, 0, 0);
+        this.skin = new Skin('rocket-1', 0, 0, 0);
     }
 
     fire () {
@@ -71,14 +71,14 @@ class Character extends FlyingObject
         this.position.y = Math.round(Math.random() * this.stage.height) + 1;
         this.rotation = Math.round(Math.random() * 360) + 1;
         this.velocity = MIN_VELOCITY;
-        this.skin = new Skin(`images/rocket1up_spr_strip5.png`, 0, 0, 0);
+        this.skin = new Skin('rocket-1', 0, 0, 0);
     }
 
     destroy () {
         this.player.score -= 2;
         this.velocity = 0;
         this.alive = false;
-        this.skin = new Skin(`images/explosion.png`, 0, 40, 2);
+        this.skin = new Skin('explosion', 0, 40, 2);
         setTimeout(this.respawn.bind(this), 2000);
 
 //        this.explosion.currentFrame = 0;

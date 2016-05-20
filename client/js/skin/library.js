@@ -1,32 +1,31 @@
 export default class SpriteLibrary
 {
     constructor () {
-        this.skins = [];
+        this.sprites = new Map();
     }
 
-    addSkin (imageSource, frameHeight, frameWidth, rotation) {
-        let image = new Image();
-        image.src = imageSource;
-        image.onload = () => {
-            let skin = {
-                image: image,
-                rotation: rotation,
-                framesPerRow: Math.floor(image.width / frameWidth),
-                frameWidth: frameWidth,
-                frameHeight: frameHeight,
-                rows: Math.floor(image.height / frameHeight),
-                animationSequence: []
-            };
-
-            for (let frameNumber = 0; frameNumber <= skin.framesPerRow * skin.rows; frameNumber++) {
-                skin.animationSequence.push(frameNumber);
-            }
-
-            this.skins[imageSource] = skin;
+    addSprite (name, source, frameHeight, frameWidth, rotation) {
+        return new Promise((resolve, reject)=>{
+            let image = new Image();
+            image.src = source;
+            image.onerror = reject;
+            image.onload = () => {
+                let sprite = {
+                    name: name,
+                    image: image,
+                    rotation: rotation,
+                    framesPerRow: Math.floor(image.width / frameWidth),
+                    frameWidth: frameWidth,
+                    frameHeight: frameHeight,
+                    rows: Math.floor(image.height / frameHeight),
+                    animationSequence: []
+                };
+                for (let frameNumber = 0; frameNumber <= sprite.framesPerRow * sprite.rows; frameNumber++) {
+                    sprite.animationSequence.push(frameNumber);
+                }
+                this.sprites.set(name, sprite);
+                resolve();
         };
+        });
     };
-
-    getSkin (skinName) {
-        return this.skins[skinName];
-    }
 }
