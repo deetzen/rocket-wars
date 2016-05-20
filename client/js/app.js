@@ -13,7 +13,8 @@ import io from 'socket.io-client/socket.io.js';
     let game = new Game(socket);
 
     let skinLibrary = new SkinLibrary();
-    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80);
+    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
+    skinLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
 
     let playerName = 'henry';
 
@@ -31,12 +32,14 @@ import io from 'socket.io-client/socket.io.js';
             newObject.id = objects[object].id;
             newObject.x = objects[object].x;
             newObject.y = objects[object].y;
+            newObject.shield = objects[object].shield;
+            newObject.size = objects[object].size;
             newObject.context = game.context;
             newObject.player = objects[object].player;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
-            newObject.skin = new Skin(skinLibrary, objects[object].skin.imageSource);
+            newObject.skin = new Skin(skinLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
 
             game.addObject(newObject);
         }
