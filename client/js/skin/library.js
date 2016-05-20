@@ -4,12 +4,13 @@ export default class SkinLibrary
         this.skins = [];
     }
 
-    addSkin (imageSource, frameHeight, frameWidth) {
+    addSkin (imageSource, frameHeight, frameWidth, rotation) {
         let image = new Image();
         image.src = imageSource;
         image.onload = () => {
             let skin = {
                 image: image,
+                rotation: rotation,
                 framesPerRow: Math.floor(image.width / frameWidth),
                 frameWidth: frameWidth,
                 frameHeight: frameHeight,

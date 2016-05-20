@@ -1,4 +1,4 @@
-import {CHARACTER_SIZE, MIN_VELOCITY, MAX_SHIELD, FIRE_RATE} from '../../constants';
+import {CHARACTER_SIZE, MAX_SHIELD, MIN_VELOCITY, FIRE_RATE} from '../../constants';
 import FlyingObject from './flying-object';
 import Skin from '../skin/skin';
 import Canon from '../weapons/canon';
@@ -7,11 +7,15 @@ class Character extends FlyingObject
 {
     constructor(stage, options) {
         super(stage, options);
+        this.size = CHARACTER_SIZE;
+        this. shield = MAX_SHIELD;
+        this.velocity = MIN_VELOCITY;
         this.alive = true;
         this.shadow = true;
         this.player = options.player || null;
         this.weapons = [new Canon(stage, this.player, this)];
         this.activeWeapon = 0;
+        this.shield = MAX_SHIELD;
 
         //this.explosionSheet = new SpriteSheet('images/explosion_3_40_128.png', 128, 128);
         //this.explosionSheet = new SpriteSheet(`images/explosion2_spr_strip16.png`, 203, 207, this.context);
@@ -86,7 +90,7 @@ class Character extends FlyingObject
     }
 
     hit (object) {
-        if (this.player.shield <= 0 && object.player) {
+        if (this.shield <= 0 && object.player) {
             this.destroy();
             if (object.player) {
                 object.player.score += 3;

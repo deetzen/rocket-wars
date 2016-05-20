@@ -1,6 +1,6 @@
-export const MIN_VELOCITY = 10;
+export const MIN_VELOCITY = 0;
 export const MAX_VELOCITY = 20;
-export const CHARACTER_SIZE = 50;
+export const CHARACTER_SIZE = 65;
 export const FIRE_RATE = 200;
 export const MAX_AMMO = 20;
 export const MAX_SHIELD = 10;

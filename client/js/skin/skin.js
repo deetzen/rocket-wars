@@ -1,30 +1,35 @@
 export default class Skin
 {
-    constructor (skinLibrary, skin) {
+    constructor (skinLibrary, skin, currentFrame) {
         this.skinName = skin;
         this.spriteLibrary = skinLibrary;
+        this.currentFrame = currentFrame;
     }
     
-    draw (context, x, y, rotation, currentFrame = 0, scale = 1)
+    draw (context, x, y, rotation, size)
     {
         let sprite = this.spriteLibrary.getSkin(this.skinName);
 
+        if (!sprite) return;
+
+        let scale = (size / sprite.frameWidth);
+        let newWidth = sprite.frameWidth * scale;
+        let newHeight = sprite.frameHeight * scale;
+
         // get the row and col of the frame
-        const row = Math.floor(sprite.animationSequence[currentFrame] / sprite.framesPerRow);
-        const col = Math.floor(sprite.animationSequence[currentFrame] % sprite.framesPerRow);
-        const CENTER_X = (-sprite.frameWidth / 2) * scale;
-        const CENTER_Y = (-sprite.frameHeight / 2) * scale;
+        const row = Math.floor(sprite.animationSequence[this.currentFrame] / sprite.framesPerRow);
+        const col = Math.floor(sprite.animationSequence[this.currentFrame] % sprite.framesPerRow);
 
         context.save();
         context.translate(x, y);
-        context.rotate((rotation + 90) * Math.PI / 180);
+        context.rotate((rotation + sprite.rotation) * Math.PI / 180);
 
         context.drawImage(
             sprite.image,
             col * sprite.frameWidth, row * sprite.frameHeight,
             sprite.frameWidth, sprite.frameHeight,
-            CENTER_X, CENTER_Y,
-            sprite.frameWidth * scale, sprite.frameHeight * scale
+            -newWidth/2, -newHeight/2,
+            newWidth, newHeight
         );
         context.restore();
     };

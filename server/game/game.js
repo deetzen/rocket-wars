@@ -54,9 +54,11 @@ export default class {
                     visible: object.visible,
                     x: object.position.x,
                     y: object.position.y,
+                    size: object.size,
                     rotation: object.rotation,
                     unicode: object.unicode,
-                    skin: object.skin
+                    skin: object.skin,
+                    shield: object.shield
                 };
             });
         }
