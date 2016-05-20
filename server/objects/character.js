@@ -19,8 +19,7 @@ class Character extends FlyingObject
         //this.explosionSheet = new SpriteSheet('images/explosion.png', 128, 128);
         //this.explosion = new Animation(this.explosionSheet, 3, 0, 39, this.context);
 
-        this.type = Math.floor(Math.random() * 5 + 1); // TODO: used to get random sprite-sheet ( 1 - 5 ) remove later on
-        this.skin = new Skin(`images/rocket${this.type}up_spr_strip5.png`, 0, 0, 4, 71, 80);
+        this.skin = new Skin(`images/rocket1up_spr_strip5.png`, 0, 0, 4, 71, 80);
     }
 
     draw () {

@@ -2,15 +2,18 @@ import {ADD_PLAYER,UPDATE_PLAYERS,AMMO_CREATED,UPDATE_OBJECTS} from '../../event
 import {HOSTNAME} from '../../constants';
 import Game from './game/game';
 import Player from './game/player';
+import SkinLibrary from './skin/library';
 import Skin from './skin/skin';
-import Ammo from './objects/ammo';
-import Factory from './objects/factory';
+import FlyingObject from './objects/flying-object';
 import io from 'socket.io-client/socket.io.js';
 
 (function() {
 
     let socket = io(HOSTNAME);
     let game = new Game(socket);
+
+    let skinLibrary = new SkinLibrary();
+    skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80);
 
     let playerName = 'henry';
 
@@ -22,10 +25,9 @@ import io from 'socket.io-client/socket.io.js';
     socket.on(UPDATE_OBJECTS, function (objects) {
         game.objects.splice(0, game.objects.length);
 
-        let ObjectFactory = new Factory();
         for(let object in objects)
         {
-            let newObject = ObjectFactory.create(objects[object].type);
+            let newObject = new FlyingObject(objects[object].type);
             newObject.id = objects[object].id;
             newObject.x = objects[object].x;
             newObject.y = objects[object].y;
@@ -34,14 +36,14 @@ import io from 'socket.io-client/socket.io.js';
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
-            newObject.skin = new Skin(objects[object].skin, game.context);
+            newObject.skin = new Skin(skinLibrary, objects[object].skin.imageSource);
 
             game.addObject(newObject);
         }
 
         game.drawCanvas();
     });
-    
+
     socket.on(UPDATE_PLAYERS, function (players) {
         game.players.splice(0, game.players.length);
 
@@ -51,21 +53,10 @@ import io from 'socket.io-client/socket.io.js';
                 name: players[player].name,
                 color: players[player].color,
                 shield: players[player].shield,
-                ammp: players[player].ammo
+                ammo: players[player].ammo,
+                score: players[player].score
             }));
         }
-    });
-
-    socket.on(AMMO_CREATED, function (newAmmo) {
-        let ammo = new Ammo({
-            x: newAmmo.x,
-            y: newAmmo.y,
-            size: newAmmo.size,
-            player: game.players[newAmmo.player],
-            color: newAmmo.color
-        });
-        
-        game.addObject(ammo);
     });
 
     document.addEventListener('keydown', (event) => {
