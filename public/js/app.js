@@ -42,6 +42,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
     var spriteLibrary = new _library2.default();
     spriteLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
     spriteLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
+    spriteLibrary.addSkin('images/explosion.png', 128, 128, 0);
 
     var playerName = 'henry';
 
@@ -59,13 +60,15 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
             newObject.x = objects[object].x * scaleX;
             newObject.y = objects[object].y * scaleY;
             newObject.shield = objects[object].shield;
-            newObject.size = objects[object].size;
+            newObject.size = objects[object].size * scaleX;
             newObject.context = game.context;
             newObject.label = objects[object].label;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
             newObject.skin = new _skin2.default(spriteLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
+
+            console.log(objects[object].skin.currentFrame);
 
             game.addObject(newObject);
         }
@@ -167,16 +170,16 @@ var _class = function () {
         value: function drawAmmo() {
             this.context.font = '14px Verdana';
             this.context.fillStyle = 'rgba(255,255,255,0.8)';
-            this.context.fillRect(_constants.STAGE_WIDTH - 160, 10, 150, this.players.length * 20 + 10);
+            this.context.fillRect(window.innerWidth - 160, 10, 150, this.players.length * 20 + 10);
 
             var i = 1;
             for (var index in this.players) {
                 var player = this.players[index];
                 this.context.fillStyle = 'rgba(0,0,0,0.3)';
-                this.context.fillRect(_constants.STAGE_WIDTH - 150, i * 10 + i * 10, 130, 10);
+                this.context.fillRect(window.innerWidth - 150, i * 10 + i * 10, 130, 10);
                 this.context.shadowColor = 'transparent';
                 this.context.fillStyle = player.color;
-                this.context.fillRect(_constants.STAGE_WIDTH - 150, i * 10 + i * 10, 130 / _constants.MAX_AMMO * player.ammo, 10);
+                this.context.fillRect(window.innerWidth - 150, i * 10 + i * 10, 130 / _constants.MAX_AMMO * player.ammo, 10);
                 i++;
             }
         }
@@ -471,8 +474,8 @@ var FIRE_RATE = exports.FIRE_RATE = 200;
 var MAX_AMMO = exports.MAX_AMMO = 20;
 var MAX_SHIELD = exports.MAX_SHIELD = 10;
 var HOSTNAME = exports.HOSTNAME = ':1234';
-var STAGE_WIDTH = exports.STAGE_WIDTH = 1000;
-var STAGE_HEIGHT = exports.STAGE_HEIGHT = 800;
+var STAGE_WIDTH = exports.STAGE_WIDTH = 1500;
+var STAGE_HEIGHT = exports.STAGE_HEIGHT = 844;
 
 },{}],8:[function(require,module,exports){
 'use strict';

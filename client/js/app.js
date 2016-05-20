@@ -19,6 +19,7 @@ import io from 'socket.io-client/socket.io.js';
     let spriteLibrary = new SpriteLibrary();
     spriteLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
     spriteLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
+    spriteLibrary.addSkin(`images/explosion.png`, 128, 128, 0);
 
     let playerName = 'henry';
 
@@ -37,13 +38,15 @@ import io from 'socket.io-client/socket.io.js';
             newObject.x = objects[object].x * scaleX;
             newObject.y = objects[object].y * scaleY;
             newObject.shield = objects[object].shield;
-            newObject.size = objects[object].size;
+            newObject.size = objects[object].size * scaleX;
             newObject.context = game.context;
             newObject.label = objects[object].label;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
             newObject.skin = new Skin(spriteLibrary, objects[object].skin.imageSource, objects[object].skin.currentFrame);
+
+            console.log(objects[object].skin.currentFrame);
 
             game.addObject(newObject);
         }
