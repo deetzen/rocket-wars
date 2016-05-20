@@ -41,11 +41,6 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
     var playerName = 'henry';
 
-    socket.emit(_events.ADD_PLAYER, {
-        name: playerName,
-        color: '#00B806'
-    });
-
     socket.on(_events.UPDATE_OBJECTS, function (objects) {
         game.objects.splice(0, game.objects.length);
 
@@ -427,6 +422,9 @@ var MOVE_PLAYER = exports.MOVE_PLAYER = 'move player';
 var ADD_PLAYER = exports.ADD_PLAYER = 'add player';
 var UPDATE_OBJECTS = exports.UPDATE_OBJECTS = 'update objects';
 var UPDATE_PLAYERS = exports.UPDATE_PLAYERS = 'update players';
+var DISCONNECT = exports.DISCONNECT = 'disconnect';
+var KEYDOWN = exports.KEYDOWN = 'keydown';
+var KEYUP = exports.KEYUP = 'keyup';
 
 },{}],9:[function(require,module,exports){
 (function (global){

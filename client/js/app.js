@@ -16,11 +16,6 @@ import io from 'socket.io-client/socket.io.js';
     skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80);
 
     let playerName = 'henry';
-
-    socket.emit(ADD_PLAYER, {
-        name: playerName,
-        color: '#00B806'
-    });
     
     socket.on(UPDATE_OBJECTS, function (objects) {
         game.objects.splice(0, game.objects.length);
