@@ -3,7 +3,7 @@ import Character from '../objects/character';
 
 export default class {
 
-    constructor (stage, options) {
+    constructor(stage, options) {
         this.id = options.id;
         this.stage = stage;
         this.name = options.name;
@@ -23,13 +23,14 @@ export default class {
 
         setInterval(this.raiseAmmo.bind(this), 1200);
     }
-
     raiseAmmo() {
-        if(this.character.isFiring) {
-            return;
-        }
         if (this.ammo < MAX_AMMO) {
-            this.ammo++;
+            if(this.character.isFiring) {
+                this.ammo++;
+            }
+        }
+        else {
+            this.ammo = MAX_AMMO;
         }
     }
 }
