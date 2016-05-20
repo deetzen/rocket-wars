@@ -1,5 +1,6 @@
 import {CHARACTER_SIZE} from '../../../constants';
 import FlyingObject from '../flying-object';
+import Skin from '../../skin/skin';
 
 class PermanentFire extends FlyingObject
 {
@@ -8,14 +9,15 @@ class PermanentFire extends FlyingObject
         this.velocity = 0;
         this.size = (CHARACTER_SIZE * 0.8);
         this.color = 'rgba(255,255,255,0.6)';
-        this.shadow = true;
-        this.unicode = '\uf06d';
+        this.skin = new Skin('powerup-permanentfire', 1, 2, 15);
         this.collected = false;
         this.interval = null;
+
+        setTimeout(() => { this.remove(); }, 15000);
     }
 
     startFire (object) {
-        this.interval = setInterval(() => { object.fire(); object.player.ammo++; }, 100);
+        this.interval = setInterval(() => { if (object.player) { object.fire(); object.player.ammo++; } }, 100);
     }
 
     hit (object) {
@@ -28,10 +30,14 @@ class PermanentFire extends FlyingObject
             }
         }
     }
+
     remove () {
         clearInterval(this.interval);
         this.visible = true;
-        this.game.removeObject(this);
+        
+        if (this.game) {
+            this.game.removeObject(this);
+        }
     }
 }
 

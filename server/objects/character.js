@@ -15,13 +15,6 @@ class Character extends FlyingObject
         this.weapons = [new Canon(stage, this.player, this)];
         this.activeWeapon = 0;
         this.shield = MAX_SHIELD;
-
-        //this.explosionSheet = new SpriteSheet('images/explosion_3_40_128.png', 128, 128);
-        //this.explosionSheet = new SpriteSheet(`images/explosion2_spr_strip16.png`, 203, 207, this.context);
-        //this.explosion = new Animation(this.explosionSheet, 3, 0, 40, this.context);
-        //this.explosionSheet = new SpriteSheet('images/explosion.png', 128, 128);
-        //this.explosion = new Animation(this.explosionSheet, 3, 0, 39, this.context);
-
         this.skin = new Skin('rocket-1', 0, 0, 0);
     }
 
@@ -47,11 +40,15 @@ class Character extends FlyingObject
     speedUp () {
         if (this.velocity < (MAX_VELOCITY - ACCELERATION)) {
             this.velocity += ACCELERATION;
+        } else {
+            this.velocity = MAX_VELOCITY;
         }
     }
     speedDown () {
         if (this.velocity > (MIN_VELOCITY + ACCELERATION)) {
             this.velocity -= ACCELERATION;
+        } else {
+            this.velocity = 0;
         }
     }
 

@@ -22,7 +22,7 @@ export default class Weapon
             size: 10,
             player: this.player,
             color: this.player.color,
-            velocity: this.character.velocity * 4,
+            velocity: (this.character.velocity + 1) * 3,
             rotation: this.character.rotation
         });
 

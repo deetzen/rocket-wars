@@ -24,14 +24,19 @@ export default class PowerUps
     add () {
         let index = Math.floor(Math.random() * this.powerups.length);
         let powerUp = this.powerups.slice(index, index+1)[0];
+        let exists = false;
 
         setTimeout(this.add.bind(this), PowerUps.getTimeout());
 
-        for (let i = 0; i < this.game.objects.length; i++) {
-            let object = this.game.objects[i];
+        this.game.objects.forEach((object) => {
             if (object.constructor.name === powerUp.constructor.name) {
+                exists = true;
                 return;
             }
+        });
+
+        if (exists) {
+            return;
         }
 
         powerUp.id = '_' + Math.random().toString(36).substr(2, 9);
