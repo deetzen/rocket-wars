@@ -1,5 +1,4 @@
-import {MAX_AMMO} from '../../constants';
-import PowerUpAmmo from './objects/powerup-ammo';
+import {MAX_AMMO} from '../../../constants';
 
 export default class {
 
@@ -7,31 +6,14 @@ export default class {
         this.socket = socket;
         this.canvas = document.getElementById('playground');
         this.context = this.canvas.getContext('2d');
-        this.canvas.width = 500;
+        this.canvas.width = 800;
         this.canvas.height = 500;
         this.players = [];
         this.objects = [];
-
-        let timeout = Math.floor(Math.random() * 20) + 10;
-        setTimeout(this.addPowerUp.bind(this), 0 * 1000);
-    }
-
-    addPowerUp () {
-        let powerUp = new PowerUpAmmo({
-            x: Math.round(Math.random() * window.innerWidth) + 1,
-            y: Math.round(Math.random() * window.innerHeight) + 1,
-            rotation: Math.round(Math.random() * 360) + 1
-        });
-
-        this.addObject(powerUp);
-
-        let timeout = Math.floor(Math.random() * 20) + 10;
-        setTimeout(this.addPowerUp.bind(this), timeout * 1000);
     }
 
     addPlayer(player) {
-        this.players[player.id] = player;
-        this.addObject(player.character);
+        this.players.push(player);
     }
 
     addObject(object) {
@@ -39,13 +21,8 @@ export default class {
         this.objects.push(object);
     }
 
-    removeObject(object) {
-        let objectPos = this.objects.indexOf(object);
-        this.objects.splice(objectPos, 1);
-    }
-
     // this happens within the server's update loop
-    updateCanvas () {
+    drawCanvas () {
         this.drawBackground();
         this.drawFlyingObjects();
         this.drawHighscore();
@@ -75,31 +52,33 @@ export default class {
 
     drawHighscore() {
 
-        let playerList = this.players.slice(0);
         let playerTextWidth = 0;
-        playerList.sort(function(a, b) {
+        this.players.sort(function(a, b) {
             return a.score > b.score ? -1 : a.score < b.score ? 1 : 0;
         });
 
         this.context.font = '14px Verdana';
         this.context.shadowColor = 'rgba(0,0,0,0.5)';
 
-        for(let i = 1; i <= playerList.length; i++) {
-            let playerText = i + '. ' + playerList[i-1].name + " [" + playerList[i-1].score.toString() + ']';
+        let i = 1;
+        for (let player in this.players) {
+            let playerText = i + '. ' + this.players[player].name + " [" + this.players[player].score.toString() + ']';
             playerTextWidth = this.context.measureText(playerText).width > playerTextWidth ? this.context.measureText(playerText).width : playerTextWidth;
+            i++;
         }
 
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(10, 10, playerTextWidth + 55, playerList.length * 20 + 30);
+        this.context.fillRect(10, 10, playerTextWidth + 55, this.players.length * 20 + 30);
 
-        for(let i = 1; i <= playerList.length; i++) {
-            this.context.fillStyle = playerList[i-1].color;
+        i = 1;
+        for(let player in this.players) {
+            this.context.fillStyle = this.players[player].color;
             this.context.shadowColor = 'rgba(0,0,0,0.4)';
             this.context.shadowOffsetX = 1;
             this.context.shadowOffsetY = 1;
             this.context.shadowBlur = 1;
-            let playerText = i + '. ' + playerList[i-1].name;
-            let playerPoints = playerList[i-1].score.toString();
+            let playerText = i + '. ' + this.players[player].name;
+            let playerPoints = this.players[player].score.toString();
 
             this.context.textAlign = 'left';
             this.context.fillText(playerText, 25, (i * 20) + 20);
@@ -107,8 +86,8 @@ export default class {
             this.context.fillStyle = 'rgba(0,0,0,0.5)';
             this.context.textAlign = 'right';
             this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 20);
+            i++;
         }
-
     }
 
     drawFlyingObjects () {

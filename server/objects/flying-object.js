@@ -1,5 +1,6 @@
 import {MAX_VELOCITY,MIN_VELOCITY} from '../../constants';
 import Vector from '../utils/vector';
+import Skin from '../skin/skin';
 
 class FlyingObject
 {
@@ -19,6 +20,7 @@ class FlyingObject
         this.unicode = options.unicode || '';
         this.velocity = options.velocity;
         this.size = options.size ? options.size : 45;
+        this.skin = new Skin(`images/rocket1up_spr_strip5.png`, 0, 0, 4, 71, 80);
     }
 
     collide (obj) {
@@ -73,21 +75,21 @@ class FlyingObject
     }
 
     rotateRight () {
-        this.rotation += 1.5;
+        this.rotation += 2;
     }
 
     rotateLeft () {
-        this.rotation -= 1.5;
+        this.rotation -= 2;
     }
 
     speedUp () {
         if (this.velocity < MAX_VELOCITY) {
-            this.velocity += 0.1;
+            this.velocity += 0.2;
         }
     }
     speedDown () {
         if (this.velocity > MIN_VELOCITY) {
-            this.velocity -= 0.1;
+            this.velocity -= 0.2;
         }
     }
 

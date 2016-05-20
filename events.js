@@ -4,3 +4,4 @@ export const FIRE_REQUEST = 'fire request';
 export const MOVE_PLAYER = 'move player';
 export const ADD_PLAYER = 'add player';
 export const UPDATE_OBJECTS = 'update objects';
+export const UPDATE_PLAYERS = 'update players';

@@ -1,4 +1,5 @@
 import Ammo from './ammo';
+import FlyingObject from './flying-object';
 import Character from './character';
 import PowerUpAmmo from './powerup-ammo';
 
@@ -13,6 +14,9 @@ class ObjectFactory {
                 break;
             case 'PowerUpAmmo':
                 return new PowerUpAmmo();
+                break;
+            default:
+                return new FlyingObject();
                 break;
         }
     }

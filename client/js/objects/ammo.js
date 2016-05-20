@@ -12,7 +12,7 @@ class Ammo extends FlyingObject
     }
 
     hit (object) {
-        this.game.objects.splice(this.game.objects.indexOf(this), 1);
+        this.game.removeObject(this);
 
         if (object.constructor.name === 'Character') {
             this.player.score++;

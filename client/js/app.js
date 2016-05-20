@@ -1,7 +1,7 @@
-import {ADD_PLAYER,PLAYER_CREATED,AMMO_CREATED,UPDATE_OBJECTS} from '../../events';
+import {ADD_PLAYER,UPDATE_PLAYERS,AMMO_CREATED,UPDATE_OBJECTS} from '../../events';
 import {HOSTNAME} from '../../constants';
-import Game from './game';
-import Player from './player';
+import Game from './game/game';
+import Player from './game/player';
 import Skin from './skin/skin';
 import Ammo from './objects/ammo';
 import Factory from './objects/factory';
@@ -20,17 +20,17 @@ import io from 'socket.io-client/socket.io.js';
     });
     
     socket.on(UPDATE_OBJECTS, function (objects) {
-
         game.objects.splice(0, game.objects.length);
-        
+
         let ObjectFactory = new Factory();
-        
-        for(let object in objects) {
+        for(let object in objects)
+        {
             let newObject = ObjectFactory.create(objects[object].type);
             newObject.id = objects[object].id;
             newObject.x = objects[object].x;
             newObject.y = objects[object].y;
             newObject.context = game.context;
+            newObject.player = objects[object].player;
             newObject.visible = objects[object].visible;
             newObject.rotation = objects[object].rotation;
             newObject.unicode = objects[object].unicode;
@@ -38,21 +38,22 @@ import io from 'socket.io-client/socket.io.js';
 
             game.addObject(newObject);
         }
-        
-        game.updateCanvas();
+
+        game.drawCanvas();
     });
     
-    socket.on(PLAYER_CREATED, function (newPlayer) {
+    socket.on(UPDATE_PLAYERS, function (players) {
+        game.players.splice(0, game.players.length);
 
-        console.log('player with id ' + newPlayer.id + ' was created on server');
-
-        let player = new Player({
-            id: newPlayer.id,
-            name: newPlayer.name,
-            color: newPlayer.color
-        });
-        
-        game.addPlayer(player);
+        for(let player in players) {
+            game.addPlayer(new Player({
+                id: players[player].id,
+                name: players[player].name,
+                color: players[player].color,
+                shield: players[player].shield,
+                ammp: players[player].ammo
+            }));
+        }
     });
 
     socket.on(AMMO_CREATED, function (newAmmo) {
