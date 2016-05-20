@@ -5,6 +5,6 @@ export const CHARACTER_SIZE = 65;
 export const FIRE_RATE = 200;
 export const MAX_AMMO = 20;
 export const MAX_SHIELD = 10;
-export const HOSTNAME = ':1234';
+export const HOSTNAME = '';
 export const STAGE_WIDTH = 1500;
 export const STAGE_HEIGHT = 844;
