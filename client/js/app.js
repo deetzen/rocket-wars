@@ -1,4 +1,4 @@
-import {ADD_PLAYER,UPDATE_PLAYERS,AMMO_CREATED,UPDATE_OBJECTS} from '../../events';
+import {UPDATE_PLAYERS,UPDATE_OBJECTS} from '../../events';
 import {HOSTNAME} from '../../constants';
 import Game from './game/game';
 import Player from './game/player';
@@ -15,8 +15,6 @@ import io from 'socket.io-client/socket.io.js';
     let skinLibrary = new SkinLibrary();
     skinLibrary.addSkin('images/rocket1up_spr_strip5.png', 71, 80, 90);
     skinLibrary.addSkin('images/playerbullet1_spr_strip6.png', 39, 70, 180);
-
-    let playerName = 'henry';
     
     socket.on(UPDATE_OBJECTS, function (objects) {
         game.objects.splice(0, game.objects.length);
@@ -55,14 +53,6 @@ import io from 'socket.io-client/socket.io.js';
                 score: players[player].score
             }));
         }
-    });
-
-    document.addEventListener('keydown', (event) => {
-        socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
-    });
-    
-    document.addEventListener('keyup', (event) => {
-        socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
     });
     
 })();
