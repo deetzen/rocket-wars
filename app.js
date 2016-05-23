@@ -38,7 +38,7 @@
         res.setHeader("X-Frame-Options", "SAMEORIGIN");
         res.setHeader("X-Xss-Protection", "1; mode=block");
         res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubdomains; preload");
-        res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-inline' https://rocket-wars.de:* https://ajax.googleapis.com https://ssl.google-analytics.com; object-src 'self'");
+        res.setHeader("Content-Security-Policy", "script-src 'self' https://rocket-wars.de:* https://ajax.googleapis.com https://ssl.google-analytics.com 'sha256-wBhFPZwc6Udf8DqLnOu/HBPPqkoOveSyuhlS/nNXQo0='; object-src 'self'");
         return next();
     });
 
@@ -49,28 +49,28 @@
 
         sound.setSocket(socket);
 
-        socket.on(EVENTS.ADD_PLAYER, function (player) {
+        socket.on(EVENTS.ADD_PLAYER, function (remotePlayer) {
 
-            let newPlayer = new Player(stage, {
+            let player = new Player(stage, {
                 id: socket.id,
                 game: game,
-                name: player.name,
-                color: player.color,
+                name: remotePlayer.name,
+                color: remotePlayer.color,
                 keyboard: new Keyboard(38, 39, 40, 37, 32)
             });
 
-            game.addPlayer(newPlayer);
+            game.addPlayer(player);
 
-            var result = { id: newPlayer.id, name: newPlayer.name, color: newPlayer.color };
+            var result = { id: player.id, name: player.name, color: player.color };
 
             io.emit(EVENTS.PLAYER_CREATED, result);
 
             setInterval(function () {
-                if(newPlayer.keyboard.isDown(newPlayer.keyboard.up)) { newPlayer.character.speedUp(); }
-                if(newPlayer.keyboard.isDown(newPlayer.keyboard.down)) { newPlayer.character.speedDown(); }
-                if(newPlayer.keyboard.isDown(newPlayer.keyboard.right)) { newPlayer.character.rotateRight(); }
-                if(newPlayer.keyboard.isDown(newPlayer.keyboard.left)) { newPlayer.character.rotateLeft(); }
-                if(newPlayer.keyboard.isDown(newPlayer.keyboard.fire) && !newPlayer.character.isFiring) { newPlayer.character.fire(); }
+                if(player.keyboard.isDown(player.keyboard.keys.up.keyCode)) { player.character.speedUp(player.keyboard.keys.up.percent); }
+                if(player.keyboard.isDown(player.keyboard.keys.down.keyCode)) { player.character.speedDown(player.keyboard.keys.down.percent); }
+                if(player.keyboard.isDown(player.keyboard.keys.right.keyCode)) { player.character.rotateRight(player.keyboard.keys.right.percent); }
+                if(player.keyboard.isDown(player.keyboard.keys.left.keyCode)) { player.character.rotateLeft(player.keyboard.keys.left.percent); }
+                if(player.keyboard.isDown(player.keyboard.keys.fire.keyCode) && !player.character.isFiring) { player.character.fire(player.keyboard.keys.fire.percent); }
             }, 10);
         });
 
@@ -81,23 +81,6 @@
                 }
             });
             game.players.delete(socket.id);
-        });
-
-        socket.on(EVENTS.MOVE_PLAYER, function (data) {
-            switch(data.translate) {
-                case 'rotateRight':
-                    game.objects.get(data.id).rotateRight();
-                    break;
-                case 'rotateLeft':
-                    game.objects.get(data.id).rotateLeft();
-                    break;
-                case 'speedUp':
-                    game.objects.get(data.id).speedUp();
-                    break;
-                case 'speedDown':
-                    game.objects.get(data.id).speedDown();
-                    break;
-            }
         });
 
         socket.on(EVENTS.FIRE_REQUEST, function (data) {

@@ -64,26 +64,26 @@ class Character extends FlyingObject
         }
     }
 
-    rotateRight () {
-        this.rotation += 2;
+    rotateRight (percent = 100) {
+        this.rotation += percent/100 * 2;
         this.direction = this.rotation;
     }
 
-    rotateLeft () {
-        this.rotation -= 2;
+    rotateLeft (percent = 100) {
+        this.rotation -= percent/100 * 2;
         this.direction = this.rotation;
     }
 
-    speedUp () {
+    speedUp (percent = 100) {
         if (this.velocity < (MAX_VELOCITY - ACCELERATION)) {
-            this.velocity += ACCELERATION;
+            this.velocity += percent/100 * ACCELERATION;
         } else {
             this.velocity = MAX_VELOCITY;
         }
     }
-    speedDown () {
+    speedDown (percent = 100) {
         if (this.velocity > (MIN_VELOCITY + ACCELERATION)) {
-            this.velocity -= ACCELERATION;
+            this.velocity -= percent/100 * ACCELERATION;
         } else {
             this.velocity = 0;
         }

@@ -2,33 +2,9 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Rocket Wars Remote Control</title>
+    <title>The Rocket-Wars Remote Control</title>
 </head>
 <body>
-
-    <div id="content"></div>
-    <script type="text/javascript" src="socket.io/socket.io.js"></script>
-    <script type="text/javascript">
-
-        var socket = io(':1234');
-
-        socket.emit('add player', {
-            name: 'henry',
-        });
-
-        document.addEventListener('devicemotion', function (e) {
-            console.log(e.acceleration);
-            document.getElementById('content').innerHTML = e.acceleration;
-        }, true);
-
-        document.addEventListener('touchend', function (e) {
-            socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: 48 });
-        });
-
-        document.addEventListener('touchstart', function (e) {
-            socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: 48 });
-        });
-
-    </script>
+    <script type="text/javascript" src="js/mobile.js"></script>
 </body>
 </html>

@@ -1,6 +1,5 @@
 import {ADD_PLAYER,PLAY_SOUND,UPDATE_PLAYERS,UPDATE_OBJECTS} from '../../events';
-import {STAGE_WIDTH,STAGE_HEIGHT} from '../../constants';
-import {HOSTNAME} from '../../constants';
+import {HOSTNAME,STAGE_WIDTH,STAGE_HEIGHT} from '../../constants';
 import Game from './game/game';
 import Player from './game/player';
 import SpriteLibrary from './sprite/library';
@@ -9,6 +8,7 @@ import FlyingObject from './objects/flying-object';
 import io from 'socket.io-client/socket.io.js';
 
 (function() {
+    'use strict';
 
     let socket = io(HOSTNAME);
     let game = new Game(socket);
@@ -91,11 +91,11 @@ import io from 'socket.io-client/socket.io.js';
         });
 
         document.addEventListener('keydown', (event) => {
-            socket.emit('keydown', {player: socket.nsp + '#' + socket.id, keyCode: event.keyCode});
+            socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode, percent: 100 });
         });
 
         document.addEventListener('keyup', (event) => {
-            socket.emit('keyup', {player: socket.nsp + '#' + socket.id, keyCode: event.keyCode});
+            socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode, percent: 100 });
         });
 
         window.onresize = () => {
