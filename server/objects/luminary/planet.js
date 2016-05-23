@@ -16,7 +16,7 @@ class Planet extends Asteroid
     }
 
     rotate () {
-        this.rotation += 0.1;
+        this.rotation += this.rotateDirection * 0.1;
     }
 
     hit () {}
