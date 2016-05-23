@@ -8,3 +8,5 @@ export const HOSTNAME = ':1234';
 export const STAGE_WIDTH = 1500;
 export const STAGE_HEIGHT = 844;
 export const SHIELD_MAX_DAMAGE = 7;
+export const ROTATE_LEFT = -1;
+export const ROTATE_RIGHT = +1;
