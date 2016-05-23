@@ -40,19 +40,21 @@ export default class {
     }
 
     onKeydown (event) {
+        let percent = event.percent > 100 ? 100 : event.percent < 0 ? 0 : event.percent;
         for (let i in this.keys) {
             if (this.keys[i].keyCode == event.keyCode) {
                 this.keys[i].pressed = true;
-                this.keys[i].percent = event.percent;
+                this.keys[i].percent = percent;
             }
         }
     }
 
     onKeyup (event) {
+        let percent = event.percent > 100 ? 100 : event.percent < 0 ? 0 : event.percent;
         for (let i in this.keys) {
             if (this.keys[i].keyCode == event.keyCode) {
                 this.keys[i].pressed = false;
-                this.keys[i].percent = event.percent;
+                this.keys[i].percent = percent;
             }
         }
     }
