@@ -10,7 +10,7 @@ class Character extends FlyingObject
         super(stage, options);
         this.alive = true;
         this.mass = 20;
-        this.rotation = this.direction;
+        this.direction = this.rotation;
         this.zIndex = 10;
         this.size = CHARACTER_SIZE;
         this.velocity = MIN_VELOCITY;

@@ -1,4 +1,4 @@
-import {STAGE_WIDTH, STAGE_HEIGHT} from '../../../constants';
+import {STAGE_WIDTH, STAGE_HEIGHT, ROTATE_LEFT, ROTATE_RIGHT} from '../../../constants';
 import FlyingObject from './../flying-object';
 import Skin from '../../skin/skin';
 
@@ -19,6 +19,9 @@ class Asteroid extends FlyingObject
         this.position.y = randomPosition.y;
         this.direction = randomPosition.angle;
         this.rotation = Math.round(Math.random() * 360);
+
+        let rotateDirections = [ROTATE_LEFT, ROTATE_RIGHT];
+        this.rotateDirection = rotateDirections[Math.floor(Math.random() * rotateDirections.length)];
 
         setInterval(() => { this.rotate() }, 50);
     }
@@ -65,7 +68,7 @@ class Asteroid extends FlyingObject
     }
 
     rotate () {
-        this.rotation += 2.5;
+        this.rotation += this.rotateDirection * 2.5;
     }
 
     hit (object) {
