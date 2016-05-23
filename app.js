@@ -38,7 +38,7 @@
         res.setHeader("X-Frame-Options", "SAMEORIGIN");
         res.setHeader("X-Xss-Protection", "1; mode=block");
         res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubdomains; preload");
-        res.setHeader("Content-Security-Policy", "script-src 'self' https://rocket-wars.de:* https://ajax.googleapis.com https://ssl.google-analytics.com 'sha256-wBhFPZwc6Udf8DqLnOu/HBPPqkoOveSyuhlS/nNXQo0='; object-src 'self'");
+        res.setHeader("Content-Security-Policy", "script-src 'self' 'unsafe-inline' https://rocket-wars.de:* https://ajax.googleapis.com https://ssl.google-analytics.com; object-src 'self'");
         return next();
     });
 
