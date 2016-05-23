@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Rocket Wars Remote Control</title>
+</head>
+<body>
+
+    <div id="content"></div>
+    <script type="text/javascript" src="http://10.1.200.236:1234/socket.io/socket.io.js"></script>
+    <script type="text/javascript">
+
+        var socket = io('http://10.1.200.236:1234');
+
+        socket.emit('add player', {
+            name: 'henry',
+            color: '#00B806'
+        });
+
+        document.addEventListener('devicemotion', function (e) {
+            console.log(e.acceleration);
+            document.getElementById('content').innerHTML = e.acceleration;
+        }, true);
+
+        document.addEventListener('touchend', function (e) {
+            socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: 48 });
+        });
+
+        document.addEventListener('touchstart', function (e) {
+            socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: 48 });
+        });
+
+    </script>
+</body>
+</html>
