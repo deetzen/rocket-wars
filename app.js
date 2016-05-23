@@ -19,32 +19,44 @@
     let Player = require('./server/game/player').default;
     let Game = require('./server/game/game').default;
     let Stage = require('./server/game/stage').default;
+    let Sound = require('./server/game/sound').default;
 
     let Keyboard = require('./server/game/keyboard').default;
     let EVENTS = require('./events');
 
     let stage = new Stage();
+    let sound = new Sound(io);
 
-    let game = new Game(io, stage);
+    let game = new Game(io, stage, sound);
     game.start();
 
     http_server.listen(1233);
     https_server.listen(1234);
+
+    app.use(function(req, res, next) {
+        res.setHeader("X-Content-Type-Options", "nosniff");
+        res.setHeader("X-Frame-Options", "SAMEORIGIN");
+        res.setHeader("X-Xss-Protection", "1; mode=block");
+        res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubdomains; preload");
+        res.setHeader("Content-Security-Policy", "script-src 'self' https://rocket-wars.de:* https://ajax.googleapis.com https://ssl.google-analytics.com 'sha256-wBhFPZwc6Udf8DqLnOu/HBPPqkoOveSyuhlS/nNXQo0='; object-src 'self'");
+        return next();
+    });
 
     app.use(express.static('public'));
 
     io.on('connect', function (socket) {
         'use strict';
 
-        console.log('client connected');
+        sound.setSocket(socket);
 
         socket.on(EVENTS.ADD_PLAYER, function (player) {
 
             let newPlayer = new Player(stage, {
                 id: socket.id,
+                game: game,
                 name: player.name,
                 color: player.color,
-                keyboard: new Keyboard(38, 39, 40, 37, 48)
+                keyboard: new Keyboard(38, 39, 40, 37, 32)
             });
 
             game.addPlayer(newPlayer);

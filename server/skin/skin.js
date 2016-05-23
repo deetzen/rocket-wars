@@ -5,9 +5,10 @@ export default class Skin
         this.currentFrame = frameStart;
         this.frameEnd = frameEnd;
         this.frameSpeed = frameSpeed;
+        this.alpha = 1;
         this.counter = 0;
     }
-    
+
     update () {
         if (this.counter === (this.frameSpeed - 1)) {
             this.currentFrame = (this.currentFrame + 1) % this.frameEnd;

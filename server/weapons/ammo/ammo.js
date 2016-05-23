@@ -9,7 +9,8 @@ class Ammo extends FlyingObject {
     this.type = options.type || 1;
     this.size = 45;
     this.mass = 1;
-    this.skin = new Skin('bullet-1');
+    this.zIndex = 10;
+    this.skin = new Skin('bullet-1', 0, 5, 2);
   }
 
   draw() {
@@ -18,17 +19,13 @@ class Ammo extends FlyingObject {
   }
 
   hit(object) {
-    this.game.removeObject(this);
-
-    if (object.shield > 0) {
+    if (object.alive) {
+      this.game.removeObject(this);
       this.player.score++;
-      object.shield--;
+      object.damage++;
     }
 
-    /*
-    var snd = new Audio("sounds/hit.wav"); // buffers automatically when created
-    snd.play();
-    */
+    this.game.sound.play('hit');
   }
 
   checkValid() {

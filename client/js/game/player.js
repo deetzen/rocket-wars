@@ -5,7 +5,6 @@ class Player {
         this.color = options.color;
         this.score = options.score;
         this.ammo = options.ammo;
-        this.shield = options.shield;
     }
 }
 
