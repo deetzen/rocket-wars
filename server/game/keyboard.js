@@ -1,23 +1,59 @@
 export default class {
 
     constructor (up, right, down, left, fire) {
-        this.up = up;
-        this.right = right;
-        this.down = down;
-        this.left = left;
-        this.fire = fire;
-        this.pressed = {};
+
+        this.keys = {
+            up: {
+                keyCode: up,
+                percent: 100,
+                pressed: false
+            },
+            right: {
+                keyCode: right,
+                percent: 100,
+                pressed: false
+            },
+            down: {
+                keyCode: down,
+                percent: 100,
+                pressed: false
+            },
+            left: {
+                keyCode: left,
+                percent: 100,
+                pressed: false
+            },
+            fire: {
+                keyCode: fire,
+                percent: 100,
+                pressed: false
+            }
+        }
     }
 
     isDown (keyCode) {
-        return this.pressed[keyCode];
+        for (let i in this.keys) {
+            if (this.keys[i].keyCode == keyCode) {
+                return this.keys[i].pressed;
+            }
+        }
     }
 
     onKeydown (event) {
-        this.pressed[event.keyCode] = true;
+        for (let i in this.keys) {
+            if (this.keys[i].keyCode == event.keyCode) {
+                this.keys[i].pressed = true;
+                this.keys[i].percent = event.percent;
+            }
+        }
     }
 
     onKeyup (event) {
-        delete this.pressed[event.keyCode];
+        for (let i in this.keys) {
+            if (this.keys[i].keyCode == event.keyCode) {
+                this.keys[i].pressed = false;
+                this.keys[i].percent = event.percent;
+            }
+        }
     }
 }
