@@ -10,7 +10,8 @@ export default class Weapon
     }
 
     fire () {
-        if (!this.player.ammo || !this.character.visible) { return; }
+        if (!this.character.alive) { return; }
+        if (this.player.ammo <= 0) {this.player.ammo = 0; return; }
         this.player.ammo--;
 
         let bulletPosition = Vector.calcMovement(this.character.position.x, this.character.position.y, this.character.rotation, this.character.size/2);
@@ -22,15 +23,13 @@ export default class Weapon
             size: 10,
             player: this.player,
             color: this.player.color,
-            velocity: (this.character.velocity + 1) * 3,
+            velocity: (this.character.velocity + 5) * 1.8,
+            direction: this.character.direction,
             rotation: this.character.rotation
         });
 
         this.character.game.addObject(bullet);
 
-        /*
-        var snd = new Audio("sounds/shoot.wav"); // buffers automatically when created
-        snd.play();
-        */
+        this.character.game.sound.play('shoot');
     }
 }

@@ -6,22 +6,22 @@ class FlyingObject
     constructor (stage, options) {
         this.id = '_' + Math.random().toString(36).substr(2, 9);
         this.alive = true;
+        this.zIndex = 0;
         this.vector = new Vector(0, 0);
-        this.position = new Vector(options.x, options.y);
+        this.position = new Vector(options.x || 0, options.y || 0);
         this.mass = 10;
         this.label = '';
         this.elasticity = 0.2;
         this.stage = stage;
         this.visible = options.visible || true;
-        this.shadow = options.shadow || false;
         this.game = options.game || null;
         this.player = options.player || null;
         this.rotation = options.rotation || 0;
+        this.direction = options.direction || 0;
         this.color = options.color || 'lightpink';
-        this.unicode = options.unicode || '';
         this.velocity = options.velocity;
         this.size = options.size ? options.size : 45;
-        this.shield = 0;
+        this.damage = 0;
         this.skin = new Skin('rocket-1', 0, 0, 0, 1);
     }
 
@@ -59,7 +59,7 @@ class FlyingObject
 
     update () {
 
-        let angle = this.rotation * Math.PI / 180;
+        let angle = this.direction * Math.PI / 180;
         this.position.x += this.velocity * Math.cos(angle) + this.vector.x;
         this.position.y += this.velocity * Math.sin(angle) + this.vector.y;
 

@@ -1,4 +1,5 @@
-import Asteroid from './asteroids/asteroid';
+import Asteroid from './luminary/asteroid';
+import Planet from './luminary/planet';
 import RefillAmmo from './powerup/refillammo';
 import RefillShield from './powerup/refillshield';
 import PermanentFire from './powerup/permanentfire';
@@ -6,17 +7,32 @@ import PermanentFire from './powerup/permanentfire';
 export default class Emitter {
     constructor(game) {
         this.game = game;
-        this.objects = [
-            new RefillAmmo(this.game.stage, {x: 0, y: 0}),
-            new PermanentFire(this.game.stage, {x: 0, y: 0}),
-            new RefillShield(this.game.stage, {x: 0, y: 0}),
-            new Asteroid(this.game.stage, {x: 0, y: 0})
-        ];
-        this.weight = [0.5, 0.3, 0.4, 0.2];
+        this.objects = {
+            RefillAmmo: {
+                class: RefillAmmo,
+                weight: 0.5
+            },
+            PermanentFire: {
+                class: PermanentFire,
+                weight: 0.4
+            },
+            RefillShield: {
+                class: RefillShield,
+                weight: 0.3
+            },
+            Asteroid: {
+                class: Asteroid,
+                weight: 0.2
+            },
+            Planet: {
+                class: Planet,
+                weight: 0.3
+            }
+        };
     }
 
     static getTimeout() {
-        return ((Math.floor(Math.random() * 10) + 2) * 1000);
+        return ((Math.floor(Math.random() * 6) + 1) * 1000);
     }
 
     start () {
@@ -29,19 +45,19 @@ export default class Emitter {
 
 
     getRandomItem () {
-        var total_weight = this.weight.reduce(function (prev, cur, i, arr) {
-            return prev + cur;
-        });
+        var total_weight = Object.keys(this.objects).reduce((previous, key) => {
+            return previous + this.objects[key].weight;
+        }, 0);
 
         var random_num = Emitter.rand(0, total_weight);
         var weight_sum = 0;
 
-        for (var i = 0; i < this.objects.length; i++) {
-            weight_sum += this.weight[i];
+        for (let index in this.objects) {
+            weight_sum += this.objects[index].weight;
             weight_sum = +weight_sum.toFixed(2);
 
             if (random_num <= weight_sum) {
-                return this.objects[i];
+                return { name: index, class: this.objects[index].class };
             }
         }
     }
@@ -49,25 +65,19 @@ export default class Emitter {
     add () {
         this.start();
 
-        let object = this.getRandomItem(this.objects, this.weight);
+        let object = this.getRandomItem();
 
         let exists = false;
         this.game.objects.forEach((gameObject) => {
-            if (gameObject.constructor.name === object.constructor.name) {
+            if (gameObject.constructor.name === object.name) {
                 exists = true;
                 return;
             }
         });
 
-        if (exists) {
-            return;
+        if (!exists) {
+            let objectInstance = new object.class(this.game.stage, {});
+            this.game.addObject(objectInstance);
         }
-
-        object.id = '_' + Math.random().toString(36).substr(2, 9);
-        object.position.x = Math.round(Math.random() * (this.game.stage.width - 70)) + 35;
-        object.position.y = Math.round(Math.random() * (this.game.stage.height - 70)) + 35;
-
-        this.game.addObject(object);
-
     }
 }

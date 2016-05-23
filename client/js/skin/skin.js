@@ -1,7 +1,8 @@
 export default class Skin
 {
-    constructor (sprite, currentFrame) {
+    constructor (sprite, currentFrame, alpha = 1) {
         this.sprite = sprite;
+        this.alpha = alpha;
         this.currentFrame = currentFrame;
     }
 
@@ -20,6 +21,8 @@ export default class Skin
         context.translate(x, y);
         context.rotate((rotation + this.sprite.rotation) * Math.PI / 180);
 
+        context.globalAlpha = this.alpha;
+
         context.drawImage(
             this.sprite.image,
             col * this.sprite.frameWidth, row * this.sprite.frameHeight,
@@ -27,6 +30,7 @@ export default class Skin
             -newWidth/2, -newHeight/2,
             newWidth, newHeight
         );
+
         context.restore();
     };
 }

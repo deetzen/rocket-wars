@@ -1,10 +1,10 @@
 export const PLAYER_CREATED = 'player created';
-export const AMMO_CREATED = 'ammo created';
 export const FIRE_REQUEST = 'fire request';
 export const MOVE_PLAYER = 'move player';
+export const KEYDOWN = 'keydown';
+export const KEYUP = 'keyup';
 export const ADD_PLAYER = 'add player';
 export const UPDATE_OBJECTS = 'update objects';
 export const UPDATE_PLAYERS = 'update players';
 export const DISCONNECT = 'disconnect';
-export const KEYDOWN = 'keydown';
-export const KEYUP = 'keyup';
+export const PLAY_SOUND = 'play sound';

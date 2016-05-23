@@ -1,10 +1,10 @@
 export const MIN_VELOCITY = 0;
 export const MAX_VELOCITY = 20;
 export const ACCELERATION = 0.3;
-export const CHARACTER_SIZE = 65;
+export const CHARACTER_SIZE = 50;
 export const FIRE_RATE = 200;
 export const MAX_AMMO = 20;
-export const MAX_SHIELD = 10;
 export const HOSTNAME = ':1234';
 export const STAGE_WIDTH = 1500;
 export const STAGE_HEIGHT = 844;
+export const SHIELD_MAX_DAMAGE = 7;

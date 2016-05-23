@@ -3,9 +3,11 @@ import {UPDATE_OBJECTS, UPDATE_PLAYERS} from '../../events';
 
 export default class {
 
-    constructor (io, stage) {
+    constructor (io, stage, sound) {
         this.io = io;
         this.stage = stage;
+        this.sound = sound;
+
         this.players = new Map();
         this.objects = new Map();
     }
@@ -45,11 +47,19 @@ export default class {
     updateClient () {
         let objects = {};
         if (this.objects.size > 0) {
-            this.objects.forEach(object => {
+
+            let sortedObjects = new Map([...this.objects.entries()].sort((a,b) => {
+                let object1 = a[Object.keys(a)[1]];
+                let object2 = b[Object.keys(b)[1]];
+                return object1.zIndex > object2.zIndex ? 1 : object1.zIndex < object2.zIndex ? -1 : 0;
+            }));
+
+            sortedObjects.forEach(object => {
                 objects[object.id] = {
                     id: object.id,
                     type: object.constructor.name,
                     label: object.label,
+                    color: object.color,
                     visible: object.visible,
                     x: object.position.x,
                     y: object.position.y,
@@ -70,7 +80,6 @@ export default class {
                     name: player.name,
                     ammo: player.ammo,
                     score: player.score,
-                    shield: player.shield,
                     color: player.color
                 };
             });
@@ -89,8 +98,8 @@ export default class {
                 if (object1 === object2) return;
                 if (object1.player === object2.player) return;
 
-                object1.collide(object2);
                 object2.collide(object1);
+                object1.collide(object2);
             });
         });
     }

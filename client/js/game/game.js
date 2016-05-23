@@ -35,17 +35,22 @@ export default class {
 
     drawBackground () {
         this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
-        this.background.draw(this.context, this.canvas.width/2, this.canvas.height/2, 0, STAGE_WIDTH);
+        this.background.draw(this.context, this.canvas.width/2, this.canvas.height/2, 0, this.canvas.width);
     }
 
     drawAmmo () {
+        if (!this.players.length) return;
+
         this.context.font = '14px Verdana';
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(window.innerWidth - 160, 10, 150, (this.players.length * 20) + 10);
+        this.context.fillRect(window.innerWidth - 160, 10, 150, 30);
 
         let i = 1;
         for(let index in this.players) {
             let player = this.players[index];
+
+            if (player.id.substring(2) != this.socket.id) continue;
+
             this.context.fillStyle = 'rgba(0,0,0,0.3)';
             this.context.fillRect(window.innerWidth - 150, (i * 10) + (i * 10), 130, 10);
             this.context.shadowColor = 'transparent';
@@ -56,6 +61,7 @@ export default class {
     }
 
     drawHighscore() {
+        if (!this.players.length) return;
 
         let playerList = this.players.slice(0);
         let playerTextWidth = 0;
@@ -72,23 +78,30 @@ export default class {
         }
 
         this.context.fillStyle = 'rgba(255,255,255,0.8)';
-        this.context.fillRect(10, 10, playerTextWidth + 50, playerList.length * 20 + 10);
 
+        let height = playerList.length * 20 + 10;
+        height = height >= 90 ? 90 : height;
+        this.context.fillRect(10, 10, playerTextWidth + 50, height);
+
+        let j = 1;
         for(let i = 1; i <= playerList.length; i++) {
-            this.context.fillStyle = playerList[i-1].color;
-            this.context.shadowColor = 'rgba(0,0,0,0.8)';
-            this.context.shadowOffsetX = 1;
-            this.context.shadowOffsetY = 1;
-            this.context.shadowBlur = 0;
-            let playerText = i + '. ' + playerList[i-1].name;
-            let playerPoints = playerList[i-1].score.toString();
+            if (i <= 3 || playerList[i-1].id.substring(2) === this.socket.id) {
+                this.context.fillStyle = playerList[i-1].color;
+                this.context.shadowColor = 'rgba(0,0,0,0.8)';
+                this.context.shadowOffsetX = 1;
+                this.context.shadowOffsetY = 1;
+                this.context.shadowBlur = 0;
+                let playerText = i + '. ' + playerList[i-1].name;
+                let playerPoints = playerList[i-1].score.toString();
 
-            this.context.textAlign = 'left';
-            this.context.fillText(playerText, 20, (i * 20) + 10);
+                this.context.textAlign = 'left';
+                this.context.fillText(playerText, 20, (j * 20) + 10);
 
-            this.context.fillStyle = 'rgba(0,0,0,0.8)';
-            this.context.textAlign = 'right';
-            this.context.fillText(playerPoints, playerTextWidth + 50, (i * 20) + 10);
+                this.context.fillStyle = 'rgba(0,0,0,0.8)';
+                this.context.textAlign = 'right';
+                this.context.fillText(playerPoints, playerTextWidth + 50, (j * 20) + 10);
+                j++;
+            }
         }
     }
 
