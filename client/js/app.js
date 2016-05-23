@@ -3,8 +3,8 @@ import {STAGE_WIDTH,STAGE_HEIGHT} from '../../constants';
 import {HOSTNAME} from '../../constants';
 import Game from './game/game';
 import Player from './game/player';
-import SpriteLibrary from './skin/library';
-import Skin from './skin/skin';
+import SpriteLibrary from './sprite/library';
+import Skin from './sprite/skin';
 import FlyingObject from './objects/flying-object';
 import io from 'socket.io-client/socket.io.js';
 
@@ -13,12 +13,24 @@ import io from 'socket.io-client/socket.io.js';
     let socket = io(HOSTNAME);
     let game = new Game(socket);
 
+    // antialiasing for canvas ;)
+    game.context.translate(0.5, 0.5);
+
+    let playerName = '';
+    while (!playerName) {
+        playerName = prompt("Please enter your name", "Rocket Warrior " + Math.round(Math.random() * 5000));
+    }
+
+    socket.emit(ADD_PLAYER, {
+        name: playerName
+    });
+
     let scaleX = game.canvas.width / STAGE_WIDTH;
     let scaleY = game.canvas.height / STAGE_HEIGHT;
 
     let spriteLibrary = new SpriteLibrary();
-
     Promise.all([
+        spriteLibrary.addSprite('game-background-1', 'images/backgrounds/background_02_parallax_01.png', 2448, 1936, 0),
         spriteLibrary.addSprite('shield','images/weapons/shield_frames.png', 280, 280, 135),
         spriteLibrary.addSprite('rocket-1','images/rocket1up_spr_strip5.png', 80, 71, 90),
         spriteLibrary.addSprite('bullet-1','images/playerbullet1_spr_strip6.png', 39, 70, 180),
@@ -29,42 +41,29 @@ import io from 'socket.io-client/socket.io.js';
         spriteLibrary.addSprite('explosion','images/explosions/explosion.png', 140, 140, 0),
         spriteLibrary.addSprite('powerup-shield','images/power-ups/powerup_04.png', 100, 100, 0),
         spriteLibrary.addSprite('powerup-ammo','images/power-ups/powerup_06.png', 100, 100, 0),
-        spriteLibrary.addSprite('powerup-permanentfire','images/power-ups/powerup_08.png', 100, 100, 0),
-        spriteLibrary.addSprite('game-background-1', 'images/backgrounds/background_02_parallax_01.png', 2448, 1936, 0)
+        spriteLibrary.addSprite('powerup-permanentfire','images/power-ups/powerup_08.png', 100, 100, 0)
     ]).then(() => {
-
-        // antialiasing for canvas ;)
-        game.context.translate(0.5, 0.5);
 
         let backgroundSprite = spriteLibrary.sprites.get('game-background-1');
         game.setBackground(new Skin(backgroundSprite, 0));
 
-        let playerName = '';
-        while (!playerName) {
-            playerName = prompt("Please enter your name", "Rocket Warrior " + Math.round(Math.random() * 5000));
-        }
-
-        socket.emit(ADD_PLAYER, {
-            name: playerName
-//            color: '#00B806'
-        });
-
         socket.on(UPDATE_OBJECTS, function (objects) {
             game.objects.splice(0, game.objects.length);
-            for(let object in objects) {
-                let newObject = new FlyingObject(objects[object].type);
+
+            for (let object in objects) {
+                let newObject = new FlyingObject();
                 const sprite = spriteLibrary.sprites.get(objects[object].sprite.id);
                 newObject.id = objects[object].id;
-                newObject.x = objects[object].x * scaleX;
-                newObject.y = objects[object].y * scaleY;
-                newObject.damage = objects[object].damage;
-                newObject.size = objects[object].size * scaleX;
+                newObject.x = objects[object].x;
+                newObject.y = objects[object].y;
+                newObject.shield = objects[object].shield;
+                newObject.size = objects[object].size;
                 newObject.context = game.context;
-                newObject.label = objects[object].label;
-                newObject.color = objects[object].color;
+                newObject.player = objects[object].player;
                 newObject.visible = objects[object].visible;
                 newObject.rotation = objects[object].rotation;
-                newObject.skin = new Skin(sprite, objects[object].sprite.currentFrame, objects[object].sprite.alpha);
+                newObject.unicode = objects[object].unicode;
+                newObject.skin = new Skin(sprite, objects[object].sprite.currentFrame);
 
                 game.addObject(newObject);
             }
@@ -75,7 +74,7 @@ import io from 'socket.io-client/socket.io.js';
         socket.on(UPDATE_PLAYERS, function (players) {
             game.players.splice(0, game.players.length);
 
-            for(let player in players) {
+            for (let player in players) {
                 game.addPlayer(new Player({
                     id: players[player].id,
                     name: players[player].name,
@@ -92,11 +91,11 @@ import io from 'socket.io-client/socket.io.js';
         });
 
         document.addEventListener('keydown', (event) => {
-            socket.emit('keydown', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
+            socket.emit('keydown', {player: socket.nsp + '#' + socket.id, keyCode: event.keyCode});
         });
 
         document.addEventListener('keyup', (event) => {
-            socket.emit('keyup', { player: socket.nsp + '#' + socket.id, keyCode: event.keyCode });
+            socket.emit('keyup', {player: socket.nsp + '#' + socket.id, keyCode: event.keyCode});
         });
 
         window.onresize = () => {
@@ -106,12 +105,5 @@ import io from 'socket.io-client/socket.io.js';
             scaleX = game.canvas.width / STAGE_WIDTH;
             scaleY = game.canvas.height / STAGE_HEIGHT;
         };
-
-
-
-
-
-
     });
-
 })();
