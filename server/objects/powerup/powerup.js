@@ -25,7 +25,7 @@ class PowerUp extends FlyingObject
         var duration = (new Date() - this.timeStart);
         var percent = duration / this.timeOut;
 
-        this.skin.frameSpeed = Math.round(((1 - percent) * 7) + 10);
+        this.skin.frameSpeed = Math.round(((1 - percent) * 20) + 10);
     }
 
     hit (object) {
