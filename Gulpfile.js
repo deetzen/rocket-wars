@@ -5,11 +5,55 @@ const buffer = require('vinyl-buffer');
 const source = require('vinyl-source-stream');
 const sourcemaps = require('gulp-sourcemaps');
 const uglify = require('gulp-uglify');
+const run = require('gulp-run');
+const cleanCSS = require('gulp-clean-css');
+const cleanHtml = require('gulp-cleanhtml');
 
-gulp.task('uglify', function() {
+gulp.task('npm', function (cb) {
+    gulp.src([
+        'package.json'
+    ])
+    .pipe(gulp.dest('dist'));
+
+    return run('cd dist && npm install --production')
+        .exec();
+});
+
+gulp.task('html', function(cb) {
+    gulp.src([
+        'src/client/*.html'
+    ])
+    .pipe(cleanHtml())
+    .pipe(gulp.dest('dist/client'));
+
+    cb();
+});
+
+gulp.task('css', function(cb) {
+    gulp.src([
+        'src/client/css/*',
+        'node_modules/bootstrap/dist/css/bootstrap.css'
+    ])
+    .pipe(cleanCSS())
+    .pipe(gulp.dest('dist/client/css'));
+
+    cb();
+});
+
+gulp.task('images', function(cb) {
+    gulp.src([
+        'src/client/images/**/*'
+    ])
+    .pipe(gulp.dest('dist/client/images'));
+
+    cb();
+});
+
+
+gulp.task('js:client', function(cb) {
 
     var clientBundler = browserify({
-        entries: ['client/js/app.js'],
+        entries: ['src/client/js/app.js'],
         debug: true
     });
     clientBundler.transform(babelify);
@@ -18,12 +62,12 @@ gulp.task('uglify', function() {
         .pipe(source('app.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify()) // Use any gulp plugins you want now
+        .pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('public/js'));
+        .pipe(gulp.dest('dist/client/js'));
 
     var mobileBundler = browserify({
-        entries: ['client/js/mobile.js'],
+        entries: ['src/client/js/mobile.js'],
         debug: true
     });
     mobileBundler.transform(babelify);
@@ -32,21 +76,49 @@ gulp.task('uglify', function() {
         .pipe(source('mobile.js'))
         .pipe(buffer())
         .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify()) // Use any gulp plugins you want now
+        .pipe(uglify())
         .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('public/js'));
+        .pipe(gulp.dest('dist/client/js'));
 
+    cb();
 });
 
-gulp.task('copy', function () {
-    return gulp.src(['client/**/*', '!client/js/**/*'])
-        .pipe(gulp.dest('public'));
+gulp.task('js:server', function (cb) {
+
+    gulp.src(['src/server/**/*'])
+        .pipe(gulp.dest('dist/server'));
+
+    gulp.src(['src/*.js'])
+        .pipe(gulp.dest('dist'));
+
+    cb();
 });
 
-gulp.task('build', ['copy', 'uglify']);
+gulp.task('sounds', function (cb) {
+    gulp.src([
+        'src/client/sounds/*'
+    ])
+    .pipe(gulp.dest('dist/client/sounds'));
+
+    cb();
+});
+
+
+gulp.task('build', ['js:server', 'js:client', 'css', 'html', 'images', 'sounds']);
 
 gulp.task('default', ['build']);
 
 gulp.task('watch', ['default'], function () {
-    gulp.watch(['./src/**/*'], ['build']);
+
+    gulp.watch(['src/client/css/**/*'], ['css']);
+    gulp.watch(['src/client/images/**/*'], ['images']);
+    gulp.watch(['src/client/js/**/*'], ['js:client']);
+    gulp.watch(['src/client/*.html'], ['html']);
+    gulp.watch(['src/client/sounds/*'], ['sounds']);
+
+    gulp.watch([
+        'src/*.js',
+        'src/server/**/*'
+    ], ['js:server']);
+
 });
