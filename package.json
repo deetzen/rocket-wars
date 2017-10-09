@@ -36,7 +36,7 @@
     "gulp-clean-css": "^3.9.0",
     "gulp-cleanhtml": "^1.0.1",
     "gulp-run": "^1.7.1",
-    "gulp-sourcemaps": "^1.12.0",
+    "gulp-sourcemaps": "^2.6.1",
     "gulp-uglify": "^3.0.0",
     "gulp-webserver": "^0.9.1",
     "vinyl-buffer": "^1.0.0",
