@@ -1,6 +1,8 @@
 # The Rocket-Wars
 > Canvas and socket based browser game.
 
+[![Code Climate](https://codeclimate.com/github/deetzen/rocket-wars/badges/gpa.svg)](https://codeclimate.com/github/deetzen/rocket-wars)
+
 Start your rocket into space and blast away your enemies.
  
 This simple game was written to try the performance of sockets and canvas in modern browsers.
