@@ -21,7 +21,7 @@ class Ammo extends FlyingObject {
   hit(object) {
     if (object.alive) {
       this.game.removeObject(this);
-      this.player.score++;
+      this.player.score += 1;
       object.damage++;
     }
 
@@ -29,10 +29,13 @@ class Ammo extends FlyingObject {
   }
 
   checkValid() {
-    let stageWidth = this.stage.width;
-    let stageHeight = this.stage.height;
+    const stageWidth = this.stage.width;
+    const stageHeight = this.stage.height;
 
-    if (this.position.x >= stageWidth || this.position.x <= 0 || this.position.y >= stageHeight || this.position.y <= 0) {
+    if (this.position.x >= stageWidth
+      || this.position.x <= 0
+      || this.position.y >= stageHeight
+      || this.position.y <= 0) {
       this.game.removeObject(this);
     }
 
