@@ -9,98 +9,96 @@ const run = require('gulp-run');
 const cleanCSS = require('gulp-clean-css');
 const cleanHtml = require('gulp-cleanhtml');
 
-gulp.task('npm', function (cb) {
-    gulp.src([
-        'package.json'
-    ])
+gulp.task('npm', () => {
+  gulp.src([
+    'package.json',
+  ])
     .pipe(gulp.dest('dist'));
 
-    return run('cd dist && npm install --production')
-        .exec();
+  return run('cd dist && npm install --production')
+    .exec();
 });
 
-gulp.task('html', function(cb) {
-    gulp.src([
-        'src/client/*.html'
-    ])
+gulp.task('html', (cb) => {
+  gulp.src([
+    'src/client/*.html',
+  ])
     .pipe(cleanHtml())
     .pipe(gulp.dest('dist/client'));
 
-    cb();
+  cb();
 });
 
-gulp.task('css', function(cb) {
-    gulp.src([
-        'src/client/css/*',
-        'node_modules/bootstrap/dist/css/bootstrap.css'
-    ])
+gulp.task('css', (cb) => {
+  gulp.src([
+    'src/client/css/*',
+    'node_modules/bootstrap/dist/css/bootstrap.css',
+  ])
     .pipe(cleanCSS())
     .pipe(gulp.dest('dist/client/css'));
 
-    cb();
+  cb();
 });
 
-gulp.task('images', function(cb) {
-    gulp.src([
-        'src/client/images/**/*'
-    ])
+gulp.task('images', (cb) => {
+  gulp.src([
+    'src/client/images/**/*',
+  ])
     .pipe(gulp.dest('dist/client/images'));
 
-    cb();
+  cb();
 });
 
 
-gulp.task('js:client', function(cb) {
+gulp.task('js:client', (cb) => {
+  const clientBundler = browserify({
+    entries: ['src/client/js/app.js'],
+    debug: true,
+  });
+  clientBundler.transform(babelify);
+  clientBundler.bundle()
+    .on('error', (err) => { console.error(err); })
+    .pipe(source('app.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist/client/js'));
 
-    var clientBundler = browserify({
-        entries: ['src/client/js/app.js'],
-        debug: true
-    });
-    clientBundler.transform(babelify);
-    clientBundler.bundle()
-        .on('error', function (err) { console.error(err); })
-        .pipe(source('app.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist/client/js'));
+  const mobileBundler = browserify({
+    entries: ['src/client/js/mobile.js'],
+    debug: true,
+  });
+  mobileBundler.transform(babelify);
+  mobileBundler.bundle()
+    .on('error', (err) => { console.error(err); })
+    .pipe(source('mobile.js'))
+    .pipe(buffer())
+    .pipe(sourcemaps.init({ loadMaps: true }))
+    .pipe(uglify())
+    .pipe(sourcemaps.write('./'))
+    .pipe(gulp.dest('dist/client/js'));
 
-    var mobileBundler = browserify({
-        entries: ['src/client/js/mobile.js'],
-        debug: true
-    });
-    mobileBundler.transform(babelify);
-    mobileBundler.bundle()
-        .on('error', function (err) { console.error(err); })
-        .pipe(source('mobile.js'))
-        .pipe(buffer())
-        .pipe(sourcemaps.init({ loadMaps: true }))
-        .pipe(uglify())
-        .pipe(sourcemaps.write('./'))
-        .pipe(gulp.dest('dist/client/js'));
-
-    cb();
+  cb();
 });
 
-gulp.task('js:server', function (cb) {
+gulp.task('js:server', (cb) => {
+  gulp.src(['src/server/**/*'])
+    .pipe(gulp.dest('dist/server'));
 
-    gulp.src(['src/server/**/*'])
-        .pipe(gulp.dest('dist/server'));
+  gulp.src(['src/*.js'])
+    .pipe(gulp.dest('dist'));
 
-    gulp.src(['src/*.js'])
-        .pipe(gulp.dest('dist'));
-
-    cb();
+  cb();
 });
 
-gulp.task('sounds', function (cb) {
-    gulp.src([
-        'src/client/sounds/*'
-    ])
+gulp.task('sounds', (cb) => {
+  gulp.src([
+    'src/client/sounds/*',
+  ])
     .pipe(gulp.dest('dist/client/sounds'));
 
-    cb();
+  cb();
 });
 
 
@@ -108,17 +106,15 @@ gulp.task('build', ['js:server', 'js:client', 'css', 'html', 'images', 'sounds']
 
 gulp.task('default', ['build']);
 
-gulp.task('watch', ['default'], function () {
+gulp.task('watch', ['default'], () => {
+  gulp.watch(['src/client/css/**/*'], ['css']);
+  gulp.watch(['src/client/images/**/*'], ['images']);
+  gulp.watch(['src/client/js/**/*'], ['js:client']);
+  gulp.watch(['src/client/*.html'], ['html']);
+  gulp.watch(['src/client/sounds/*'], ['sounds']);
 
-    gulp.watch(['src/client/css/**/*'], ['css']);
-    gulp.watch(['src/client/images/**/*'], ['images']);
-    gulp.watch(['src/client/js/**/*'], ['js:client']);
-    gulp.watch(['src/client/*.html'], ['html']);
-    gulp.watch(['src/client/sounds/*'], ['sounds']);
-
-    gulp.watch([
-        'src/*.js',
-        'src/server/**/*'
-    ], ['js:server']);
-
+  gulp.watch([
+    'src/*.js',
+    'src/server/**/*',
+  ], ['js:server']);
 });

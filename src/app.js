@@ -1,101 +1,104 @@
-(function() {
-    'use strict';
+const register = require('babel-register');
 
-    let register = require('babel-register');
-    
-    let express = require('express');
-    let fs = require('fs');
+const express = require('express');
 
-    let app = express();
-    let http_server = require('http').Server(app);
+const app = express();
+const httpServer = require('http').Server(app);
 
-    let io = require('socket.io')(http_server);
+const io = require('socket.io')(httpServer);
 
-    let Player = require('./server/game/player').default;
-    let Game = require('./server/game/game').default;
-    let Stage = require('./server/game/stage').default;
-    let Sound = require('./server/game/sound').default;
+const Player = require('./server/game/player').default;
+const Game = require('./server/game/game').default;
+const Stage = require('./server/game/stage').default;
+const Sound = require('./server/game/sound').default;
 
-    let Keyboard = require('./server/game/keyboard').default;
-    let EVENTS = require('./events');
+const Keyboard = require('./server/game/keyboard').default;
+const EVENTS = require('./events');
 
-    let stage = new Stage();
-    let sound = new Sound(io);
+const stage = new Stage();
+const sound = new Sound(io);
 
-    let game = new Game(io, stage, sound);
-    game.start();
+const game = new Game(io, stage, sound);
+game.start();
 
-    http_server.listen(8442);
+httpServer
+  .listen(8442, () => {
+    console.log('server running: http://localhost:8442');
+  });
 
-    app.use(function(req, res, next) {
-        res.setHeader("X-Content-Type-Options", "nosniff");
-        res.setHeader("X-Frame-Options", "SAMEORIGIN");
-        res.setHeader("X-Xss-Protection", "1; mode=block");
-        res.setHeader("Strict-Transport-Security", "max-age=63072000; includeSubdomains; preload");
-        res.setHeader("Content-Security-Policy", "script-src 'self' http://localhost:* https://rocket-wars.de:* https://ajax.googleapis.com https://ssl.google-analytics.com 'sha256-wBhFPZwc6Udf8DqLnOu/HBPPqkoOveSyuhlS/nNXQo0='; object-src 'self'");
-        return next();
+app.use((req, res, next) => {
+  res.setHeader('X-Content-Type-Options', 'nosniff');
+  res.setHeader('X-Frame-Options', 'SAMEORIGIN');
+  res.setHeader('X-Xss-Protection', '1; mode=block');
+
+  return next();
+});
+
+app.use(express.static(`${__dirname}/client`));
+
+io.on('connect', (socket) => {
+  sound.setSocket(socket);
+
+  socket.on(EVENTS.ADD_PLAYER, (remotePlayer) => {
+    const player = new Player(stage, {
+      id: socket.id,
+      game,
+      name: remotePlayer.name,
+      color: remotePlayer.color,
+      keyboard: new Keyboard(38, 39, 40, 37, 32),
     });
 
-    app.use(express.static('client'));
+    game.addPlayer(player);
 
-    io.on('connect', function (socket) {
-        'use strict';
+    const result = { id: player.id, name: player.name, color: player.color };
 
-        sound.setSocket(socket);
+    io.emit(EVENTS.PLAYER_CREATED, result);
 
-        socket.on(EVENTS.ADD_PLAYER, function (remotePlayer) {
+    setInterval(() => {
+      if (player.keyboard.isDown(player.keyboard.keys.up.keyCode)) {
+        player.character.speedUp(player.keyboard.keys.up.percent);
+      }
+      if (player.keyboard.isDown(player.keyboard.keys.down.keyCode)) {
+        player.character.speedDown(player.keyboard.keys.down.percent);
+      }
+      if (player.keyboard.isDown(player.keyboard.keys.right.keyCode)) {
+        player.character.rotateRight(player.keyboard.keys.right.percent);
+      }
+      if (player.keyboard.isDown(player.keyboard.keys.left.keyCode)) {
+        player.character.rotateLeft(player.keyboard.keys.left.percent);
+      }
+      if (player.keyboard.isDown(player.keyboard.keys.fire.keyCode) && !player.character.isFiring) {
+        player.character.fire(player.keyboard.keys.fire.percent);
+      }
+    }, 10);
+  });
 
-            let player = new Player(stage, {
-                id: socket.id,
-                game: game,
-                name: remotePlayer.name,
-                color: remotePlayer.color,
-                keyboard: new Keyboard(38, 39, 40, 37, 32)
-            });
-
-            game.addPlayer(player);
-
-            var result = { id: player.id, name: player.name, color: player.color };
-
-            io.emit(EVENTS.PLAYER_CREATED, result);
-
-            setInterval(function () {
-                if(player.keyboard.isDown(player.keyboard.keys.up.keyCode)) { player.character.speedUp(player.keyboard.keys.up.percent); }
-                if(player.keyboard.isDown(player.keyboard.keys.down.keyCode)) { player.character.speedDown(player.keyboard.keys.down.percent); }
-                if(player.keyboard.isDown(player.keyboard.keys.right.keyCode)) { player.character.rotateRight(player.keyboard.keys.right.percent); }
-                if(player.keyboard.isDown(player.keyboard.keys.left.keyCode)) { player.character.rotateLeft(player.keyboard.keys.left.percent); }
-                if(player.keyboard.isDown(player.keyboard.keys.fire.keyCode) && !player.character.isFiring) { player.character.fire(player.keyboard.keys.fire.percent); }
-            }, 10);
-        });
-
-        socket.on(EVENTS.DISCONNECT, function() {
-            game.objects.forEach((object) => {
-                if (object.player && object.player.id === socket.id) {
-                    game.removeObject(object);
-                }
-            });
-            game.players.delete(socket.id);
-        });
-
-        socket.on(EVENTS.FIRE_REQUEST, function (data) {
-            game.objects.get(data).fire();
-        });
-
-        socket.on(EVENTS.KEYDOWN, function (event) {
-            if(game.players.has(event.player)) {
-                var player = game.players.get(event.player);
-                var keyboard = player.keyboard;
-                keyboard.onKeydown(event);
-            }
-        });
-
-        socket.on(EVENTS.KEYUP, function (event) {
-            if(game.players.has(event.player)) {
-                var player = game.players.get(event.player);
-                var keyboard = player.keyboard;
-                keyboard.onKeyup(event);
-            }
-        });
+  socket.on(EVENTS.DISCONNECT, () => {
+    game.objects.forEach((object) => {
+      if (object.player && object.player.id === socket.id) {
+        game.removeObject(object);
+      }
     });
+    game.players.delete(socket.id);
+  });
 
-})();
+  socket.on(EVENTS.FIRE_REQUEST, (data) => {
+    game.objects.get(data).fire();
+  });
+
+  socket.on(EVENTS.KEYDOWN, (event) => {
+    if (game.players.has(event.player)) {
+      const player = game.players.get(event.player);
+      const keyboard = player.keyboard;
+      keyboard.onKeydown(event);
+    }
+  });
+
+  socket.on(EVENTS.KEYUP, (event) => {
+    if (game.players.has(event.player)) {
+      const player = game.players.get(event.player);
+      const keyboard = player.keyboard;
+      keyboard.onKeyup(event);
+    }
+  });
+});
