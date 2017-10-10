@@ -18,9 +18,7 @@
       "name": "Christoph Weise"
     }, {
       "name": "Dennis Schneider"
-    }, {
-      "name": "Per Schippl"
-  }],
+    }],
   "devDependencies": {
   },
   "dependencies": {
