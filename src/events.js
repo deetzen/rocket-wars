@@ -1,13 +1,13 @@
-const PLAYER_CREATED = 'player created';
-const FIRE_REQUEST = 'fire request';
-const MOVE_PLAYER = 'move player';
+const PLAYER_CREATED = 'playercreated';
+const FIRE_REQUEST = 'firerequest';
+const MOVE_PLAYER = 'moveplayer';
 const KEYDOWN = 'keydown';
 const KEYUP = 'keyup';
-const ADD_PLAYER = 'add player';
-const UPDATE_OBJECTS = 'update objects';
-const UPDATE_PLAYERS = 'update players';
+const ADD_PLAYER = 'addplayer';
+const UPDATE_OBJECTS = 'updateobjects';
+const UPDATE_PLAYERS = 'updateplayers';
 const DISCONNECT = 'disconnect';
-const PLAY_SOUND = 'play sound';
+const PLAY_SOUND = 'playsound';
 
 module.exports = {
   PLAYER_CREATED,

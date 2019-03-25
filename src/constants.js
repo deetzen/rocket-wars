@@ -1,15 +1,15 @@
-const MIN_VELOCITY = 0;
+const MIN_VELOCITY = 2;
 const MAX_VELOCITY = 20;
-const ACCELERATION = 0.3;
-const CHARACTER_SIZE = 50;
-const FIRE_RATE = 200;
-const MAX_AMMO = 20;
+const ACCELERATION = 0.2;
+const CHARACTER_SIZE = 40;
+const FIRE_RATE = 300;
+const MAX_AMMO = 15;
 const HOSTNAME = '';
-const STAGE_WIDTH = 1500;
+const STAGE_WIDTH = 1300;
 const STAGE_HEIGHT = 844;
 const SHIELD_MAX_DAMAGE = 10;
-const ROTATE_LEFT = -1;
-const ROTATE_RIGHT = +1;
+const ROTATE_LEFT = -2;
+const ROTATE_RIGHT = +2;
 
 module.exports = {
   MIN_VELOCITY,

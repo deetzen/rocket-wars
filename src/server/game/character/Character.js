@@ -109,7 +109,7 @@ class Character extends Object {
     this.velocity = MIN_VELOCITY;
     this.skin = new Skin('rocket-1', 0, 0, 0);
     this.zIndex = 10;
-    this.size = this.size * 0.625;
+    this.size = CHARACTER_SIZE;
 
     this.shieldObject.visible = true;
     this.shieldObject.alive = true;
@@ -124,6 +124,7 @@ class Character extends Object {
     this.player.score = 0;
     this.velocity = this.velocity / 10;
     this.skin = new Skin('explosion', 0, 9, 6);
+
     setTimeout(this.respawn.bind(this), 2000);
 
     this.game.sound.play('explode');
