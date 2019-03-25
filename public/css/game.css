@@ -1,0 +1,112 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
+    background-image: url('../images/backgrounds/background_02_parallax_01.png');
+    background-size: cover;
+}
+body:before {
+    content: '';
+    z-index: 1;
+    display: block;
+    position: fixed;
+    width: 5076px;
+    height: 100vh;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background-image: url('../images/backgrounds/background_01_parallax_05.png');
+    background-size: contain;
+    background-repeat: repeat-x;
+    animation: slideRight 60s linear infinite;
+}
+body:after {
+    content: '';
+    z-index: 2;
+    display: block;
+    position: fixed;
+    width: 5076px;
+    height: 100vh;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background-image: url('../images/backgrounds/background_02_parallax_02.png');
+    background-size: contain;
+    background-repeat: repeat-x;
+    animation: slideLeft 120s linear infinite;
+}
+
+@keyframes slideLeft{
+  0%{
+    transform: translate3d(0, 0, 0);
+  }
+  100%{
+    transform: translate3d(-1692px, 0, 0);
+  }
+}
+
+@keyframes slideRight{
+  0%{
+    transform: translate3d(0, 0, 0);
+  }
+  100%{
+    transform: translate3d(1692px, 0, 0);
+    }
+}
+
+body {
+  display: table;
+  width: 100%;
+  height: 100%; /* For at least Firefox */
+  min-height: 100%;
+  -webkit-box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
+  box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
+  position: relative;
+  z-index: 100;
+}
+.wrapper {
+  position: relative;
+  z-index: 3;
+  display: table-cell;
+  vertical-align: middle;
+}
+
+h1 {
+  color: rgba(255, 255, 255, 0.7);
+  font-family: 'Bungee Shade';
+  font-size: 2em;
+  font-style: italic;
+  font-weight: normal;
+  margin-bottom: 1em;
+}
+h1 span {
+  display: block;
+  font-style: normal;
+  margin-top: 0.2em;
+  font-size: 2.5em;
+}
+
+input {
+  display: block;
+  margin: 30px auto;
+  padding: 10px 15px;
+}
+input[type=text] {
+  min-width: 300px;
+  text-align: center;
+  border: 1px solid #FFF;
+  background: #000;
+  color: #FFF;
+  font-size: 1.2em;
+}
+input[type=submit] {
+  background: rgba(255, 255, 255, 0.7);
+  border: 0;
+  font-size: 1.1em;
+  cursor: pointer;
+}

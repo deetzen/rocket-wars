@@ -1,12 +1,27 @@
-export const MIN_VELOCITY = 0;
-export const MAX_VELOCITY = 20;
-export const ACCELERATION = 0.3;
-export const CHARACTER_SIZE = 50;
-export const FIRE_RATE = 200;
-export const MAX_AMMO = 20;
-export const HOSTNAME = '';
-export const STAGE_WIDTH = 1500;
-export const STAGE_HEIGHT = 844;
-export const SHIELD_MAX_DAMAGE = 10;
-export const ROTATE_LEFT = -1;
-export const ROTATE_RIGHT = +1;
+const MIN_VELOCITY = 0;
+const MAX_VELOCITY = 20;
+const ACCELERATION = 0.3;
+const CHARACTER_SIZE = 50;
+const FIRE_RATE = 200;
+const MAX_AMMO = 20;
+const HOSTNAME = '';
+const STAGE_WIDTH = 1500;
+const STAGE_HEIGHT = 844;
+const SHIELD_MAX_DAMAGE = 10;
+const ROTATE_LEFT = -1;
+const ROTATE_RIGHT = +1;
+
+module.exports = {
+  MIN_VELOCITY,
+  MAX_VELOCITY,
+  ACCELERATION,
+  CHARACTER_SIZE,
+  FIRE_RATE,
+  MAX_AMMO,
+  HOSTNAME,
+  STAGE_WIDTH,
+  STAGE_HEIGHT,
+  SHIELD_MAX_DAMAGE,
+  ROTATE_LEFT,
+  ROTATE_RIGHT
+};

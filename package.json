@@ -2,47 +2,53 @@
   "name": "rocket-wars",
   "description": "A tiny browser game with rockets",
   "version": "0.1.0",
-  "private": true,
-  "homepage": "https://rocket-wars.de",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "author": {
     "name": "Matthias von Deetzen",
     "email": "hello@deetzen.de",
     "url": "https://deetzen.de"
   },
+  "homepage": "https://rocket-wars.de",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/deetzen/rocket-wars.git"
   },
-  "contributors": [{
+  "contributors": [
+    {
       "name": "Christoph Weise"
-    }, {
+    },
+    {
       "name": "Dennis Schneider"
-    }],
-  "devDependencies": {
+    }
+  ],
+  "installConfig": {
+    "pnp": true
   },
   "dependencies": {
-    "babel-register": "^6.9.0",
-    "babel-preset-es2015": "^6.6.0",
+    "buntstift": "^1.5.1",
+    "esm": "^3.2.20",
     "express": "^4.13.4",
+    "express-browserify": "^1.0.3",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
-    "babelify": "^7.3.0",
-    "browserify": "^14.4.0",
-    "gulp": "^3.9.1",
-    "gulp-babel": "^7.0.0",
-    "gulp-clean-css": "^3.9.0",
-    "gulp-cleanhtml": "^1.0.1",
-    "gulp-run": "^1.7.1",
-    "gulp-sourcemaps": "^2.6.1",
-    "gulp-uglify": "^3.0.0",
-    "gulp-webserver": "^0.9.1",
-    "vinyl-buffer": "^1.0.0",
-    "vinyl-source-stream": "^1.1.0",
-    "bootstrap": "^4.0.0-alpha.6"
+    "uuidv4": "^3.0.1"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.0",
+    "@babel/preset-env": "^7.4.2",
+    "babel-preset-es2015": "^6.24.1",
+    "babelify": "^10.0.0",
+    "browserify": "^16.2.3",
+    "nodemon": "^1.18.10",
+    "roboter": "^4.0.2"
+  },
+  "nodemonConfig": {
+    "ignore": ["public/**", "node_modules/*"]
   },
   "scripts": {
-    "start": "gulp && node dist/app",
-    "develop": "gulp watch"
+    "build": "browserify src/client/app.js -o public/js/app.js -t [ babelify --presets [ @babel/preset-env ] ]",
+    "start": "npm run build && node src/index.js",
+    "watch": "nodemon"
   }
 }
