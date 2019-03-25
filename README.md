@@ -2,10 +2,9 @@
 > Canvas and socket based browser game.
 
 [![Code Climate](https://codeclimate.com/github/deetzen/rocket-wars/badges/gpa.svg)](https://codeclimate.com/github/deetzen/rocket-wars)
-[![Dependency Status](https://gemnasium.com/badges/github.com/deetzen/rocket-wars.svg)](https://gemnasium.com/github.com/deetzen/rocket-wars)
 
 Start your rocket into space and blast away your enemies.
- 
+
 This simple game was written to try the performance of sockets and canvas in modern browsers.
 
 ## Installation
@@ -19,8 +18,8 @@ git clone https://github.com/deetzen/rocket-wars.git
 Install dependencies and start:
 
 ```sh
-yarn
-yarn run start
+npm install
+npm run start
 ```
 
 ## Development setup
@@ -28,7 +27,7 @@ yarn run start
 To make changes and directly see the results in the browser, run:
 
 ```sh
-yarn run develop
+npm run watch
 ```
 
 All changes to the source file will be transpiled on the fly.
