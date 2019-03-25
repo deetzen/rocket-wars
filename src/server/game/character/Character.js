@@ -85,7 +85,7 @@ class Character extends Object {
     if (this.velocity > (MIN_VELOCITY + ACCELERATION)) {
       this.velocity -= (percent / 100) * ACCELERATION;
     } else {
-      this.velocity = 0;
+      this.velocity = MIN_VELOCITY;
     }
   }
 

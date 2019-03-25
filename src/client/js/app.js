@@ -1,14 +1,14 @@
 import FlyingObject from './objects/flying-object';
 import Game from './game/game';
-import io from '../../node_modules/socket.io-client/dist/socket.io.js';
+import IoClient from 'socket.io-client/dist/socket.io.js';
 import Player from './game/player';
 import Skin from './sprite/skin';
 import SpriteLibrary from './sprite/library';
 
-import { HOSTNAME, STAGE_HEIGHT, STAGE_WIDTH } from '../constants';
-import { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } from '../events';
+import { HOSTNAME, STAGE_HEIGHT, STAGE_WIDTH } from '../../constants';
+import { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } from '../../events';
 
-const socket = io(HOSTNAME);
+const socket = new IoClient(HOSTNAME);
 const game = new Game(socket);
 
 const spriteLibrary = new SpriteLibrary();
@@ -16,7 +16,6 @@ let scaleX = 1;
 let scaleY = 1;
 
 Promise.all([
-  spriteLibrary.addSprite('game-background-1', 'images/backgrounds/background_02_parallax_01.png', 2448, 1936, 0),
   spriteLibrary.addSprite('shield', 'images/weapons/shield_frames.png', 280, 280, 135),
   spriteLibrary.addSprite('rocket-1', 'images/rocket1up_spr_strip5.png', 80, 71, 90),
   spriteLibrary.addSprite('bullet-1', 'images/playerbullet1_spr_strip6.png', 39, 70, 180),

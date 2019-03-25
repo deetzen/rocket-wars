@@ -1,5 +1,5 @@
-import { ADD_PLAYER } from '../../events';
-import { MAX_AMMO } from '../../constants';
+import { ADD_PLAYER } from '../../../events';
+import { MAX_AMMO } from '../../../constants';
 
 export default class {
   constructor (socket) {

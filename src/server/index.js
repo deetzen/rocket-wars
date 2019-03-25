@@ -14,19 +14,21 @@ const game = new Game(io);
 
 game.start();
 
-server.listen(8181, () => {
-  buntstift.info('server running: http://localhost:8181');
-});
-
 app.use((req, res, next) => {
   res.setHeader('X-Content-Type-Options', 'nosniff');
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-Xss-Protection', '1; mode=block');
 
+  res.header("Access-Control-Allow-Origin", "http://localhost:1234");
+  res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+  res.header("Access-Control-Allow-Credentials", "true");
+
   return next();
 });
 
-app.use(express.static(`${__dirname}/../../public`));
+server.listen(8181, () => {
+  buntstift.info('server running: http://localhost:8181');
+});
 
 io.on('connect', socketServer => {
   game.sound.setSocket(socketServer);

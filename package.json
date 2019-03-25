@@ -22,9 +22,6 @@
       "name": "Dennis Schneider"
     }
   ],
-  "installConfig": {
-    "pnp": true
-  },
   "dependencies": {
     "buntstift": "^1.5.1",
     "esm": "^3.2.20",
@@ -36,19 +33,30 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.0",
+    "@babel/node": "^7.2.2",
     "@babel/preset-env": "^7.4.2",
+    "babel-plugin-dynamic-import-node": "^2.2.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
+    "concurrently": "^4.1.0",
     "nodemon": "^1.18.10",
-    "roboter": "^4.0.2"
+    "parcel-bundler": "^1.12.3",
+    "parcel-plugin-imagemin": "^2.1.3",
+    "parcel-plugin-static-files-copy": "^2.0.0",
+    "roboter": "^4.0.2",
+    "sass": "^1.17.3"
   },
-  "nodemonConfig": {
-    "ignore": ["public/**", "node_modules/*"]
+  "staticFiles": {
+    "staticPath": "src/public",
+    "watcherGlob": "**"
   },
   "scripts": {
-    "build": "browserify src/client/app.js -o public/js/app.js -t [ babelify --presets [ @babel/preset-env ] ]",
-    "start": "npm run build && node src/index.js",
-    "watch": "nodemon"
+    "dev-frontend": "parcel src/client/index.html",
+    "dev-backend": "nodemon --exec babel-node src/server/index.js",
+    "dev": "concurrently --kill-others \"npm run dev-frontend\" \"npm run dev-backend\"",
+    "build": "parcel build src/client/index.html && parcel build src/server/index.js --target node",
+    "start": "npm run build && concurrently --kill-others \"node dist/index.js\" \"npx serve dist\""
   }
 }
