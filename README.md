@@ -1,6 +1,7 @@
 # The Rocket-Wars
 > Canvas and socket based browser game.
 
+[![GitHub license](https://img.shields.io/badge/license-MIT-blue.svg)](https://github.com/deetzen/rocket-wars/blob/develop/LICENSE.md)
 [![Code Climate](https://codeclimate.com/github/deetzen/rocket-wars/badges/gpa.svg)](https://codeclimate.com/github/deetzen/rocket-wars)
 
 Start your rocket into space and blast away your enemies.
