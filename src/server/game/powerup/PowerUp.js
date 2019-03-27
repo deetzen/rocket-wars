@@ -2,7 +2,7 @@ import Object from '../object/Object';
 
 import { CHARACTER_SIZE, STAGE_HEIGHT, STAGE_WIDTH } from '../../../constants';
 
-class PowerUp extends Object {
+export default class PowerUp extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 0;
@@ -48,5 +48,3 @@ class PowerUp extends Object {
     }
   }
 }
-
-export default PowerUp;

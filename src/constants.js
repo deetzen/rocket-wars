@@ -4,7 +4,7 @@ const ACCELERATION = 0.2;
 const CHARACTER_SIZE = 40;
 const FIRE_RATE = 300;
 const MAX_AMMO = 15;
-const HOSTNAME = ':8181';
+const SERVER_PORT = '8181';
 const STAGE_WIDTH = 1300;
 const STAGE_HEIGHT = 844;
 const SHIELD_MAX_DAMAGE = 10;
@@ -18,7 +18,7 @@ module.exports = {
   CHARACTER_SIZE,
   FIRE_RATE,
   MAX_AMMO,
-  HOSTNAME,
+  SERVER_PORT,
   STAGE_WIDTH,
   STAGE_HEIGHT,
   SHIELD_MAX_DAMAGE,

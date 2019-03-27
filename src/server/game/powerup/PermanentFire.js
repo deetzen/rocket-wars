@@ -1,7 +1,7 @@
 import PowerUp from './PowerUp';
 import Skin from '../../skin/Skin';
 
-class PermanentFire extends PowerUp {
+export default class PermanentFire extends PowerUp {
   constructor (stage, options) {
     super(stage, options);
     this.skin = new Skin('powerup-permanentfire', 1, 2, 15);
@@ -32,5 +32,3 @@ class PermanentFire extends PowerUp {
     super.remove();
   }
 }
-
-export default PermanentFire;

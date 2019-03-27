@@ -2,7 +2,7 @@ import Skin from '../../skin/Skin';
 import uuid from 'uuidv4';
 import Vector from '../../utils/Vector';
 
-class FlyingObject {
+export default class {
   constructor (stage, options) {
     const userId = uuid();
 
@@ -95,5 +95,3 @@ class FlyingObject {
     return true;
   }
 }
-
-export default FlyingObject;

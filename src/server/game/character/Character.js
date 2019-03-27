@@ -4,7 +4,7 @@ import Shield from './Shield';
 import Skin from '../../skin/Skin';
 import { ACCELERATION, CHARACTER_SIZE, FIRE_RATE, MAX_AMMO, MAX_VELOCITY, MIN_VELOCITY } from '../../../constants';
 
-class Character extends Object {
+export default class Character extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.alive = true;
@@ -130,5 +130,3 @@ class Character extends Object {
     this.game.sound.play('explode');
   }
 }
-
-export default Character;

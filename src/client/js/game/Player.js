@@ -1,4 +1,4 @@
-class Player {
+export default class Player {
   constructor (options) {
     this.id = options.id;
     this.name = options.name;
@@ -7,5 +7,3 @@ class Player {
     this.ammo = options.ammo;
   }
 }
-
-export default Player;

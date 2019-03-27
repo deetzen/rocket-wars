@@ -3,7 +3,7 @@ import Skin from '../../skin/Skin';
 
 import { ROTATE_LEFT, ROTATE_RIGHT, STAGE_HEIGHT, STAGE_WIDTH } from '../../../constants';
 
-class Asteroid extends Object {
+export default class Asteroid extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 1;
@@ -86,5 +86,3 @@ class Asteroid extends Object {
     }
   }
 }
-
-export default Asteroid;

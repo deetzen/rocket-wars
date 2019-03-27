@@ -1,7 +1,7 @@
 import { ADD_PLAYER } from '../../../events';
 import { MAX_AMMO } from '../../../constants';
 
-export default class {
+export default class Game {
   constructor (socket) {
     this.socket = socket;
     this.canvas = null;
@@ -53,7 +53,7 @@ export default class {
     }
 
     this.clearCanvas();
-    this.drawFlyingObjects();
+    this.drawObjects();
     this.drawHighscore();
     this.drawAmmo();
   }
@@ -144,7 +144,7 @@ export default class {
     }
   }
 
-  drawFlyingObjects () {
+  drawObjects () {
     if (this.objects) {
       for (let i = 0; i < this.objects.length; i++) {
         this.objects[i].draw();

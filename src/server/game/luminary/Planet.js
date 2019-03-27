@@ -1,7 +1,7 @@
 import Asteroid from './Asteroid';
 import Skin from '../../skin/Skin';
 
-class Planet extends Asteroid {
+export default class Planet extends Asteroid {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = Math.round(Math.random() * 0.4) + 0.2;
@@ -23,5 +23,3 @@ class Planet extends Asteroid {
     return this;
   }
 }
-
-export default Planet;

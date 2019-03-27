@@ -1,5 +1,4 @@
-class FlyingObject {
-
+export default class {
     constructor () {
         this.context = null;
         this.type = '';
@@ -43,6 +42,3 @@ class FlyingObject {
         this.context.fillText(this.label, this.x + (textWidth/2), this.y + ((this.size/2) * 1.9));
     }
 }
-
-export default FlyingObject;
-

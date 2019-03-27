@@ -1,7 +1,7 @@
 import Object from '../../object/Object';
 import Skin from '../../../skin/Skin';
 
-class Ammo extends Object {
+export default class Ammo extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.type = options.type;
@@ -42,5 +42,3 @@ class Ammo extends Object {
     return true;
   }
 }
-
-export default Ammo;

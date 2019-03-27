@@ -2,7 +2,7 @@ import Object from '../object/Object';
 import { SHIELD_MAX_DAMAGE } from '../../../constants';
 import Skin from '../../skin/Skin';
 
-class Shield extends Object {
+export default class Shield extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 0;
@@ -28,5 +28,3 @@ class Shield extends Object {
     }
   }
 }
-
-export default Shield;

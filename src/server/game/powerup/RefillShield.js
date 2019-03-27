@@ -1,7 +1,7 @@
 import PowerUp from './PowerUp';
 import Skin from '../../skin/Skin';
 
-class RefillShield extends PowerUp {
+export default class RefillShield extends PowerUp {
   constructor (stage, options) {
     super(stage, options);
     this.skin = new Skin('powerup-shield', 1, 2, 15);
@@ -19,5 +19,3 @@ class RefillShield extends PowerUp {
     this.game.sound.play('powerup-refillshield', true);
   }
 }
-
-export default RefillShield;

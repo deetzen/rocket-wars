@@ -1,5 +1,6 @@
 import buntstift from 'buntstift';
-import EVENTS from '../events';
+import { ADD_PLAYER, PLAYER_CREATED, DISCONNECT, FIRE_REQUEST, KEYDOWN, KEYUP } from '../events';
+import { SERVER_PORT } from '../constants';
 import express from 'express';
 import Game from './game/Game';
 import Player from './player/Player';
@@ -26,15 +27,15 @@ app.use((req, res, next) => {
   return next();
 });
 
-server.listen(8181, () => {
-  buntstift.info('server running: http://localhost:8181');
+server.listen(SERVER_PORT, () => {
+  buntstift.info('Backend running: http://localhost:8181');
 });
 
 io.on('connect', socketServer => {
   game.sound.setSocket(socketServer);
   game.sound.setIo(io);
 
-  socketServer.on(EVENTS.ADD_PLAYER, remotePlayer => {
+  socketServer.on(ADD_PLAYER, remotePlayer => {
     const player = new Player(game.stage, {
       id: socketServer.id,
       game,
@@ -46,7 +47,7 @@ io.on('connect', socketServer => {
 
     const result = { id: player.id, name: player.name, color: player.color };
 
-    io.emit(EVENTS.PLAYER_CREATED, result);
+    io.emit(PLAYER_CREATED, result);
 
     setInterval(() => {
       if (player.keyboard.isDown(player.keyboard.keys.up.keyCode)) {
@@ -67,7 +68,7 @@ io.on('connect', socketServer => {
     }, 10);
   });
 
-  socketServer.on(EVENTS.DISCONNECT, () => {
+  socketServer.on(DISCONNECT, () => {
     game.objects.forEach(object => {
       if (object.player && object.player.id === socketServer.id) {
         game.removeObject(object);
@@ -76,11 +77,11 @@ io.on('connect', socketServer => {
     game.players.delete(socketServer.id);
   });
 
-  socketServer.on(EVENTS.FIRE_REQUEST, data => {
+  socketServer.on(FIRE_REQUEST, data => {
     game.objects.get(data).fire();
   });
 
-  socketServer.on(EVENTS.KEYDOWN, event => {
+  socketServer.on(KEYDOWN, event => {
     if (game.players.has(event.player)) {
       const player = game.players.get(event.player);
       const keyboard = player.keyboard;
@@ -89,7 +90,7 @@ io.on('connect', socketServer => {
     }
   });
 
-  socketServer.on(EVENTS.KEYUP, event => {
+  socketServer.on(KEYUP, event => {
     if (game.players.has(event.player)) {
       const player = game.players.get(event.player);
       const keyboard = player.keyboard;

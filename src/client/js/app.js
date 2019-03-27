@@ -1,14 +1,14 @@
-import FlyingObject from './objects/flying-object';
-import Game from './game/game';
+import Object from './object/Object';
+import Game from './game/Game';
 import IoClient from 'socket.io-client/dist/socket.io.js';
-import Player from './game/player';
-import Skin from './sprite/skin';
-import SpriteLibrary from './sprite/library';
+import Player from './game/Player';
+import Skin from './sprite/Skin';
+import SpriteLibrary from './sprite/SpriteLibrary';
 
-import { HOSTNAME, STAGE_HEIGHT, STAGE_WIDTH } from '../../constants';
+import { SERVER_PORT, STAGE_HEIGHT, STAGE_WIDTH } from '../../constants';
 import { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } from '../../events';
 
-const socket = new IoClient(HOSTNAME);
+const socket = new IoClient(':'+SERVER_PORT);
 const game = new Game(socket);
 
 const spriteLibrary = new SpriteLibrary();
@@ -49,7 +49,7 @@ Promise.all([
 
         for (const object in objects) {
           if (objects) {
-            const newObject = new FlyingObject();
+            const newObject = new Object();
             const sprite = spriteLibrary.sprites.get(objects[object].sprite.id);
 
             newObject.id = objects[object].id;
