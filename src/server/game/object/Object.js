@@ -36,7 +36,7 @@ export default class {
     const dx = dn.length();
 
     if (dx > sr) {
-      return;
+      return this;
     }
 
     const sm = this.mass + obj.mass;
