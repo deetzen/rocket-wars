@@ -2,6 +2,9 @@ import Skin from '../../skin/Skin';
 import uuid from 'uuidv4';
 import Vector from '../../utils/Vector';
 
+export class Objects extends Map {
+}
+
 export default class {
   constructor (stage, options) {
     const userId = uuid();
@@ -58,6 +61,8 @@ export default class {
     obj.vector.tx(dn.multiply((((cr * this.mass) * (v1 - v2)) + (obj.mass * v2) + (this.mass * v1)) / sm));
 
     obj.hit(this);
+
+    return this;
   }
 
   update () {
@@ -81,6 +86,8 @@ export default class {
     if (this.skin) {
       this.skin.update();
     }
+
+    return this;
   }
 
   hit () {
@@ -92,6 +99,6 @@ export default class {
   }
 
   checkValid () { // eslint-disable-line class-methods-use-this
-    return true;
+    return this;
   }
 }

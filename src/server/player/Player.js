@@ -3,6 +3,9 @@ import Color from '../utils/Color';
 import Keyboard from './Keyboard';
 import { MAX_AMMO } from '../../constants';
 
+export class Players extends Map {
+}
+
 export default class Player {
   constructor (stage, options) {
     this.id = options.id;

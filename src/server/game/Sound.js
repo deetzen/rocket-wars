@@ -8,10 +8,14 @@ export default class Sound {
 
   setSocket (socket) {
     this.socket = socket;
+
+    return this;
   }
 
   setIo (io) {
     this.io = io;
+
+    return this;
   }
 
   play (sound, privateSound = false) {
@@ -20,5 +24,7 @@ export default class Sound {
     } else {
       this.io.emit(PLAY_SOUND, sound);
     }
+
+    return this;
   }
 }

@@ -17,6 +17,8 @@ export default class Planet extends Asteroid {
 
   rotate () {
     this.rotation += this.rotateDirection * 0.1;
+
+    return this;
   }
 
   hit () {

@@ -57,6 +57,8 @@ export default class Asteroid extends Object {
     if (this.skin) {
       this.skin.update();
     }
+
+    return this;
   }
 
   checkValid () {
@@ -69,11 +71,13 @@ export default class Asteroid extends Object {
       this.wasInScreen = true;
     }
 
-    return true;
+    return this;
   }
 
   rotate () {
     this.rotation += this.rotateDirection * 2.5;
+
+    return this;
   }
 
   hit () {
@@ -84,5 +88,7 @@ export default class Asteroid extends Object {
       this.skin.currentFrame = 0;
       this.game.removeObject(this);
     }
+
+    return this;
   }
 }

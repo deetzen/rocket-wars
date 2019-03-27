@@ -42,5 +42,7 @@ export default class Weapon {
     this.character.game.addObject(bullet);
 
     this.character.game.sound.play('shoot');
+
+    return this;
   }
 }

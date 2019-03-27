@@ -19,6 +19,8 @@ export default class Shield extends Object {
 
     this.skin.alpha = alpha > 0 ? alpha : 0;
     this.skin.update();
+
+    return this;
   }
 
   hit () {
@@ -26,5 +28,7 @@ export default class Shield extends Object {
       this.alive = false;
       this.visible = false;
     }
+
+    return this;
   }
 }

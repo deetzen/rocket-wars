@@ -16,6 +16,8 @@ export default class Ammo extends Object {
   draw () {
     this.checkValid();
     this.skin.update();
+
+    return this;
   }
 
   hit (object) {
@@ -26,6 +28,8 @@ export default class Ammo extends Object {
     }
 
     this.game.sound.play('hit');
+
+    return this;
   }
 
   checkValid () {
@@ -39,6 +43,6 @@ export default class Ammo extends Object {
       this.game.removeObject(this);
     }
 
-    return true;
+    return this;
   }
 }

@@ -41,6 +41,7 @@
     "babelify": "^10.0.0",
     "browserify": "^16.2.3",
     "concurrently": "^4.1.0",
+    "madge": "^3.4.4",
     "nodemon": "^1.18.10",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-imagemin": "^2.1.3",

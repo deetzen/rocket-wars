@@ -25,10 +25,14 @@ export default class PermanentFire extends PowerUp {
     }
     super.hit();
     this.game.sound.play('powerup-permanentfire', true);
+
+    return this;
   }
 
   remove () {
     clearInterval(this.interval);
     super.remove();
+    
+    return this;
   }
 }

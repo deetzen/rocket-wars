@@ -14,5 +14,7 @@ export default class RefillAmmo extends PowerUp {
       object.player.ammo = MAX_AMMO;
     }
     this.game.sound.play('powerup-refillammo', true);
+
+    return this;
   }
 }

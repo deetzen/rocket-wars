@@ -50,6 +50,8 @@ export default class Character extends Object {
       this.shieldObject.visible = this.alive;
       this.shieldObject.update();
     }
+
+    return this;
   }
 
   fire () {
@@ -61,16 +63,22 @@ export default class Character extends Object {
       this.isFiring = true;
       this.weapons[this.activeWeapon].fire();
     }
+
+    return this;
   }
 
   rotateRight (percent = 100) {
     this.rotation += (percent / 100) * 2;
     this.direction = this.rotation;
+
+    return this;
   }
 
   rotateLeft (percent = 100) {
     this.rotation -= (percent / 100) * 2;
     this.direction = this.rotation;
+
+    return this;
   }
 
   speedUp (percent = 100) {
@@ -79,6 +87,8 @@ export default class Character extends Object {
     } else {
       this.velocity = MAX_VELOCITY;
     }
+
+    return this;
   }
 
   speedDown (percent = 100) {
@@ -87,6 +97,8 @@ export default class Character extends Object {
     } else {
       this.velocity = MIN_VELOCITY;
     }
+
+    return this;
   }
 
   hit (object) {
@@ -96,6 +108,8 @@ export default class Character extends Object {
         object.player.score += 3;
       }
     }
+
+    return this;
   }
 
   respawn () {
@@ -114,6 +128,8 @@ export default class Character extends Object {
     this.shieldObject.visible = true;
     this.shieldObject.alive = true;
     this.shieldObject.damage = 0;
+
+    return this;
   }
 
   destroy () {
@@ -128,5 +144,7 @@ export default class Character extends Object {
     setTimeout(this.respawn.bind(this), 2000);
 
     this.game.sound.play('explode');
+
+    return this;
   }
 }

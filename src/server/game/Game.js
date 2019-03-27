@@ -1,6 +1,8 @@
 import ObjectEmitter from './object/Emitter';
 import Sound from './Sound';
 import Stage from './Stage';
+import { Players } from '../player/Player';
+import { Objects } from './object/Object';
 import { UPDATE_OBJECTS, UPDATE_PLAYERS } from '../../events';
 
 export default class Game {
@@ -9,8 +11,8 @@ export default class Game {
     this.stage = new Stage();
     this.sound = new Sound();
 
-    this.players = new Map();
-    this.objects = new Map();
+    this.players = new Players();
+    this.objects = new Objects();
   }
 
   start () {
@@ -43,8 +45,9 @@ export default class Game {
   updateObjects () {
     if (this.objects.size > 0) {
       this.objects.forEach(object => {
-        object.update();
-        object.checkValid();
+        object
+          .update()
+          .checkValid();
       });
     }
     this.collide();

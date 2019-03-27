@@ -9,13 +9,19 @@ export default class RefillShield extends PowerUp {
 
   hit (object) {
     object.damage = 0;
+
     if (object.shieldObject) {
       object.shieldObject.damage = 0;
     }
+
     if (object.character) {
       object.character.damage = 0;
     }
+
     super.hit();
+
     this.game.sound.play('powerup-refillshield', true);
+
+    return this;
   }
 }

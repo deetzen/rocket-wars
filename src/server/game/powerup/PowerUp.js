@@ -28,6 +28,8 @@ export default class PowerUp extends Object {
     const percent = duration / this.timeOut;
 
     this.skin.frameSpeed = Math.round(((1 - percent) * 20) + 10);
+
+    return this;
   }
 
   hit () {
@@ -37,6 +39,8 @@ export default class PowerUp extends Object {
         this.remove();
       }, 5000);
     }
+
+    return this;
   }
 
   remove () {
@@ -46,5 +50,7 @@ export default class PowerUp extends Object {
     if (this.game) {
       this.game.removeObject(this);
     }
+
+    return this;
   }
 }
