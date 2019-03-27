@@ -8,26 +8,11 @@ export default class Emitter {
   constructor (game) {
     this.game = game;
     this.objects = {
-      RefillAmmo: {
-        class: RefillAmmo,
-        weight: 0.5
-      },
-      PermanentFire: {
-        class: PermanentFire,
-        weight: 0.4
-      },
-      RefillShield: {
-        class: RefillShield,
-        weight: 0.3
-      },
-      Asteroid: {
-        class: Asteroid,
-        weight: 0.2
-      },
-      Planet: {
-        class: Planet,
-        weight: 0.3
-      }
+      RefillAmmo: { class: RefillAmmo, weight: 0.5 },
+      PermanentFire: { class: PermanentFire, weight: 0.4 },
+      RefillShield: { class: RefillShield, weight: 0.3 },
+      Asteroid: { class: Asteroid, weight: 0.2 },
+      Planet: { class: Planet, weight: 0.3 }
     };
   }
 
@@ -50,13 +35,10 @@ export default class Emitter {
     let weightSum = 0;
 
     for (const index in this.objects) {
-      if (this.objects) {
-        weightSum += this.objects[index].weight;
-        weightSum = Number(weightSum.toFixed(2));
+      weightSum += Number((this.objects[index].weight).toFixed(2));
 
-        if (randomNum <= weightSum) {
-          return { name: index, Class: this.objects[index].class };
-        }
+      if (randomNum <= weightSum) {
+        return { name: index, Class: this.objects[index].class };
       }
     }
 
