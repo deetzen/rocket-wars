@@ -53,8 +53,8 @@
     "watcherGlob": "**"
   },
   "scripts": {
-    "dev-frontend": "parcel src/client/index.html",
-    "dev-backend": "nodemon --exec node src/server/index.js --watch src/**",
+    "dev-frontend": "parcel src/client/index.html --open",
+    "dev-backend": "nodemon --exec node src/server/index.js --watch src/server/**",
     "dev": "concurrently --kill-others \"npm run dev-frontend\" \"npm run dev-backend\"",
     "build": "parcel build src/client/index.html && parcel build src/server/index.js --target node",
     "start": "npm run build && concurrently --kill-others \"node dist/index.js\" \"npx serve dist\"",
