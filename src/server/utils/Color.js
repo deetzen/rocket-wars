@@ -1,4 +1,6 @@
-export default class Color {
+'use strict';
+
+class Color {
   constructor () {
     this.hue = Math.random();
     this.goldenRatio = 0.618033988749895;
@@ -94,3 +96,5 @@ export default class Color {
     return rgb;
   }
 }
+
+module.exports = Color;

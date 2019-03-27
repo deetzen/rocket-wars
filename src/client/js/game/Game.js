@@ -1,7 +1,9 @@
-import { ADD_PLAYER } from '../../../events';
-import { MAX_AMMO } from '../../../constants';
+'use strict';
 
-export default class Game {
+const { ADD_PLAYER } = require('../../../events');
+const { MAX_AMMO } = require('../../../constants');
+
+class Game {
   constructor (socket) {
     this.socket = socket;
     this.canvas = null;
@@ -107,7 +109,8 @@ export default class Game {
 
     for (let i = 1; i <= playerList.length; i++) {
       if (playerList[i - 1]) {
-        const playerText = `${i}. ${playerList[i-1].name} [${playerList[i-1].score.toString()}]`;
+        const playerText = `${i}. ${playerList[i - 1].name} [${playerList[i - 1].score.toString()}]`;
+
         playerTextWidth = this.context.measureText(playerText).width > playerTextWidth ? this.context.measureText(playerText).width : playerTextWidth;
       }
     }
@@ -152,3 +155,5 @@ export default class Game {
     }
   }
 }
+
+module.exports = Game;

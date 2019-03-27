@@ -1,6 +1,8 @@
-import { PLAY_SOUND } from '../../events';
+'use strict';
 
-export default class Sound {
+const { PLAY_SOUND } = require('../../events');
+
+class Sound {
   constructor () {
     this.io = null;
     this.socket = null;
@@ -28,3 +30,5 @@ export default class Sound {
     return this;
   }
 }
+
+module.exports = Sound;

@@ -1,4 +1,6 @@
-export default class Skin {
+'use strict';
+
+class Skin {
   constructor (sprite, currentFrame, alpha = 1) {
     this.sprite = sprite;
     this.alpha = alpha;
@@ -35,3 +37,5 @@ export default class Skin {
     context.restore();
   }
 }
+
+module.exports = Skin;

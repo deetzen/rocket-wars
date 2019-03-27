@@ -1,4 +1,8 @@
-import Ammo from './Ammo';
+'use strict';
 
-export default class Bullet extends Ammo {
+const Ammo = require('./Ammo');
+
+class Bullet extends Ammo {
 }
+
+module.exports = Bullet;

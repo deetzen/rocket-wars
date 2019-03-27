@@ -1,8 +1,9 @@
-import Object from '../object/Object';
+'use strict';
 
-import { CHARACTER_SIZE, STAGE_HEIGHT, STAGE_WIDTH } from '../../../constants';
+const { Object } = require('../object/Object');
+const { CHARACTER_SIZE, STAGE_HEIGHT, STAGE_WIDTH } = require('../../../constants');
 
-export default class PowerUp extends Object {
+class PowerUp extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 0;
@@ -54,3 +55,5 @@ export default class PowerUp extends Object {
     return this;
   }
 }
+
+module.exports = PowerUp;

@@ -1,12 +1,15 @@
-import Asteroid from '../luminary/Asteroid';
-import PermanentFire from '../powerup/PermanentFire';
-import Planet from '../luminary/Planet';
-import RefillAmmo from '../powerup/RefillAmmo';
-import RefillShield from '../powerup/RefillShield';
+'use strict';
 
-export default class Emitter {
+const Asteroid = require('../luminary/Asteroid');
+const PermanentFire = require('../powerup/PermanentFire');
+const Planet = require('../luminary/Planet');
+const RefillAmmo = require('../powerup/RefillAmmo');
+const RefillShield = require('../powerup/RefillShield');
+
+class Emitter {
   constructor (game) {
     this.game = game;
+
     this.objects = {
       RefillAmmo: { class: RefillAmmo, weight: 0.5 },
       PermanentFire: { class: PermanentFire, weight: 0.4 },
@@ -35,10 +38,12 @@ export default class Emitter {
     let weightSum = 0;
 
     for (const index in this.objects) {
-      weightSum += Number((this.objects[index].weight).toFixed(2));
+      if (this.objects && this.objects[index]) {
+        weightSum += Number(this.objects[index].weight.toFixed(2));
 
-      if (randomNum <= weightSum) {
-        return { name: index, Class: this.objects[index].class };
+        if (randomNum <= weightSum) {
+          return { name: index, Class: this.objects[index].class };
+        }
       }
     }
 
@@ -64,3 +69,5 @@ export default class Emitter {
     }
   }
 }
+
+module.exports = Emitter;

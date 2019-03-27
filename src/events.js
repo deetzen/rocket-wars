@@ -1,3 +1,5 @@
+'use strict';
+
 const PLAYER_CREATED = 'playercreated';
 const FIRE_REQUEST = 'firerequest';
 const MOVE_PLAYER = 'moveplayer';

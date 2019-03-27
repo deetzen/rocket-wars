@@ -1,4 +1,6 @@
-export default class Player {
+'use strict';
+
+class Player {
   constructor (options) {
     this.id = options.id;
     this.name = options.name;
@@ -7,3 +9,5 @@ export default class Player {
     this.ammo = options.ammo;
   }
 }
+
+module.exports = Player;

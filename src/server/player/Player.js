@@ -1,12 +1,14 @@
-import Character from '../game/character/Character';
-import Color from '../utils/Color';
-import Keyboard from './Keyboard';
-import { MAX_AMMO } from '../../constants';
+'use strict';
 
-export class Players extends Map {
+const Character = require('../game/character/Character');
+const Color = require('../utils/Color');
+const Keyboard = require('./Keyboard');
+const { MAX_AMMO } = require('../../constants');
+
+class Players extends Map {
 }
 
-export default class Player {
+class Player {
   constructor (stage, options) {
     this.id = options.id;
     this.stage = stage;
@@ -41,3 +43,8 @@ export default class Player {
     }
   }
 }
+
+module.exports = {
+  Players,
+  Player
+};

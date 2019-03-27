@@ -1,9 +1,10 @@
-import Object from '../object/Object';
-import Skin from '../../skin/Skin';
+'use strict';
 
-import { ROTATE_LEFT, ROTATE_RIGHT, STAGE_HEIGHT, STAGE_WIDTH } from '../../../constants';
+const { Object } = require('../object/Object');
+const Skin = require('../../skin/Skin');
+const { ROTATE_LEFT, ROTATE_RIGHT, STAGE_HEIGHT, STAGE_WIDTH } = require('../../../constants');
 
-export default class Asteroid extends Object {
+class Asteroid extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 1;
@@ -92,3 +93,5 @@ export default class Asteroid extends Object {
     return this;
   }
 }
+
+module.exports = Asteroid;

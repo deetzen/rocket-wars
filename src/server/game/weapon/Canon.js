@@ -1,4 +1,8 @@
-import Weapon from './Weapon';
+'use strict';
 
-export default class Canon extends Weapon {
+const Weapon = require('./Weapon');
+
+class Canon extends Weapon {
 }
+
+module.exports = Canon;

@@ -1,3 +1,5 @@
+'use strict';
+
 const MIN_VELOCITY = 5;
 const MAX_VELOCITY = 20;
 const ACCELERATION = 0.2;

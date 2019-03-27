@@ -1,4 +1,6 @@
-export default class Skin {
+'use strict';
+
+class Skin {
   constructor (id, frameStart = 0, frameEnd = 0, frameSpeed = 0, alpha = 1) {
     this.id = id;
     this.currentFrame = frameStart;
@@ -17,3 +19,5 @@ export default class Skin {
     this.counter = (this.counter + 1) % this.frameSpeed;
   }
 }
+
+module.exports = Skin;

@@ -1,4 +1,6 @@
-export default class SpriteLibrary {
+'use strict';
+
+class SpriteLibrary {
   constructor () {
     this.sprites = new Map();
   }
@@ -30,3 +32,5 @@ export default class SpriteLibrary {
     });
   }
 }
+
+module.exports = SpriteLibrary;

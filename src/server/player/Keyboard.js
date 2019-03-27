@@ -1,4 +1,6 @@
-export default class Keyboard {
+'use strict';
+
+class Keyboard {
   constructor (up, right, down, left, fire) {
     this.keys = {
       up: { keyCode: up, percent: 100, pressed: false },
@@ -19,7 +21,7 @@ export default class Keyboard {
     return false;
   }
 
-  santitizePercent (percent) {
+  static santitizePercent (percent) {
     percent = percent > 100 ? 100 : percent;
     percent = percent < 0 ? 0 : percent;
 
@@ -27,7 +29,7 @@ export default class Keyboard {
   }
 
   onKeydown (event) {
-    let percent = this.santitizePercent(event.percent);
+    const percent = Keyboard.santitizePercent(event.percent);
 
     for (const i in this.keys) {
       if (this.keys[i].keyCode === event.keyCode) {
@@ -40,7 +42,7 @@ export default class Keyboard {
   }
 
   onKeyup (event) {
-    let percent = this.santitizePercent(event.percent);
+    const percent = this.santitizePercent(event.percent);
 
     for (const i in this.keys) {
       if (this.keys[i].keyCode === event.keyCode) {
@@ -52,3 +54,5 @@ export default class Keyboard {
     return this;
   }
 }
+
+module.exports = Keyboard;

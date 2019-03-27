@@ -1,14 +1,16 @@
-import Object from './object/Object';
-import Game from './game/Game';
-import IoClient from 'socket.io-client/dist/socket.io.js';
-import Player from './game/Player';
-import Skin from './sprite/Skin';
-import SpriteLibrary from './sprite/SpriteLibrary';
+'use strict';
 
-import { SERVER_PORT, STAGE_HEIGHT, STAGE_WIDTH } from '../../constants';
-import { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } from '../../events';
+const Object = require('./object/Object');
+const Game = require('./game/Game');
+const IoClient = require('socket.io-client/dist/socket.io.js');
+const Player = require('./game/Player');
+const Skin = require('./sprite/Skin');
+const SpriteLibrary = require('./sprite/SpriteLibrary');
 
-const socket = new IoClient(':'+SERVER_PORT);
+const { SERVER_PORT, STAGE_HEIGHT, STAGE_WIDTH } = require('../../constants');
+const { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } = require('../../events');
+
+const socket = new IoClient(`:${SERVER_PORT}`);
 const game = new Game(socket);
 
 const spriteLibrary = new SpriteLibrary();
@@ -94,12 +96,12 @@ Promise.all([
         snd.play();
       });
 
-      document.addEventListener('keydown', event => {
-        socket.emit('keydown', { player: socket.id, keyCode: event.keyCode, percent: 100 });
+      document.addEventListener('keydown', keyEvent => {
+        socket.emit('keydown', { player: socket.id, keyCode: keyEvent.keyCode, percent: 100 });
       });
 
-      document.addEventListener('keyup', event => {
-        socket.emit('keyup', { player: socket.id, keyCode: event.keyCode, percent: 100 });
+      document.addEventListener('keyup', keyEvent => {
+        socket.emit('keyup', { player: socket.id, keyCode: keyEvent.keyCode, percent: 100 });
       });
     }
 

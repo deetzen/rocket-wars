@@ -1,11 +1,13 @@
-import ObjectEmitter from './object/Emitter';
-import Sound from './Sound';
-import Stage from './Stage';
-import { Players } from '../player/Player';
-import { Objects } from './object/Object';
-import { UPDATE_OBJECTS, UPDATE_PLAYERS } from '../../events';
+'use strict';
 
-export default class Game {
+const ObjectEmitter = require('./object/Emitter');
+const Sound = require('./Sound');
+const Stage = require('./Stage');
+const { Players } = require('../player/Player');
+const { Objects } = require('./object/Object');
+const { UPDATE_OBJECTS, UPDATE_PLAYERS } = require('../../events');
+
+class Game {
   constructor (io) {
     this.io = io;
     this.stage = new Stage();
@@ -45,9 +47,9 @@ export default class Game {
   updateObjects () {
     if (this.objects.size > 0) {
       this.objects.forEach(object => {
-        object
-          .update()
-          .checkValid();
+        object.
+          update().
+          checkValid();
       });
     }
     this.collide();
@@ -136,3 +138,5 @@ export default class Game {
     });
   }
 }
+
+module.exports = Game;

@@ -1,5 +1,7 @@
-import { HOSTNAME } from '../../constants';
-import io from '../../../node_modules/socket.io-client/dist/socket.io.js';
+'use strict';
+
+const { HOSTNAME } = require('../../constants');
+const io = require('../../../node_modules/socket.io-client/dist/socket.io.js');
 
 const socket = io(HOSTNAME);
 

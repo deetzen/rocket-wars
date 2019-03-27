@@ -1,11 +1,13 @@
-import Skin from '../../skin/Skin';
-import uuid from 'uuidv4';
-import Vector from '../../utils/Vector';
+'use strict';
 
-export class Objects extends Map {
+const Skin = require('../../skin/Skin');
+const uuid = require('uuidv4');
+const Vector = require('../../utils/Vector');
+
+class Objects extends Map {
 }
 
-export default class {
+class Object {
   constructor (stage, options) {
     const userId = uuid();
 
@@ -102,3 +104,7 @@ export default class {
     return this;
   }
 }
+
+module.exports = {
+  Objects, Object
+};

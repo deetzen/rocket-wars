@@ -1,10 +1,12 @@
-import Canon from '../weapon/Canon';
-import Object from '../object/Object';
-import Shield from './Shield';
-import Skin from '../../skin/Skin';
-import { ACCELERATION, CHARACTER_SIZE, FIRE_RATE, MAX_AMMO, MAX_VELOCITY, MIN_VELOCITY } from '../../../constants';
+'use strict';
 
-export default class Character extends Object {
+const Canon = require('../weapon/Canon');
+const { Object } = require('../object/Object');
+const Shield = require('./Shield');
+const Skin = require('../../skin/Skin');
+const { ACCELERATION, CHARACTER_SIZE, FIRE_RATE, MAX_AMMO, MAX_VELOCITY, MIN_VELOCITY } = require('../../../constants');
+
+class Character extends Object {
   constructor (stage, options) {
     super(stage, options);
     this.alive = true;
@@ -148,3 +150,5 @@ export default class Character extends Object {
     return this;
   }
 }
+
+module.exports = Character;

@@ -1,7 +1,9 @@
-import PowerUp from './PowerUp';
-import Skin from '../../skin/Skin';
+'use strict';
 
-export default class PermanentFire extends PowerUp {
+const PowerUp = require('./PowerUp');
+const Skin = require('../../skin/Skin');
+
+class PermanentFire extends PowerUp {
   constructor (stage, options) {
     super(stage, options);
     this.skin = new Skin('powerup-permanentfire', 1, 2, 15);
@@ -32,7 +34,9 @@ export default class PermanentFire extends PowerUp {
   remove () {
     clearInterval(this.interval);
     super.remove();
-    
+
     return this;
   }
 }
+
+module.exports = PermanentFire;
