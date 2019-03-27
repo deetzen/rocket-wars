@@ -13,8 +13,8 @@ class Game {
   }
 
   start (playerName) {
-    while (!playerName) {
-      playerName = prompt('Please enter your player name', 'Rocket Warrior ' + Math.round(Math.random() * 5000));
+    if (!playerName) {
+      return this;
     }
 
     this.createCanvas();
@@ -25,6 +25,8 @@ class Game {
     this.socket.emit(ADD_PLAYER, {
       name: playerName
     });
+
+    return this;
   }
 
   createCanvas () {
@@ -37,36 +39,46 @@ class Game {
 
     this.context = this.canvas.getContext('2d');
     document.body.appendChild(this.canvas);
+
+    return this;
   }
 
   addPlayer (player) {
     this.players.push(player);
+
+    return this;
   }
 
   addObject (object) {
     object.game = this;
     this.objects.push(object);
+
+    return this;
   }
 
   // this happens within the server's update loop
   drawCanvas () {
     if (this.canvas === null) {
-      return;
+      return this;
     }
 
     this.clearCanvas();
     this.drawObjects();
     this.drawHighscore();
     this.drawAmmo();
+
+    return this;
   }
 
   clearCanvas () {
     this.context.clearRect(0, 0, this.canvas.width, this.canvas.height);
+
+    return this;
   }
 
   drawAmmo () {
     if (!this.players.length) {
-      return;
+      return this;
     }
 
     this.context.font = '14px Verdana';
@@ -92,6 +104,8 @@ class Game {
         i += 1;
       }
     }
+
+    return this;
   }
 
   drawHighscore () {
@@ -102,7 +116,7 @@ class Game {
     const playerList = this.players.slice(0);
     let playerTextWidth = 0;
 
-    playerList.sort((one, two) => one.score > two.score ? -1 : one.score < two.score ? 1 : 0);
+    playerList.sort((one, two) => two.score - one.score);
 
     this.context.font = '14px Verdana';
     this.context.shadowColor = 'rgba(0,0,0,0.5)';
@@ -145,6 +159,8 @@ class Game {
         j += 1;
       }
     }
+
+    return this;
   }
 
   drawObjects () {
@@ -153,6 +169,8 @@ class Game {
         this.objects[i].draw();
       }
     }
+
+    return this;
   }
 }
 
