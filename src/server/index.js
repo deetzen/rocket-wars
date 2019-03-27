@@ -74,6 +74,7 @@ io.on('connect', socketServer => {
         game.removeObject(object);
       }
     });
+
     game.players.delete(socketServer.id);
   });
 
