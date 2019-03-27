@@ -42,7 +42,7 @@ class Keyboard {
   }
 
   onKeyup (event) {
-    const percent = this.santitizePercent(event.percent);
+    const percent = Keyboard.santitizePercent(event.percent);
 
     for (const i in this.keys) {
       if (this.keys[i].keyCode === event.keyCode) {
