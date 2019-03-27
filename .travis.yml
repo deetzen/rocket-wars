@@ -6,3 +6,11 @@ node_js:
 cache:
   directories:
     - node_modules
+
+jobs:
+  include:
+    - stage: analyse
+      script: npm run analyse
+
+    - stage: test
+      script: npm run test
