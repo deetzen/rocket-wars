@@ -35,6 +35,8 @@ class Object {
     if (this.skin) {
       this.skin.draw(this.context, this.x, this.y, this.rotation, this.size);
     }
+
+    return this;
   }
 
   drawLabel () {
@@ -44,6 +46,8 @@ class Object {
     const textWidth = this.context.measureText(this.label).width;
 
     this.context.fillText(this.label, this.x + (textWidth / 2), this.y + ((this.size / 2) * 1.9));
+
+    return this;
   }
 }
 
