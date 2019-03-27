@@ -1,6 +1,6 @@
 'use strict';
 
-const Object = require('./object/Object');
+const GameObject = require('./object/Object');
 const Game = require('./game/Game');
 const IoClient = require('socket.io-client/dist/socket.io.js');
 const Player = require('./game/Player');
@@ -51,7 +51,7 @@ Promise.all([
 
         for (const object in objects) {
           if (objects) {
-            const newObject = new Object();
+            const newObject = new GameObject();
             const sprite = spriteLibrary.sprites.get(objects[object].sprite.id);
 
             newObject.id = objects[object].id;
