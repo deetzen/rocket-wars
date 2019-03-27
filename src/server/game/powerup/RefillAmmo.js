@@ -7,7 +7,7 @@ const Skin = require('../../skin/Skin');
 class RefillAmmo extends PowerUp {
   constructor (stage, options) {
     super(stage, options);
-    this.skin = new Skin('powerup-ammo', 1, 2, 15);
+    this.skin = new Skin('powerUpAmmo', 1, 2, 15);
   }
 
   hit (object) {
@@ -15,7 +15,7 @@ class RefillAmmo extends PowerUp {
     if (object.player) {
       object.player.ammo = MAX_AMMO;
     }
-    this.game.sound.play('powerup-refillammo', true);
+    this.game.sound.play('powerUpRefillAmmo', true);
 
     return this;
   }

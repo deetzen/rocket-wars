@@ -19,7 +19,7 @@ class Character extends Object {
     this.label = options.player.name;
     this.weapons = [ new Canon(stage, this.player, this) ];
     this.activeWeapon = 0;
-    this.skin = new Skin('rocket-1', 0, 0, 0);
+    this.skin = new Skin('rocket', 0, 0, 0);
     this.shieldObject = null;
     this.createShield();
   }

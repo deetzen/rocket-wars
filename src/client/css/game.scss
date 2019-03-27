@@ -27,7 +27,7 @@ body {
   color: #fff;
   text-align: center;
 
-  background-image: url('../../public/images/backgrounds/background_02_parallax_01.png');
+  background-image: url('../images/backgrounds/background_02_parallax_01.png');
   background-size: cover;
 
   display: table;
@@ -47,7 +47,7 @@ body {
       height: 100vh;
       top: 0; bottom: 0;
       left: 0; right: 0;
-      background-image: url('../../public/images/backgrounds/background_01_parallax_05.png');
+      background-image: url('../images/backgrounds/background_01_parallax_05.png');
       background-size: contain;
       background-repeat: repeat-x;
       animation: slideRight 60s linear infinite;
@@ -62,7 +62,7 @@ body {
       height: 100vh;
       top: 0; bottom: 0;
       left: 0; right: 0;
-      background-image: url('../../public/images/backgrounds/background_02_parallax_02.png');
+      background-image: url('../images/backgrounds/background_02_parallax_02.png');
       background-size: contain;
       background-repeat: repeat-x;
       animation: slideLeft 120s linear infinite;

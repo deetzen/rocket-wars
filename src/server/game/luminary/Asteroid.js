@@ -10,7 +10,7 @@ class Asteroid extends Object {
     this.velocity = 1;
     this.mass = 60;
     this.size = 150;
-    this.skin = new Skin('asteroid-7');
+    this.skin = new Skin('asteroid');
     this.currentFrame = 0;
     this.maxDamage = 10;
     this.zIndex = 2;

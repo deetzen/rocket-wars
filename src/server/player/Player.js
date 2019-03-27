@@ -1,7 +1,7 @@
 'use strict';
 
 const Character = require('../game/character/Character');
-const Color = require('../utils/Color');
+const Color = require('../../utils/Color');
 const Keyboard = require('./Keyboard');
 const { MAX_AMMO } = require('../../constants');
 

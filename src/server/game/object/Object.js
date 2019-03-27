@@ -2,7 +2,7 @@
 
 const Skin = require('../../skin/Skin');
 const uuid = require('uuidv4');
-const Vector = require('../../utils/Vector');
+const Vector = require('../../../utils/Vector');
 
 class Objects extends Map {
 }

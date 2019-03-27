@@ -14,7 +14,7 @@ class Planet extends Asteroid {
 
     const index = Math.round(Math.random() * 3) + 1;
 
-    this.skin = new Skin(`planet-${index}`);
+    this.skin = new Skin(`planet${index}`);
   }
 
   rotate () {

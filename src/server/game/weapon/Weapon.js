@@ -1,7 +1,7 @@
 'use strict';
 
 const Bullet = require('./ammo/Bullet');
-const Vector = require('../../utils/Vector');
+const Vector = require('../../../utils/Vector');
 
 class Weapon {
   constructor (stage, player, character) {

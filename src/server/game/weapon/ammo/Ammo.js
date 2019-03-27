@@ -12,7 +12,7 @@ class Ammo extends Object {
     this.size = 45;
     this.mass = 1;
     this.zIndex = 10;
-    this.skin = new Skin('bullet-1', 0, 5, 2);
+    this.skin = new Skin('bullet', 0, 5, 2);
   }
 
   draw () {

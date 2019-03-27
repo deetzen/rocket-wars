@@ -6,7 +6,7 @@ const Skin = require('../../skin/Skin');
 class RefillShield extends PowerUp {
   constructor (stage, options) {
     super(stage, options);
-    this.skin = new Skin('powerup-shield', 1, 2, 15);
+    this.skin = new Skin('powerUpShield', 1, 2, 15);
   }
 
   hit (object) {
@@ -22,7 +22,7 @@ class RefillShield extends PowerUp {
 
     super.hit();
 
-    this.game.sound.play('powerup-refillshield', true);
+    this.game.sound.play('powerUpRefillShield', true);
 
     return this;
   }

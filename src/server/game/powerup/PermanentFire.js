@@ -6,7 +6,7 @@ const Skin = require('../../skin/Skin');
 class PermanentFire extends PowerUp {
   constructor (stage, options) {
     super(stage, options);
-    this.skin = new Skin('powerup-permanentfire', 1, 2, 15);
+    this.skin = new Skin('powerUpPermanentFire', 1, 2, 15);
     this.interval = null;
   }
 
@@ -26,7 +26,7 @@ class PermanentFire extends PowerUp {
       }
     }
     super.hit();
-    this.game.sound.play('powerup-permanentfire', true);
+    this.game.sound.play('powerUpPermanentFire', true);
 
     return this;
   }

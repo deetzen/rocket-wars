@@ -24,13 +24,12 @@ Install dependencies and start:
 npm install
 npm run start
 ```
-
 ## Development setup
 
 To make changes and directly see the results in the browser, run:
 
 ```sh
-npm run watch
+npm run dev
 ```
 
 All changes to the source file will be transpiled on the fly.
