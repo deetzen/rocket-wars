@@ -1,16 +1,15 @@
 language: node_js
 
 node_js:
-  - "11"
+  - 11
+  - 10
+  - 9
+  - 8
 
 cache:
   directories:
     - node_modules
 
-jobs:
-  include:
-    - stage: analyse
-      script: npm run analyse
-
-    - stage: test
-      script: npm run test
+script:
+  - npm run analyse
+  - npm test
