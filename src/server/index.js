@@ -29,6 +29,8 @@ app.use((req, res, next) => {
   return next();
 });
 
+app.use('/', express.static(`${__dirname}`));
+
 server.listen(SERVER_PORT, () => {
   buntstift.info('Backend running: http://localhost:8181');
 });
