@@ -4,11 +4,11 @@ const GameObject = require('./object/Object');
 const Game = require('./game/Game');
 const IoClient = require('socket.io-client/dist/socket.io.js');
 const Player = require('./game/Player');
-const Sprite = require('./sprite/Sprite');
+const Skin = require('./skin/Skin');
 
 const { SERVER_PORT, STAGE_HEIGHT, STAGE_WIDTH } = require('../../constants');
 const { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } = require('../../events');
-const sprites = require('../../sprites');
+const sprites = require('./sprites');
 
 const socket = new IoClient(`:${SERVER_PORT}`);
 const game = new Game(socket);
@@ -51,7 +51,7 @@ const startGameFunction = event => {
           newObject.label = objects[object].label;
           newObject.rotation = objects[object].rotation;
           newObject.unicode = objects[object].unicode;
-          newObject.skin = new Sprite(sprite, objects[object].sprite.currentFrame, objects[object].sprite.alpha);
+          newObject.skin = new Skin(sprite, objects[object].sprite.currentFrame, objects[object].sprite.alpha);
 
           game.addObject(newObject);
         }
