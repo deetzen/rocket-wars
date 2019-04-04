@@ -7,11 +7,10 @@ const express = require('express');
 const Game = require('./game/Game');
 const { Player } = require('./player/Player');
 const { Server } = require('http');
-const socket = require('socket.io');
 
 const app = express();
 const server = new Server(app);
-const io = socket(server);
+const io = require('socket.io')(server);
 
 const game = new Game(io);
 
@@ -22,17 +21,13 @@ app.use((req, res, next) => {
   res.setHeader('X-Frame-Options', 'SAMEORIGIN');
   res.setHeader('X-Xss-Protection', '1; mode=block');
 
-  res.header('Access-Control-Allow-Origin', 'http://localhost:1234');
-  res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
-  res.header('Access-Control-Allow-Credentials', 'true');
-
   return next();
 });
 
 app.use('/', express.static(`${__dirname}`));
 
 server.listen(SERVER_PORT, () => {
-  buntstift.info('Backend running: http://localhost:8181');
+  buntstift.info(`Backend running: http://localhost:${SERVER_PORT}`);
 });
 
 io.on('connect', socketServer => {

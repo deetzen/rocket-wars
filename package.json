@@ -24,19 +24,20 @@
   ],
   "dependencies": {
     "buntstift": "^1.5.1",
-    "esm": "^3.2.20",
+    "esm": "^3.2.22",
     "express": "^4.13.4",
     "express-browserify": "^1.0.3",
     "images": "^3.0.2",
     "parcel": "^1.12.3",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
+    "socket.io-server": "^1.0.0-b",
     "sprites": "^0.2.3",
-    "uuidv4": "^3.0.1"
+    "uuidv4": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.0",
-    "@babel/preset-env": "^7.4.2",
+    "@babel/core": "^7.4.3",
+    "@babel/preset-env": "^7.4.3",
     "assertthat": "^2.0.3",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
@@ -45,19 +46,18 @@
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-imagemin": "^2.1.3",
     "parcel-plugin-static-files-copy": "^2.0.0",
-    "roboter": "^4.0.2",
-    "sass": "^1.17.3"
+    "roboter": "^4.0.3",
+    "sass": "^1.17.4"
   },
   "staticFiles": {
     "staticPath": "src/static",
     "watcherGlob": "**"
   },
   "scripts": {
-    "dev-frontend": "parcel src/client/index.html --open",
-    "dev-backend": "nodemon --exec node src/server/index.js --watch src/server/**",
-    "dev": "concurrently --kill-others \"npm run dev-frontend\" \"npm run dev-backend\"",
+    "dev-backend": "parcel watch src/client/index.html & parcel watch src/server/index.js --target node & nodemon --watch dist dist/index.js",
+    "dev": "npm run dev-backend",
     "build": "parcel build src/client/index.html && parcel build src/server/index.js --target node",
-    "start": "npm run build && concurrently --kill-others \"node dist/index.js\" \"npx serve dist\"",
+    "start": "npm run build && node dist/index.js",
     "test": "bot test",
     "analyse": "bot analyse"
   }
