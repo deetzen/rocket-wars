@@ -38,7 +38,7 @@
   "devDependencies": {
     "@babel/core": "^7.4.3",
     "@babel/preset-env": "^7.4.3",
-    "assertthat": "^2.0.3",
+    "assertthat": "^3.1.0",
     "babel-plugin-transform-runtime": "^6.23.0",
     "babel-preset-es2015": "^6.24.1",
     "concurrently": "^4.1.0",
@@ -46,7 +46,7 @@
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-imagemin": "^2.1.3",
     "parcel-plugin-static-files-copy": "^2.0.0",
-    "roboter": "^4.0.3",
+    "roboter": "^6.1.0",
     "sass": "^1.17.4"
   },
   "staticFiles": {
