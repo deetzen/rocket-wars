@@ -139,8 +139,7 @@
                 "npm-bundled",
                 "npm-no-pkg"
             ]
-        }
-        , "prefix": "https://github.com/deetzen/rocket-wars/tree/develop/"
+        },
+        "prefix": "https://github.com/deetzen/rocket-wars/tree/develop/"
     }
 }
-// generated: dependency-cruiser@4.23.0 on 2019-06-22T17:55:06.451Z

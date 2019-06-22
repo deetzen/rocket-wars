@@ -1,17 +1,17 @@
 'use strict';
 
-const IoClient = require('socket.io-client/dist/socket.io.js');
+const IoClient = require('socket.io-client');
 
 const GameObject = require('./classes/FlyingObject');
 const Game = require('./classes/Game');
 const Player = require('./classes/Player');
 const Skin = require('./classes/Skin');
 
-const { SERVER_PORT, STAGE_HEIGHT, STAGE_WIDTH } = require('../../constants');
+const { STAGE_HEIGHT, STAGE_WIDTH } = require('../../constants');
 const { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } = require('../../events');
 const sprites = require('./sprites');
 
-const socket = new IoClient(`:${SERVER_PORT}`);
+const socket = new IoClient('');
 const game = new Game(socket);
 
 let scaleX = 1;

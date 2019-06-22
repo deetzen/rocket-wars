@@ -1,8 +1,5 @@
 'use strict';
 
-const FlyingObjects = require('./Object/FlyingObjects');
-const Players = require('./Player/Players');
-
 const Sound = require('./Sound/Sound');
 const Stage = require('./Stage/Stage');
 
@@ -11,8 +8,8 @@ class Game {
     this.stage = new Stage();
     this.sound = new Sound();
 
-    this.objects = new FlyingObjects();
-    this.players = new Players();
+    this.objects = new Map();
+    this.players = new Map();
   }
 
   addPlayer (player) {
