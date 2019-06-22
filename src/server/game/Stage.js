@@ -1,7 +1,7 @@
-import {
+const {
   STAGE_HEIGHT,
   STAGE_WIDTH
-} from '../../constants';
+} = require('../../constants');
 
 class Stage {
   constructor () {
@@ -10,4 +10,4 @@ class Stage {
   }
 }
 
-export default Stage;
+module.exports = Stage;

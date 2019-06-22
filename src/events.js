@@ -1,3 +1,5 @@
+'use strict';
+
 const PLAYER_CREATED = 'playercreated';
 const FIRE_REQUEST = 'firerequest';
 const MOVE_PLAYER = 'moveplayer';
@@ -9,7 +11,7 @@ const UPDATE_PLAYERS = 'updateplayers';
 const DISCONNECT = 'disconnect';
 const PLAY_SOUND = 'playsound';
 
-export {
+module.exports = {
   PLAYER_CREATED,
   FIRE_REQUEST,
   MOVE_PLAYER,

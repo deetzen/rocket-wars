@@ -42,7 +42,7 @@
     "watcherGlob": "**"
   },
   "scripts": {
-    "start": "concurrently --kill-others \"parcel watch src/client/index.html\" \"node --experimental-modules src/server/index.mjs\"",
+    "start": "concurrently --kill-others \"parcel watch src/client/index.html\" \"node src/server/index\"",
     "build": "parcel build src/client/index.html && parcel build src/server/index.js --target node",
     "test": "bot test",
     "analyse": "bot analyse"

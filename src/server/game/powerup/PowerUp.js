@@ -1,5 +1,7 @@
-import Object from '../object/Object';
-import { CHARACTER_SIZE, STAGE_HEIGHT, STAGE_WIDTH } from '../../../constants';
+'use strict';
+
+const Object = require('../object/Object');
+const { CHARACTER_SIZE, STAGE_HEIGHT, STAGE_WIDTH } = require('../../../constants');
 
 class PowerUp extends Object {
   constructor (stage, options) {
@@ -54,4 +56,4 @@ class PowerUp extends Object {
   }
 }
 
-export default PowerUp;
+module.exports = PowerUp;

@@ -1,7 +1,9 @@
-import Character from './character/Character';
-import Color from '../../utils/Color';
-import Keyboard from './Keyboard';
-import { MAX_AMMO } from '../../constants';
+'use strict';
+
+const Character = require('./character/Character');
+const Color = require('../../utils/Color');
+const Keyboard = require('./Keyboard');
+const { MAX_AMMO } = require('../../constants');
 
 class Player {
   constructor (stage, options) {
@@ -38,4 +40,4 @@ class Player {
   }
 }
 
-export default Player;
+module.exports = Player;

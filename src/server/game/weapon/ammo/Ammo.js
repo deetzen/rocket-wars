@@ -1,5 +1,7 @@
-import Object from '../../object/Object';
-import Skin from '../../../skin/Skin';
+'use strict';
+
+const Object = require('../../object/Object');
+const Skin = require('../../../skin/Skin');
 
 class Ammo extends Object {
   constructor (stage, options) {
@@ -47,4 +49,4 @@ class Ammo extends Object {
   }
 }
 
-export default Ammo;
+module.exports = Ammo;

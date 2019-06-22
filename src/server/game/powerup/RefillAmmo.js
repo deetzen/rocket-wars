@@ -1,6 +1,8 @@
-import { MAX_AMMO } from '../../../constants';
-import PowerUp from './PowerUp';
-import Skin from '../../skin/Skin';
+'use strict';
+
+const { MAX_AMMO } = require('../../../constants');
+const PowerUp = require('./PowerUp');
+const Skin = require('../../skin/Skin');
 
 class RefillAmmo extends PowerUp {
   constructor (stage, options) {
@@ -19,4 +21,4 @@ class RefillAmmo extends PowerUp {
   }
 }
 
-export default RefillAmmo;
+module.exports = RefillAmmo;

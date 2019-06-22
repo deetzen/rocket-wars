@@ -1,3 +1,5 @@
+'use strict';
+
 class Color {
   constructor () {
     this.hue = Math.random();

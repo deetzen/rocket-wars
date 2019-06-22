@@ -1,9 +1,5 @@
 {
   extends: "es/node",
-  parserOptions: {
-    ecmaVersion: 6,
-    sourceType: "module",
-  },
   rules: {
     "no-param-reassign": "off",
   },

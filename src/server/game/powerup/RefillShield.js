@@ -1,5 +1,7 @@
-import PowerUp from './PowerUp';
-import Skin from '../../skin/Skin';
+'use strict';
+
+const PowerUp = require('./PowerUp');
+const Skin = require('../../skin/Skin');
 
 class RefillShield extends PowerUp {
   constructor (stage, options) {
@@ -26,4 +28,4 @@ class RefillShield extends PowerUp {
   }
 }
 
-export default RefillShield;
+module.exports = RefillShield;

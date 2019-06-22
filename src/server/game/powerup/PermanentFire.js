@@ -1,5 +1,7 @@
-import PowerUp from './PowerUp';
-import Skin from '../../skin/Skin';
+'use strict';
+
+const PowerUp = require('./PowerUp');
+const Skin = require('../../skin/Skin');
 
 class PermanentFire extends PowerUp {
   constructor (stage, options) {
@@ -37,4 +39,4 @@ class PermanentFire extends PowerUp {
   }
 }
 
-export default PermanentFire;
+module.exports = PermanentFire;

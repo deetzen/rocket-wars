@@ -1,3 +1,5 @@
+'use strict';
+
 class Keyboard {
   constructor () {
     this.keys = {
@@ -62,4 +64,4 @@ class Keyboard {
   }
 }
 
-export default Keyboard;
+module.exports = Keyboard;

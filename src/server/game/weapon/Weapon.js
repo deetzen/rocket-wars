@@ -1,5 +1,7 @@
-import Bullet from './ammo/Bullet';
-import Vector from '../../../utils/Vector';
+'use strict';
+
+const Bullet = require('./ammo/Bullet');
+const Vector = require('../../../utils/Vector');
 
 class Weapon {
   constructor (stage, player, character) {
@@ -47,4 +49,4 @@ class Weapon {
   }
 }
 
-export default Weapon;
+module.exports = Weapon;

@@ -1,7 +1,9 @@
-import {
+'use strict';
+
+const {
   UPDATE_OBJECTS,
   UPDATE_PLAYERS
-} from '../events';
+} = require('../events');
 
 class Timer {
   constructor (game, io) {
@@ -49,4 +51,4 @@ class Timer {
   }
 }
 
-export default Timer;
+module.exports = Timer;

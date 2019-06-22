@@ -1,8 +1,10 @@
-import Asteroid from '../luminary/Asteroid';
-import PermanentFire from '../powerup/PermanentFire';
-import Planet from '../luminary/Planet';
-import RefillAmmo from '../powerup/RefillAmmo';
-import RefillShield from '../powerup/RefillShield';
+'use strict';
+
+const Asteroid = require('../luminary/Asteroid');
+const PermanentFire = require('../powerup/PermanentFire');
+const Planet = require('../luminary/Planet');
+const RefillAmmo = require('../powerup/RefillAmmo');
+const RefillShield = require('../powerup/RefillShield');
 
 class Emitter {
   constructor (game) {
@@ -70,4 +72,4 @@ class Emitter {
   }
 }
 
-export default Emitter;
+module.exports = Emitter;

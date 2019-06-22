@@ -1,6 +1,8 @@
-import Object from '../object/Object';
-import { SHIELD_MAX_DAMAGE } from '../../../constants';
-import Skin from '../../skin/Skin';
+'use strict';
+
+const Object = require('../object/Object');
+const { SHIELD_MAX_DAMAGE } = require('../../../constants');
+const Skin = require('../../skin/Skin');
 
 class Shield extends Object {
   constructor (stage, options) {
@@ -33,4 +35,4 @@ class Shield extends Object {
   }
 }
 
-export default Shield;
+module.exports = Shield;

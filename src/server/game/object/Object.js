@@ -1,6 +1,8 @@
-import Skin from '../../skin/Skin';
-import uuid from 'uuidv4';
-import Vector from '../../../utils/Vector';
+'use strict';
+
+const Skin = require('../../skin/Skin');
+const uuid = require('uuidv4');
+const Vector = require('../../../utils/Vector');
 
 class Object {
   constructor (stage, options) {
@@ -108,4 +110,4 @@ class Object {
   }
 }
 
-export default Object;
+module.exports = Object;

@@ -1,4 +1,6 @@
-import { PLAY_SOUND } from '../../events';
+'use strict';
+
+const { PLAY_SOUND } = require('../../events');
 
 class Sound {
   constructor () {
@@ -29,4 +31,4 @@ class Sound {
   }
 }
 
-export default Sound;
+module.exports = Sound;

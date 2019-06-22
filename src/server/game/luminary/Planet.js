@@ -1,5 +1,7 @@
-import Asteroid from './Asteroid';
-import Skin from '../../skin/Skin';
+'use strict';
+
+const Asteroid = require('./Asteroid');
+const Skin = require('../../skin/Skin');
 
 class Planet extends Asteroid {
   constructor (stage, options) {
@@ -26,4 +28,4 @@ class Planet extends Asteroid {
   }
 }
 
-export default Planet;
+module.exports = Planet;

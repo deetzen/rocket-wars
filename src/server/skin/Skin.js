@@ -1,3 +1,5 @@
+'use strict';
+
 class Skin {
   constructor (id, frameStart = 0, frameEnd = 0, frameSpeed = 0, alpha = 1) {
     this.id = id;
@@ -18,4 +20,4 @@ class Skin {
   }
 }
 
-export default Skin;
+module.exports = Skin;

@@ -1,8 +1,10 @@
-import Objects from './object/Objects';
-import Players from './Players';
+'use strict';
 
-import Sound from './Sound';
-import Stage from './Stage';
+const Objects = require('./object/Objects');
+const Players = require('./Players');
+
+const Sound = require('./Sound');
+const Stage = require('./Stage');
 
 class Game {
   constructor () {
@@ -99,4 +101,4 @@ class Game {
   }
 }
 
-export default Game;
+module.exports = Game;

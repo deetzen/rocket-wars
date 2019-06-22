@@ -1,9 +1,13 @@
-import express from 'express';
-import Game from './game/Game';
-import listener from './listener';
-import path from 'path';
-import Server from './Server';
-import Timer from './Timer';
+'use strict';
+
+const express = require('express');
+const path = require('path');
+
+const Game = require('./game/Game');
+const Server = require('./Server');
+const Timer = require('./Timer');
+
+const listener = require('./listener');
 
 // Directory of static files for frontend
 const rootDir = path.resolve(path.dirname(''));

@@ -1,13 +1,15 @@
-import Player from './game/Player';
+'use strict';
 
-import {
+const Player = require('./game/Player');
+
+const {
   ADD_PLAYER,
   DISCONNECT,
   FIRE_REQUEST,
   KEYDOWN,
   KEYUP,
   PLAYER_CREATED
-} from '../events';
+} = require('../events');
 
 const listener = (game, io) => {
   io.on('connect', socketServer => {
@@ -81,4 +83,4 @@ const listener = (game, io) => {
   });
 };
 
-export default listener;
+module.exports = listener;
