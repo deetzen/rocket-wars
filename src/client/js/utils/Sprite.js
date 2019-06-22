@@ -1,5 +1,3 @@
-'use strict';
-
 class Sprite {
   constructor (src, frameHeight = 0, frameWidth = 0, rotation = 0) {
     const image = new Image();

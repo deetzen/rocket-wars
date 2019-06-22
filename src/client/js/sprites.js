@@ -1,5 +1,3 @@
-'use strict';
-
 const Sprite = require('./utils/Sprite');
 
 const shield = new Sprite('sprites/shield.png', 280, 280, 135);
@@ -30,7 +28,7 @@ const library = {
 
 module.exports = {
   library,
-  get: key => {
+  get (key) {
     if (library[key]) {
       return library[key];
     }

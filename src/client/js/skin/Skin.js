@@ -1,5 +1,3 @@
-'use strict';
-
 class Skin {
   constructor (sprite, currentFrame, alpha = 1) {
     this.sprite = sprite;
@@ -16,7 +14,7 @@ class Skin {
     const newWidth = this.sprite.frameWidth * scale;
     const newHeight = this.sprite.frameHeight * scale;
 
-    // get the row and col of the frame
+    // Get the row and col of the frame
     const row = Math.floor(this.sprite.animationSequence[this.currentFrame] / this.sprite.framesPerRow);
     const col = Math.floor(this.sprite.animationSequence[this.currentFrame] % this.sprite.framesPerRow);
 

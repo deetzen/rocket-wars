@@ -1,5 +1,3 @@
-'use strict';
-
 const { HOSTNAME } = require('../../constants');
 const io = require('../../../node_modules/socket.io-client/dist/socket.io.js');
 

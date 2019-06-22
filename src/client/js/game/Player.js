@@ -1,5 +1,3 @@
-'use strict';
-
 class Player {
   constructor (options) {
     this.id = options.id;

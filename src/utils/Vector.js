@@ -1,5 +1,3 @@
-'use strict';
-
 class Vector {
   constructor (x, y) {
     this.x = x;

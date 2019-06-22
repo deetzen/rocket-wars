@@ -1,5 +1,3 @@
-'use strict';
-
 const { ADD_PLAYER } = require('../../../events');
 const { MAX_AMMO } = require('../../../constants');
 
@@ -19,7 +17,7 @@ class Game {
 
     this.createCanvas();
 
-    // antialiasing for canvas ;)
+    // Antialiasing for canvas ;)
     this.context.translate(0.5, 0.5);
 
     this.socket.emit(ADD_PLAYER, {
@@ -30,7 +28,7 @@ class Game {
   }
 
   createCanvas () {
-    /* remove all and add game canvas */
+    /* Remove all and add game canvas */
     document.body.innerHTML = '';
 
     this.canvas = document.createElement('canvas');
@@ -56,7 +54,7 @@ class Game {
     return this;
   }
 
-  // this happens within the server's update loop
+  // This happens within the server's update loop
   drawCanvas () {
     if (this.canvas === null) {
       return this;
@@ -77,7 +75,7 @@ class Game {
   }
 
   drawAmmo () {
-    if (!this.players.length) {
+    if (this.players.length === 0) {
       return this;
     }
 
@@ -109,7 +107,7 @@ class Game {
   }
 
   drawHighscore () {
-    if (!this.players.length) {
+    if (this.players.length === 0) {
       return;
     }
 
@@ -131,7 +129,7 @@ class Game {
 
     this.context.fillStyle = 'rgba(255,255,255,0.8)';
 
-    let height = playerList.length * 20 + 10;
+    let height = (playerList.length * 20) + 10;
 
     height = height >= 90 ? 90 : height;
     this.context.fillRect(10, 10, playerTextWidth + 50, height);

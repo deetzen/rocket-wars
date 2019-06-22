@@ -1,5 +1,3 @@
-'use strict';
-
 const GameObject = require('./object/Object');
 const Game = require('./game/Game');
 const IoClient = require('socket.io-client/dist/socket.io.js');

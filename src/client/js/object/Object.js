@@ -1,5 +1,3 @@
-'use strict';
-
 class Object {
   constructor () {
     this.context = null;
