@@ -1,8 +1,11 @@
-const GameObject = require('./object/Object');
-const Game = require('./game/Game');
+'use strict';
+
 const IoClient = require('socket.io-client/dist/socket.io.js');
-const Player = require('./game/Player');
-const Skin = require('./skin/Skin');
+
+const GameObject = require('./classes/FlyingObject');
+const Game = require('./classes/Game');
+const Player = require('./classes/Player');
+const Skin = require('./classes/Skin');
 
 const { SERVER_PORT, STAGE_HEIGHT, STAGE_WIDTH } = require('../../constants');
 const { PLAY_SOUND, UPDATE_OBJECTS, UPDATE_PLAYERS } = require('../../events');

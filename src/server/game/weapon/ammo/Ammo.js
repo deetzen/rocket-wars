@@ -1,9 +1,9 @@
 'use strict';
 
-const Object = require('../../object/Object');
+const FlyingObject = require('../../object/FlyingObject');
 const Skin = require('../../../skin/Skin');
 
-class Ammo extends Object {
+class Ammo extends FlyingObject {
   constructor (stage, options) {
     super(stage, options);
     this.type = options.type;

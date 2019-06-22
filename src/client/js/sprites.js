@@ -1,4 +1,6 @@
-const Sprite = require('./utils/Sprite');
+'use strict';
+
+const Sprite = require('./classes/Sprite');
 
 const shield = new Sprite('sprites/shield.png', 280, 280, 135);
 const rocket = new Sprite('sprites/rocket.png', 80, 71, 90);

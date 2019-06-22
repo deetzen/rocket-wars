@@ -1,9 +1,9 @@
 'use strict';
 
-const Object = require('../object/Object');
+const FlyingObject = require('../object/Object');
 const { CHARACTER_SIZE, STAGE_HEIGHT, STAGE_WIDTH } = require('../../../constants');
 
-class PowerUp extends Object {
+class PowerUp extends FlyingObject {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 0;

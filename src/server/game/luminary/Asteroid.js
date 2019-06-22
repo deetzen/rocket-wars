@@ -1,6 +1,6 @@
 'use strict';
 
-const Object = require('../object/Object');
+const FlyingObject = require('../object/FlyingObject');
 const Skin = require('../../skin/Skin');
 
 const {
@@ -10,7 +10,7 @@ const {
   STAGE_WIDTH
 } = require('../../../constants');
 
-class Asteroid extends Object {
+class Asteroid extends FlyingObject {
   constructor (stage, options) {
     super(stage, options);
     this.velocity = 1;

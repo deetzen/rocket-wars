@@ -42,7 +42,7 @@ class Keyboard {
   }
 
   onKeydown (event) {
-    const percent = event.percent > 100 ? 100 : event.percent < 0 ? 0 : event.percent;
+    const percent = Math.min(Math.max(parseInt(event.percent, 10), 0), 100);
 
     for (const i in this.keys) {
       if (this.keys[i].keyCode === event.keyCode) {
@@ -53,7 +53,7 @@ class Keyboard {
   }
 
   onKeyup (event) {
-    const percent = event.percent > 100 ? 100 : event.percent < 0 ? 0 : event.percent;
+    const percent = Math.min(Math.max(parseInt(event.percent, 10), 0), 100);
 
     for (const i in this.keys) {
       if (this.keys[i].keyCode === event.keyCode) {

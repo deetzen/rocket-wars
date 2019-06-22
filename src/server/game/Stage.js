@@ -1,3 +1,5 @@
+'use strict';
+
 const {
   STAGE_HEIGHT,
   STAGE_WIDTH
