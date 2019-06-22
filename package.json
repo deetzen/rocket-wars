@@ -14,20 +14,16 @@
     "type": "git",
     "url": "https://github.com/deetzen/rocket-wars.git"
   },
-  "contributors": [
-    {
-      "name": "Christoph Weise"
-    },
-    {
+  "contributors": [{
+    "name": "Christoph Weise"
+  }, {
       "name": "Dennis Schneider"
-    }
-  ],
+  }],
   "dependencies": {
     "buntstift": "^1.5.1",
     "express": "^4.13.4",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
-    "socket.io-server": "^1.0.0-b",
     "uuidv4": "^4.0.0"
   },
   "devDependencies": {
