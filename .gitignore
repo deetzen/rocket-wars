@@ -1,5 +1,5 @@
-.idea/
-/node_modules/
-public/
-dist/
-yarn.lock
+.idea
+.cache
+node_modules
+dist
+*.log

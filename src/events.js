@@ -1,10 +1,25 @@
-export const PLAYER_CREATED = 'player created';
-export const FIRE_REQUEST = 'fire request';
-export const MOVE_PLAYER = 'move player';
-export const KEYDOWN = 'keydown';
-export const KEYUP = 'keyup';
-export const ADD_PLAYER = 'add player';
-export const UPDATE_OBJECTS = 'update objects';
-export const UPDATE_PLAYERS = 'update players';
-export const DISCONNECT = 'disconnect';
-export const PLAY_SOUND = 'play sound';
+'use strict';
+
+const PLAYER_CREATED = 'playercreated';
+const FIRE_REQUEST = 'firerequest';
+const MOVE_PLAYER = 'moveplayer';
+const KEYDOWN = 'keydown';
+const KEYUP = 'keyup';
+const ADD_PLAYER = 'addplayer';
+const UPDATE_OBJECTS = 'updateobjects';
+const UPDATE_PLAYERS = 'updateplayers';
+const DISCONNECT = 'disconnect';
+const PLAY_SOUND = 'playsound';
+
+module.exports = {
+  PLAYER_CREATED,
+  FIRE_REQUEST,
+  MOVE_PLAYER,
+  KEYDOWN,
+  KEYUP,
+  ADD_PLAYER,
+  UPDATE_OBJECTS,
+  UPDATE_PLAYERS,
+  DISCONNECT,
+  PLAY_SOUND
+};

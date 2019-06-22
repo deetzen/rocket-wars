@@ -1,25 +1,22 @@
-import {HOSTNAME} from '../../constants';
-import io from '../../../node_modules/socket.io-client/dist/socket.io.js';
+'use strict';
 
-(function() {
-    'use strict';
+const { HOSTNAME } = require('../../constants');
+const io = require('../../../node_modules/socket.io-client/dist/socket.io.js');
 
-    let socket = io(HOSTNAME);
+const socket = io(HOSTNAME);
 
-    socket.emit('add player', {
-        name: "Rocket Warrior " + Math.round(Math.random() * 5000)
-    });
+socket.emit('add player', {
+  name: `Rocket Warrior ${Math.round(Math.random() * 5000)}`
+});
 
-    document.addEventListener('devicemotion', function (e) {
-        console.log(e.acceleration);
-        document.getElementById('content').innerHTML = e.acceleration;
-    }, true);
+document.addEventListener('devicemotion', event => {
+  document.getElementById('content').innerHTML = event.acceleration;
+}, true);
 
-    document.addEventListener('touchend', function (e) {
-        socket.emit('keyup', { player: socket.id, keyCode: 32, percent: 100 });
-    });
+document.addEventListener('touchend', () => {
+  socket.emit('keyup', { player: socket.id, keyCode: 32, percent: 100 });
+});
 
-    document.addEventListener('touchstart', function (e) {
-        socket.emit('keydown', { player: socket.id, keyCode: 32, percent: 100 });
-    });
-})();
+document.addEventListener('touchstart', () => {
+  socket.emit('keydown', { player: socket.id, keyCode: 32, percent: 100 });
+});
