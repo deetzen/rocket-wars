@@ -14,11 +14,14 @@
     "type": "git",
     "url": "https://github.com/deetzen/rocket-wars.git"
   },
-  "contributors": [{
-    "name": "Christoph Weise"
-  }, {
+  "contributors": [
+    {
+      "name": "Christoph Weise"
+    },
+    {
       "name": "Dennis Schneider"
-  }],
+    }
+  ],
   "dependencies": {
     "buntstift": "^1.5.1",
     "express": "^4.13.4",
@@ -28,8 +31,9 @@
   },
   "devDependencies": {
     "@babel/core": "^7.4.5",
-    "assertthat": "^3.1.0",
     "concurrently": "^4.1.0",
+    "mocha": "^6.1.4",
+    "nyc": "^14.1.1",
     "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-imagemin": "^2.1.3",
@@ -44,7 +48,8 @@
   "scripts": {
     "start": "concurrently --kill-others \"parcel watch src/client/index.html\" \"node src/server/index\"",
     "build": "rimraf ./dist/**/* && parcel build src/client/index.html && parcel build src/server/index.js --target node",
-    "test": "bot test",
+    "test": "mocha test",
+    "coverage": "nyc mocha test",
     "analyse": "bot analyse"
   }
 }

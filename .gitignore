@@ -1,5 +1,6 @@
 .idea
 .cache
+.nyc_output
 node_modules
 dist
 *.log
