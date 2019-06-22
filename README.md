@@ -2,6 +2,7 @@
 > Canvas and socket based browser game.
 
 [![GitHub](https://img.shields.io/github/license/deetzen/rocket-wars.svg)](https://github.com/deetzen/rocket-wars/blob/master/LICENSE.md)
+[![Travis (.org)](https://img.shields.io/travis/deetzen/rocket-wars.svg)](https://travis-ci.org/deetzen/rocket-wars)
 [![Maintainability](https://img.shields.io/codeclimate/maintainability-percentage/deetzen/rocket-wars.svg)](https://codeclimate.com/github/deetzen/rocket-wars/maintainability)
 [![Code Quality](https://img.shields.io/codacy/grade/e2afd942470f4d5ca0f734f90af28ec5.svg)](https://www.codacy.com/app/deetzen/rocket-wars?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=deetzen/rocket-wars&amp;utm_campaign=Badge_Grade)
 [![Dependencies](https://img.shields.io/david/deetzen/rocket-wars.svg)](https://david-dm.org/deetzen/rocket-wars)
