@@ -1,18 +1,21 @@
 'use strict';
 
-const Character = require('./character/Character');
+const uuid = require('uuidv4');
+
+const Character = require('../Character/Character');
+const Keyboard = require('../Keyboard/Keyboard');
+
 const Color = require('../../utils/Color');
-const Keyboard = require('./Keyboard');
 const { MAX_AMMO } = require('../../constants');
 
 class Player {
-  constructor (stage, options) {
-    this.id = options.id;
+  constructor (stage, { id, color, name, keyboard, game } = {}) {
+    this.id = id || uuid();
     this.stage = stage;
-    this.name = options.name;
-    this.color = options.color || new Color().get(true, 0.6, 0.7);
-    this.keyboard = options.keyboard || new Keyboard();
-    this.game = options.game;
+    this.game = game;
+    this.name = name;
+    this.color = color || new Color().get(true, 0.6, 0.7);
+    this.keyboard = keyboard || new Keyboard();
     this.score = 0;
     this.ammo = MAX_AMMO;
 

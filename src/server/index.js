@@ -3,11 +3,11 @@
 const express = require('express');
 const path = require('path');
 
-const Game = require('./game/Game');
+const Game = require('./Game');
 const Server = require('./Server');
 const Timer = require('./Timer');
 
-const listener = require('./listener');
+const Listener = require('./Listener');
 
 // Directory of static files for frontend
 const rootDir = path.resolve(path.dirname(''));
@@ -43,4 +43,6 @@ timer.start();
 /**
  * Start the input listener
  */
-listener(game, server.getIo());
+const listener = new Listener(game, server.getIo());
+
+listener.listen();

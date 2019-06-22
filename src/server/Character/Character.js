@@ -1,9 +1,9 @@
 'use strict';
 
-const Canon = require('../weapon/Canon');
-const FlyingObject = require('../object/FlyingObject');
+const Canon = require('../Weapon/Canon');
+const FlyingObject = require('../Object/FlyingObject');
 const Shield = require('./Shield');
-const Skin = require('../../skin/Skin');
+const Skin = require('../Skin/Skin');
 
 const {
   ACCELERATION,
@@ -12,7 +12,7 @@ const {
   MAX_AMMO,
   MAX_VELOCITY,
   MIN_VELOCITY
-} = require('../../../constants');
+} = require('../../constants');
 
 class Character extends FlyingObject {
   constructor (stage, options) {

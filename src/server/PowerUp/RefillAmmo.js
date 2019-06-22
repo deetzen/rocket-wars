@@ -1,8 +1,10 @@
 'use strict';
 
-const { MAX_AMMO } = require('../../../constants');
+const { MAX_AMMO } = require('../../constants');
+
+const Skin = require('../Skin/Skin');
+
 const PowerUp = require('./PowerUp');
-const Skin = require('../../skin/Skin');
 
 class RefillAmmo extends PowerUp {
   constructor (stage, options) {

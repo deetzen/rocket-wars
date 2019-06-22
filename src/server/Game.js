@@ -1,10 +1,10 @@
 'use strict';
 
-const FlyingObjects = require('./object/FlyingObjects');
-const Players = require('./Players');
+const FlyingObjects = require('./Object/FlyingObjects');
+const Players = require('./Player/Players');
 
-const Sound = require('./Sound');
-const Stage = require('./Stage');
+const Sound = require('./Sound/Sound');
+const Stage = require('./Stage/Stage');
 
 class Game {
   constructor () {

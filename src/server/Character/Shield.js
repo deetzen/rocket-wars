@@ -1,8 +1,9 @@
 'use strict';
 
-const FlyingObject = require('../object/FlyingObject');
-const { SHIELD_MAX_DAMAGE } = require('../../../constants');
-const Skin = require('../../skin/Skin');
+const FlyingObject = require('../Object/FlyingObject');
+const Skin = require('../Skin/Skin');
+
+const { SHIELD_MAX_DAMAGE } = require('../../constants');
 
 class Shield extends FlyingObject {
   constructor (stage, options) {

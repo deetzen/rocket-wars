@@ -1,7 +1,8 @@
 'use strict';
 
 const PowerUp = require('./PowerUp');
-const Skin = require('../../skin/Skin');
+
+const Skin = require('../Skin/Skin');
 
 class RefillShield extends PowerUp {
   constructor (stage, options) {

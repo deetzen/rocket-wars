@@ -1,7 +1,7 @@
 'use strict';
 
 const Asteroid = require('./Asteroid');
-const Skin = require('../../skin/Skin');
+const Skin = require('../Skin/Skin');
 
 class Planet extends Asteroid {
   constructor (stage, options) {

@@ -1,7 +1,7 @@
 'use strict';
 
-const FlyingObject = require('../../object/FlyingObject');
-const Skin = require('../../../skin/Skin');
+const FlyingObject = require('../Object/FlyingObject');
+const Skin = require('../Skin/Skin');
 
 class Ammo extends FlyingObject {
   constructor (stage, options) {
