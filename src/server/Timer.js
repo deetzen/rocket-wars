@@ -32,13 +32,13 @@ class Timer {
     const playerList = [];
 
     players.forEach(player => {
-      playerList[player.id] = {
+      playerList.push({
         id: player.id,
         name: player.name,
         ammo: player.ammo,
         score: player.score,
         color: player.color
-      };
+      });
     });
 
     this.io.emit(UPDATE_PLAYERS, playerList);
@@ -46,8 +46,8 @@ class Timer {
 
   start () {
     setInterval(() => this.updateObjects(), 35);
-    setInterval(() => this.updatePlayers(), 17);
     setInterval(() => this.checkCollision(), 17);
+    setInterval(() => this.updatePlayers(), 300);
   }
 }
 

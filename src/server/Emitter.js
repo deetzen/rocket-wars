@@ -1,10 +1,10 @@
 'use strict';
 
-const Asteroid = require('../Luminary/Asteroid');
-const PermanentFire = require('../PowerUp/PermanentFire');
-const Planet = require('../Luminary/Planet');
-const RefillAmmo = require('../PowerUp/RefillAmmo');
-const RefillShield = require('../PowerUp/RefillShield');
+const Asteroid = require('./Luminary/Asteroid');
+const PermanentFire = require('./PowerUp/PermanentFire');
+const Planet = require('./Luminary/Planet');
+const RefillAmmo = require('./PowerUp/RefillAmmo');
+const RefillShield = require('./PowerUp/RefillShield');
 
 class Emitter {
   constructor (game) {

@@ -6,6 +6,7 @@ const path = require('path');
 const Game = require('./Game');
 const Server = require('./Server');
 const Timer = require('./Timer');
+const Emitter = require('./Emitter');
 
 const Listener = require('./Listener');
 
@@ -46,3 +47,10 @@ timer.start();
 const listener = new Listener(game, server.getIo());
 
 listener.listen();
+
+/**
+ * Start the object emitter
+ */
+const emitter = new Emitter(game);
+
+emitter.start();

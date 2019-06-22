@@ -8,7 +8,7 @@ const {
   ROTATE_RIGHT,
   STAGE_HEIGHT,
   STAGE_WIDTH
-} = require('../../../constants');
+} = require('../../constants');
 
 class Asteroid extends FlyingObject {
   constructor (stage, options) {
