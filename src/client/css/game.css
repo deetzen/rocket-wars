@@ -1,0 +1,153 @@
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+body {
+    color: #fff;
+    text-align: center;
+    text-shadow: 0 .05rem .1rem rgba(0,0,0,.5);
+    background-image: url('../images/backgrounds/background_02_parallax_01.png');
+    background-size: cover;
+}
+body:before {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background-image: url('../images/backgrounds/background_01_parallax_05.png');
+    background-size: cover;
+}
+body:after {
+    content: '';
+    display: block;
+    position: fixed;
+    top: 0; bottom: 0;
+    left: 0; right: 0;
+    background-image: url('../images/backgrounds/background_02_parallax_02.png');
+    background-size: cover;
+}
+
+h1 {
+    font-family: 'Bungee Shade', cursive;
+    font-size: 2em;
+    margin-bottom: 1em;
+}
+h1 span {
+    display: block;
+    margin-top: 0.2em;
+    font-size: 2.5em;
+    white-space: nowrap;
+}
+
+canvas {
+    display: block;
+}
+
+/*
+ * Globals
+ */
+
+/* Links */
+a,
+a:focus,
+a:hover {
+    color: #fff;
+}
+
+/* Custom default button */
+.btn-secondary,
+.btn-secondary:hover,
+.btn-secondary:focus {
+    color: #333;
+    text-shadow: none; /* Prevent inheritance from `body` */
+    background-color: #fff;
+    border: .05rem solid #fff;
+}
+
+
+/*
+ * Base structure
+ */
+
+/* Extra markup and styles for table-esque vertical and horizontal centering */
+.site-wrapper {
+    display: table;
+    width: 100%;
+    height: 100%; /* For at least Firefox */
+    min-height: 100%;
+    -webkit-box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
+    box-shadow: inset 0 0 5rem rgba(0,0,0,.5);
+    position: relative;
+    z-index: 100;
+}
+.site-wrapper-inner {
+    display: table-cell;
+    vertical-align: top;
+}
+.cover-container {
+    margin-right: auto;
+    margin-left: auto;
+}
+
+/* Padding for spacing */
+.inner {
+    padding: 2rem;
+}
+
+/*
+ * Cover
+ */
+
+.cover {
+    padding: 0 1.5rem;
+}
+.cover .btn-lg {
+    padding: .75rem 1.25rem;
+    font-weight: bold;
+}
+
+/*
+ * Affix and center
+ */
+
+@media (min-width: 40em) {
+    /* Pull out the header and footer */
+    .masthead {
+        position: fixed;
+        top: 0;
+    }
+    .mastfoot {
+        position: fixed;
+        bottom: 0;
+    }
+    /* Start the vertical centering */
+    .site-wrapper-inner {
+        vertical-align: middle;
+        padding-bottom: 2em;
+    }
+    /* Handle the widths */
+    .masthead,
+    .mastfoot,
+    .cover-container {
+        width: 100%; /* Must be percentage or pixels for horizontal alignment */
+    }
+}
+
+@media (min-width: 62em) {
+    .masthead,
+    .mastfoot,
+    .cover-container {
+        width: 42rem;
+    }
+}
+
+.nav {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+}
+.nav a {
+    font-size: 0.9em;
+}
