@@ -61,8 +61,8 @@ class Object {
 
     obj.vector.tx(
       dn.multiply(
-        (((cr * this.mass) * (v1 - v2)) + (obj.mass * v2) + (this.mass * v1)) / sm,
-      ),
+        (((cr * this.mass) * (v1 - v2)) + (obj.mass * v2) + (this.mass * v1)) / sm
+      )
     );
 
     obj.hit(this);

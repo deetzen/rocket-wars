@@ -1,5 +1,5 @@
 import Character from './character/Character';
-import Color from '../utils/color';
+import Color from '../../utils/Color';
 import Keyboard from './Keyboard';
 import { MAX_AMMO } from '../../constants';
 

@@ -24,28 +24,17 @@
   ],
   "dependencies": {
     "buntstift": "^1.5.1",
-    "esm": "^3.2.22",
     "express": "^4.13.4",
-    "express-browserify": "^1.0.3",
-    "images": "^3.0.2",
-    "parcel": "^1.12.3",
     "socket.io": "^2.0.3",
     "socket.io-client": "^2.0.3",
     "socket.io-server": "^1.0.0-b",
-    "sprites": "^0.2.3",
     "uuidv4": "^4.0.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.4.3",
-    "@babel/preset-env": "^7.4.3",
+    "@babel/core": "^7.4.5",
     "assertthat": "^3.1.0",
-    "babel-eslint": "^10.0.2",
-    "babel-plugin-transform-runtime": "^6.23.0",
-    "babel-preset-es2015": "^6.24.1",
     "concurrently": "^4.1.0",
-    "eslint-config-airbnb": "^17.1.0",
-    "eslint-plugin-import": "^2.17.3",
-    "nodemon": "^1.18.10",
+    "parcel": "^1.12.3",
     "parcel-bundler": "^1.12.3",
     "parcel-plugin-imagemin": "^2.1.3",
     "parcel-plugin-static-files-copy": "^2.0.0",
@@ -57,10 +46,8 @@
     "watcherGlob": "**"
   },
   "scripts": {
-    "dev-backend": "parcel watch src/client/index.html & parcel watch src/server/index.js --target node & nodemon --watch dist dist/index.js",
-    "dev": "npm run dev-backend",
+    "start": "concurrently --kill-others \"parcel watch src/client/index.html\" \"node --experimental-modules src/server/index.mjs\"",
     "build": "parcel build src/client/index.html && parcel build src/server/index.js --target node",
-    "start": "npm run build && node dist/index.js",
     "test": "bot test",
     "analyse": "bot analyse"
   }
