@@ -55,17 +55,17 @@ class Emitter {
   add () {
     this.start();
 
-    const object = this.getRandomItem();
+    const GameOject = this.getRandomItem();
     let exists = false;
 
     this.game.objects.forEach(gameObject => {
-      if (gameObject.constructor.name === object.name) {
+      if (gameObject.constructor.name === GameOject.name) {
         exists = true;
       }
     });
 
     if (!exists) {
-      const objectInstance = new object(this.game.stage, {});
+      const objectInstance = new GameOject(this.game.stage, {});
 
       this.game.addObject(objectInstance);
     }
