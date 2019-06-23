@@ -44,7 +44,7 @@ class Emitter {
         weightSum += Number(this.objects[index].weight.toFixed(2));
 
         if (randomNum <= weightSum) {
-          return { name: index, Class: this.objects[index].class };
+          return this.objects[index].class;
         }
       }
     }
@@ -65,7 +65,7 @@ class Emitter {
     });
 
     if (!exists) {
-      const objectInstance = new object.Class(this.game.stage, {});
+      const objectInstance = new object(this.game.stage, {});
 
       this.game.addObject(objectInstance);
     }
