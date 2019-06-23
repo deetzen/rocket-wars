@@ -1,11 +1,11 @@
 'use strict';
 
-const MIN_VELOCITY = 5;
-const MAX_VELOCITY = 20;
-const ACCELERATION = 0.2;
-const CHARACTER_SIZE = 40;
-const FIRE_RATE = 300;
-const MAX_AMMO = 15;
+const MIN_VELOCITY = 10;
+const MAX_VELOCITY = 25;
+const ACCELERATION = 0.5;
+const CHARACTER_SIZE = 50;
+const FIRE_RATE = 150;
+const MAX_AMMO = 50;
 const SERVER_PORT = '8181';
 const STAGE_WIDTH = 1300;
 const STAGE_HEIGHT = 844;

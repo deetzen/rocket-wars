@@ -29,13 +29,13 @@ class Player {
       unicode: '\uF0FB'
     });
 
-    setInterval(this.raiseAmmo.bind(this), 75);
+    setInterval(this.raiseAmmo.bind(this), 300);
   }
 
   raiseAmmo () {
     if (this.ammo < MAX_AMMO) {
       if (!this.character.isFiring) {
-        this.ammo += 0.3;
+        this.ammo += 2;
       }
     } else {
       this.ammo = MAX_AMMO;

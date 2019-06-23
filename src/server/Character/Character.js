@@ -78,14 +78,14 @@ class Character extends FlyingObject {
   }
 
   rotateRight (percent = 100) {
-    this.rotation += (percent / 100) * 2;
+    this.rotation += (percent / 100) * 3.5;
     this.direction = this.rotation;
 
     return this;
   }
 
   rotateLeft (percent = 100) {
-    this.rotation -= (percent / 100) * 2;
+    this.rotation -= (percent / 100) * 3.5;
     this.direction = this.rotation;
 
     return this;
