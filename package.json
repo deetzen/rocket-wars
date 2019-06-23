@@ -44,12 +44,14 @@
     "sass": "^1.17.4"
   },
   "staticFiles": {
-    "staticPath": "src/static",
     "watcherGlob": "**"
   },
   "scripts": {
     "start": "concurrently --kill-others \"parcel watch src/client/index.html\" \"nodemon src/server/index\"",
-    "build": "rimraf ./dist/**/* && parcel build src/client/index.html --no-source-maps --out-dir dist/dist && parcel build src/server/index.js --no-source-maps --target node",
+    "build": "rimraf ./dist && npm run build-client && npm run build-server && npm run build-static",
+    "build-client": "parcel build src/client/index.html --no-source-maps --out-dir dist/dist",
+    "build-server": "parcel build src/server/index.js --no-source-maps --target node",
+    "build-static": "cp -R src/static/* dist/dist/",
     "test": "mocha test",
     "coverage": "nyc mocha test",
     "lint": "eslint --ext .js src",
