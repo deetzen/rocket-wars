@@ -1,11 +1,10 @@
 'use strict';
 
-const uuid = require('uuidv4');
-
 const Character = require('../Character/Character');
 const Keyboard = require('../Keyboard/Keyboard');
 
 const Color = require('../../utils/Color');
+const { uuid } = require('../../utils');
 const { MAX_AMMO } = require('../../constants');
 
 class Player {

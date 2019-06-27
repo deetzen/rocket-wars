@@ -1,9 +1,8 @@
 'use strict';
 
-const uuid = require('uuidv4');
-
 const Skin = require('../Skin/Skin');
 const Vector = require('../../utils/Vector');
+const { uuid } = require('../../utils');
 
 class FlyingObject {
   constructor (stage, options) {
