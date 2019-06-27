@@ -1,6 +1,5 @@
 'use strict';
 
-const buntstift = require('buntstift');
 const express = require('express');
 const { Server } = require('http');
 const { SERVER_PORT } = require('../constants');
@@ -13,7 +12,7 @@ module.exports = class {
     this.io = socketIo(this.server);
 
     this.server.listen(SERVER_PORT, () => {
-      buntstift.info(`Backend running: http://localhost:${SERVER_PORT}`);
+      console.log(`Backend running: http://localhost:${SERVER_PORT}`); // eslint-disable-line no-console
     });
   }
 
