@@ -23,23 +23,30 @@
     }
   ],
   "dependencies": {
-    "express": "4.17.1",
-    "socket.io": "2.2.0"
+    "express": "5.3.0",
+    "socket.io": "4.8.4",
+    "socket.io-client": "^4.8.4"
   },
   "devDependencies": {
-    "@babel/core": "7.4.5",
-    "concurrently": "4.1.1",
-    "dependency-cruiser": "4.24.0",
-    "eslint": "6.0.1",
-    "eslint-config-es": "3.0.0",
-    "mocha": "6.1.4",
-    "nodemon": "1.19.1",
-    "nyc": "14.1.1",
-    "parcel": "1.12.3",
-    "parcel-bundler": "1.12.3",
-    "parcel-plugin-imagemin": "3.0.0",
-    "parcel-plugin-static-files-copy": "2.1.2",
-    "sass": "1.22.1"
+    "@babel/core": "8.1.2",
+    "@parcel/transformer-sass": "^2.16.4",
+    "assert": "^2.1.0",
+    "buffer": "^6.0.3",
+    "concurrently": "10.0.7",
+    "dependency-cruiser": "18.8.0",
+    "eslint": "10.15.0",
+    "mocha": "12.0.3",
+    "nodemon": "3.1.14",
+    "nyc": "18.0.0",
+    "parcel": "2.16.4",
+    "parcel-bundler": "1.12.5",
+    "parcel-plugin-imagemin": "4.0.2",
+    "parcel-plugin-static-files-copy": "2.6.0",
+    "path-browserify": "^1.0.1",
+    "sass": "1.108.2",
+    "stream-browserify": "^3.0.0",
+    "stream-http": "^3.2.0",
+    "util": "^0.12.5"
   },
   "staticFiles": {
     "staticPath": "src/static",
